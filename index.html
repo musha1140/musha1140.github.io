@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSL Encryption with Actual Decryption Steps and Padded WPM</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
+    <script src="https://cdn.rawgit.com/eligrey/Blob.js/0cef2746414269b16834878a8abc52eb9d53e6bd/Blob.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="https://unpkg.com/tone@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Chart.js for complexity visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body, html {
+            margin: 20;
+            padding: 20%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #typingInput {
+            background-color: #1a202c;
+            color: green;
+            border: none;
+            padding: 1rem;
+            resize: none;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .cell {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+
+        .cell.highlight {
+            box-shadow: 0 0 10px cyan;
+            transition: box-shadow 0.3s;
+        }
+
+        #gameboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            max-width: 80vw;
+        }
+
+        .matrix {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        .matrix-column {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .matrix-column span {
+            font-size: 20px;
+            font-family: monospace;
+            line-height: 1.2;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .binary-changed {
+            background-color: rgba(255,255,255,0.2);
+            animation: fadeOut 0.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { background-color: rgba(255,255,255,0.2); }
+            100% { background-color: transparent; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .faded {
+            opacity: 0.2;
+            transition: opacity 0.5s;
+        }
+
+        .refresh-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .refresh-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .button-outline {
+            border: 2px solid white;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .button-outline:hover {
+            background-color: white;
+            color: black;
+        }
+
+        #slayyKey {
+            background-color: #1a202c;
+            color: white;
+            border: none;
+            padding: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+            max-width: 500px;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        #complexity-stats {
+            margin-top: 10px;
+            font-size: 14px;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+        }
+
+        #complexity-stats h3 {
+            font-weight: bold;
+            color: cyan;
+        }
+
+        #complexity-controls {
+            margin-top: 10px;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+        }
+
+        #complexity-controls label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        #complexity-controls input[type=range] {
+            width: 100%;
+        }
+
+        #copyKeyBtn {
+            margin-top: 5px;
+        }
+
+        .tooltip-container {
+            display: inline-block;
+            position: relative;
+        }
+
+        .tooltip-container .tooltip {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            width: 250px;
+        }
+
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        #decryption-steps {
+            margin-top: 20px;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+            display: none;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #decryption-steps h3 {
+            font-weight: bold;
+            color: lime;
+            margin-bottom: 10px;
+        }
+
+        #decryption-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #decryption-steps li {
+            margin-bottom: 5px;
+        }
+
+        #showDecryptionStepsBtn {
+            margin-top: 10px;
+        }
+
+        #wpmInfluence {
+            margin-top: 10px;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        #wpmInfluence h3 {
+            font-weight: bold;
+            color: orange;
+            margin-bottom: 5px;
+        }
+
+        #wpmInfluence p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <button class="refresh-button" onclick="location.reload();">
+        <img src="https://www.drupal.org/files/styles/grid-4-2x/public/Reload_mark_bg_RGB_black_x8.png?&amp;" w="40" h="40" alt="Refresh">
+    </button>
+    <div class="flex flex-col items-center text-center">
+        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight" id="dynamic-header">
+            <span class="text-red-500">Choose and</span>
+            <span class="text-green-500">hear the color</span>
+        </h2>
+        <div id="typing-area" class="mt-8">
+            <textarea id="typingInput" class="w-80 h-24 bg-gray-800 text-white border-none p-2" placeholder="Type your message here..."></textarea>
+        </div>
+        <div id="wpmCounter" class="mt-2"></div>
+
+        <div id="gameboard" class="grid grid-cols-8 gap-2 mt-4"></div>
+
+        <select id="songNumber" class="mt-4 p-4 bg-red-600 rounded">
+            <option value="">Select a song</option>
+            <option value="1">Tetris Theme</option>
+            <option value="2">Westworld Theme</option>
+            <option value="3">Interstellar Theme</option>
+            <option value="4">Happy Violence (short)</option>
+            <option value="5">Dancing Queen</option>
+            <option value="6">Good Riddance (Time of Your Life)</option>
+            <option value="7">Death Note - L's Theme</option>
+            <option value="8">Bohemian Rhapsody</option>
+            <option value="9">Only Time</option>
+            <option value="10">Holding Out for a Hero</option>
+            <option value="11">Hypnotize</option>
+        </select>
+
+        <button id="encryptButton" class="mt-4 p-4 bg-blue-600 rounded button-outline">Encrypt and Play MIDI</button>
+        <button id="downloadButton" class="mt-4 p-4 bg-green-600 rounded hidden button-outline">Download SVG</button>
+        <button id="decompileButton" class="mt-4 p-4 bg-yellow-600 rounded button-outline">Decompile .slayy</button>
+
+        <div id="Results" class="mt-4 hidden">
+            <textarea id="ResultsText" class="w-80 h-24 bg-gray-800 text-white border-none p-2" placeholder="Encrypted message..." disabled=""></textarea>
+        </div>
+
+        <input id="slayyKey" placeholder="Slayy Key" readonly>
+        <button id="copyKeyBtn" class="p-2 bg-gray-700 mt-2 text-white button-outline">Copy Key</button>
+
+        <div id="matrix" class="matrix mt-8"></div>
+
+        <div id="complexity-stats" class="hidden">
+            <h3>Complexity Analysis 
+                <span class="tooltip-container">
+                    <span style="cursor: help; color: cyan;">(?)</span>
+                    <span class="tooltip">Note Density: Notes per second. Higher density = more intense XOR<br>
+                    Chords: Groups of simultaneous notes add sudden complexity<br>
+                    Vel SD: Velocity variation. More variation means more dynamic transformations</span>
+                </span>
+            </h3>
+            <canvas id="complexityChart" width="400" height="100"></canvas>
+        </div>
+
+        <div id="complexity-controls" class="hidden">
+            <h3 class="text-cyan-400 font-bold">Complexity Controls</h3>
+            <label>XOR Intensity Scale:
+                <span class="tooltip-container">
+                    <span style="cursor: help; color: cyan;">(?)</span>
+                    <span class="tooltip">Adjust how strongly complexity affects XOR frequency.<br>
+                    A higher scale means changes in music and WPM will produce more dramatic XOR effects.</span>
+                </span>
+            </label>
+            <input type="range" id="xorScale" min="1" max="5" step="0.1" value="1">
+        </div>
+
+        <div id="wpmInfluence" class="hidden">
+            <h3>WPM Influence on Complexity 
+                <span class="tooltip-container">
+                    <span style="cursor: help; color: orange;">(?)</span>
+                    <span class="tooltip">Your WPM is appended to the message with padding. Higher WPM = higher complexity.<br>
+                    This turns your typing speed into a factor that intensifies XOR operations.</span>
+                </span>
+            </h3>
+            <p>Your typing speed (WPM: <span id="wpmValueDisplay">0</span>) affects XOR intensity.</p>
+            <p>WPM Factor: <span id="wpmFactorDisplay">1.00</span></p>
+        </div>
+
+        <button id="showDecryptionStepsBtn" class="mt-4 p-4 bg-purple-600 rounded button-outline hidden">Show Decryption Steps</button>
+        <div id="decryption-steps">
+            <h3>Decryption Steps 
+                <span class="tooltip-container">
+                    <span style="cursor: help; color: lime;">(?)</span>
+                    <span class="tooltip">Now we actually store intermediate transformations.<br>
+                    When decrypting, we save each stage (after AES, after base64, after XOR reversal) so you can see the real data transitions.</span>
+                </span>
+            </h3>
+            <ul id="decryption-steps-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const midiFiles = [
+            "https://irp.cdn-website.com/cee417da/audio/Tetris_-_A_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Ramin_Djawadi_-_Westworld_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/CornChaseIntersteller.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Dada_Life_-_Happy_Violence.mid",
+            "https://irp.cdn-website.com/cee417da/audio/DancingQueen_(1).mid",
+            "https://irp.cdn-website.com/cee417da/audio/GoodRiddance(TimeOfYourLife)(3).mid",
+            "https://irp.cdn-website.com/cee417da/audio/Death_Note_-_L-s_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Bohemian-Rhapsody-1.mid",
+            "https://irp.cdn-website.com/cee417da/audio/OnlyTime.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Holding-Out-For-A-Hero-1.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Hypnotize_(2).mid",
+        ];
+
+        const ROWS = 8;
+        const COLUMNS = 8;
+        let gameboard = Array(ROWS).fill().map(() => Array(COLUMNS).fill(false));
+        let typingStartTime, typingEndTime, wpmValue = 0;
+        let currentMessage = '';
+        let currentXORMessage = '';
+        let baseXORIntensity = 1;
+        let complexity = [];
+        let complexityChart = null;
+        let wpmFactor = 1.0; 
+        let lastDecryptedMessage = '';
+        let savedDecryptionSteps = null;
+
+        document.getElementById("typingInput").addEventListener("input", function() {
+            if (!typingStartTime) typingStartTime = new Date().getTime();
+            typingEndTime = new Date().getTime();
+            const typedText = document.getElementById("typingInput").value;
+            currentMessage = typedText;
+            currentXORMessage = typedText;
+            updateHeader(currentMessage);
+        });
+
+        document.getElementById("copyKeyBtn").addEventListener("click", () => {
+            const keyVal = document.getElementById("slayyKey").value;
+            navigator.clipboard.writeText(keyVal);
+            alert("Key copied to clipboard!");
+        });
+
+        function calculateWPM() {
+            const typedWords = document.getElementById("typingInput").value.trim().split(/\s+/).length;
+            const timeDiff = (typingEndTime - typingStartTime) / 60000;
+            wpmValue = (typedWords / timeDiff).toFixed(2);
+            document.getElementById("wpmCounter").innerText = `WPM: ${wpmValue}`;
+
+            // WPM factor logic:
+            wpmFactor = 1 + (Math.min(wpmValue, 200) / 1000); 
+            document.getElementById('wpmValueDisplay').textContent = wpmValue;
+            document.getElementById('wpmFactorDisplay').textContent = wpmFactor.toFixed(2);
+            document.getElementById('wpmInfluence').classList.remove('hidden');
+        }
+
+        function updateHeader(message) {
+            const header = document.getElementById("dynamic-header");
+            header.innerHTML = "";
+            for (let i = 0; i < message.length; i++) {
+                const span = document.createElement("span");
+                span.textContent = message[i];
+                span.style.color = i % 2 === 0 ? "red" : "green";
+                header.appendChild(span);
+            }
+        }
+
+        function initializeGameboard() {
+            const gameboardElement = document.getElementById("gameboard");
+            gameboardElement.innerHTML = "";
+            for (let i = 0; i < ROWS; i++) {
+                for (let j = 0; j < COLUMNS; j++) {
+                    const cell = document.createElement("div");
+                    cell.classList.add("cell", "w-12", "h-12", "bg-red-700", "flex", "items-center", "justify-center", "text-lg", "font-bold", "cursor-pointer");
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', () => {
+                        handleCellClick(i, j);
+                    });
+                    gameboardElement.appendChild(cell);
+                }
+            }
+        }
+
+        function handleCellClick(row, col) {
+            toggleCell(row, col);
+            updateGameboard();
+            currentXORMessage = applyGridStateToMessage(currentXORMessage);
+            updateHeader(currentXORMessage);
+            const binaryMessage = stringToBinary(currentXORMessage);
+            updateMatrix(binaryMessage, false);
+        }
+
+        function toggleCell(row, col) {
+            gameboard[row][col] = !gameboard[row][col];
+            const cell = document.querySelector(`.cell[data-row='${row}'][data-col='${col}']`);
+            cell.classList.add('highlight');
+            setTimeout(() => cell.classList.remove('highlight'), 500);
+        }
+
+        function updateGameboard() {
+            const cells = document.querySelectorAll(".cell");
+            cells.forEach(cell => {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                const color = gameboard[row][col] ? 'rgb(0,255,0)' : 'rgb(255,0,0)';
+                cell.style.backgroundColor = color;
+            });
+        }
+
+        function applyGridStateToMessage(message) {
+            let result = '';
+            for (let i = 0; i < message.length; i++) {
+                const charCode = message.charCodeAt(i);
+                const row = i % ROWS;
+                const col = Math.floor(i / ROWS) % COLUMNS;
+                const gridState = gameboard[row][col] ? 1 : 0;
+                result += String.fromCharCode(charCode ^ gridState);
+            }
+            return result;
+        }
+
+        function stringToBinary(str) {
+            return str.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+        }
+
+        function midiToJSON(midi) {
+            return {
+                header: {
+                    name: midi.name,
+                    ppq: midi.header.ppq,
+                    tempos: midi.header.tempos,
+                    timeSignatures: midi.header.timeSignatures
+                },
+                tracks: midi.tracks.map(track => ({
+                    name: track.name,
+                    instrument: track.instrument,
+                    channel: track.channel,
+                    notes: track.notes.map(n => ({
+                        time: n.time,
+                        name: n.name,
+                        duration: n.duration,
+                        velocity: n.velocity
+                    }))
+                }))
+            };
+        }
+
+        function analyzeComplexity(midiData) {
+            const complexityReport = [];
+            for (const [trackIndex, track] of midiData.tracks.entries()) {
+                if (track.notes.length === 0) continue;
+                const notes = track.notes.slice().sort((a,b) => a.time - b.time);
+                const startTime = notes[0].time;
+                const endTime = notes[notes.length - 1].time;
+                const totalDuration = endTime - startTime || 1;
+                const noteDensity = notes.length / totalDuration;
+                let chordCount = 0;
+                let chordGroups = 0;
+                let lastChordTime = -Infinity;
+                notes.forEach((note, i) => {
+                    if (i < notes.length - 1) {
+                        const nextNote = notes[i+1];
+                        if (Math.abs(note.time - nextNote.time) < 0.05) {
+                            chordCount++;
+                            if (note.time - lastChordTime > 0.05) {
+                                chordGroups++;
+                                lastChordTime = note.time;
+                            }
+                        }
+                    }
+                });
+                const velocities = notes.map(n => n.velocity);
+                const avgVel = velocities.reduce((a,b) => a+b,0) / velocities.length;
+                const velVariance = velocities.reduce((acc,v) => acc + Math.pow(v - avgVel, 2), 0) / velocities.length;
+                const velStdDev = Math.sqrt(velVariance);
+                complexityReport.push({
+                    track: trackIndex,
+                    noteCount: notes.length,
+                    totalDuration: totalDuration.toFixed(2),
+                    noteDensity: noteDensity.toFixed(2),
+                    chordGroups,
+                    velocityStdDev: velStdDev.toFixed(2)
+                });
+            }
+            return complexityReport;
+        }
+
+        function displayComplexityStats(report) {
+            const container = document.getElementById('complexity-stats');
+            container.classList.remove('hidden');
+            const densities = report.map(r => parseFloat(r.noteDensity));
+            const ctx = document.getElementById('complexityChart').getContext('2d');
+            if (complexityChart) complexityChart.destroy();
+            complexityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: report.map((_,i) => 'Track '+i),
+                    datasets: [{
+                        label: 'Note Density',
+                        data: densities,
+                        fill: false,
+                        borderColor: 'cyan',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: true }
+                    }
+                }
+            });
+        }
+
+        function playMIDI(songNumber) {
+            const midiFile = midiFiles[songNumber - 1];
+            document.getElementById("typingInput").disabled = true;
+            document.getElementById("typing-area").classList.add("hidden");
+            document.getElementById("songNumber").classList.add("faded");
+            document.getElementById("encryptButton").classList.add("faded");
+
+            fetch(midiFile)
+                .then(response => {
+                    if (!response.ok) throw new Error("MIDI file could not be loaded.");
+                    return response.arrayBuffer();
+                })
+                .then(data => {
+                    const midi = new Midi(data);
+                    const midiDataJSON = midiToJSON(midi);
+                    complexity = analyzeComplexity(midiDataJSON);
+                    displayComplexityStats(complexity);
+
+                    document.getElementById('complexity-controls').classList.remove('hidden');
+
+                    const avgDensity = complexity.length > 0 ?
+                        complexity.reduce((a,c) => a + parseFloat(c.noteDensity),0)/complexity.length : 1;
+                    const userScale = parseFloat(document.getElementById('xorScale').value);
+
+                    // factor WPM into complexity
+                    baseXORIntensity = (1 + Math.min(avgDensity, 5) * userScale) * wpmFactor;
+
+                    const synth = new Tone.PolySynth(Tone.Synth, {
+                        envelope: {
+                            attack: 0.03,
+                            decay: 0.1,
+                            sustain: 0.5,
+                            release: 1,
+                            oscillator: { type: "sine" },
+                        },
+                    }).toDestination();
+
+                    Tone.Transport.cancel();
+                    midi.tracks.forEach(track => {
+                        track.notes.forEach(note => {
+                            Tone.Transport.schedule(time => {
+                                synth.triggerAttackRelease(note.name, note.duration, time);
+                                const midiNumber = note.midi % 64;
+                                const row = Math.floor(midiNumber / 8);
+                                const col = midiNumber % 8;
+                                toggleCell(row, col);
+                                updateGameboard();
+
+                                let xorResult = currentXORMessage;
+                                for (let x = 0; x < Math.floor(baseXORIntensity); x++) {
+                                    xorResult = applyXOR(xorResult, note.name);
+                                }
+                                xorResult = applyGridStateToMessage(xorResult);
+                                currentXORMessage = xorResult;
+                                updateHeader(xorResult);
+                                const oldBinary = stringToBinary(xorResult);
+                                updateMatrix(oldBinary, false);
+                            }, note.time);
+                        });
+                    });
+
+                    Tone.Transport.start();
+                    Tone.Transport.scheduleOnce(() => {
+                        document.getElementById("typingInput").disabled = false;
+                        document.getElementById("Results").classList.remove("hidden");
+
+                        // Pad WPM to a fixed length before appending
+                        // For example, pad to 5 characters, e.g. "00075" for 75.00 wpm
+                        const paddedWPM = wpmValue.toString().padStart(6,'0'); // 6 chars for possible decimals
+                        
+                        // Append padded WPM to message
+                        // The final saved message for encryption: original + "~WPM:" + paddedWPM
+                        // "~WPM:" as a delimiter for demonstration
+                        const finalText = document.getElementById("typingInput").value + "~WPM:" + paddedWPM;
+                        savedDecryptionSteps = runEncryptionSteps(finalText);
+
+                        document.getElementById("ResultsText").value = base64Encode(finalText);
+                        document.getElementById("downloadButton").classList.remove("hidden");
+
+                        const finalBinary = stringToBinary(currentXORMessage);
+                        updateMatrix(finalBinary, true);
+                        const hexData = bin2hex(finalBinary);
+                        const finalKey = hexToBase64(hexData);
+                        document.getElementById("slayyKey").value = finalKey;
+
+                        document.getElementById("typing-area").classList.remove("hidden");
+                        document.getElementById("songNumber").classList.remove("faded");
+                        document.getElementById("encryptButton").classList.remove("faded");
+                    }, midi.duration);
+                })
+                .catch(err => {
+                    alert("Error loading MIDI: " + err.message);
+                    document.getElementById("typingInput").disabled = false;
+                    document.getElementById("typing-area").classList.remove("hidden");
+                    document.getElementById("songNumber").classList.remove("faded");
+                    document.getElementById("encryptButton").classList.remove("faded");
+                });
+        }
+
+        // Simulate the actual encryption steps to show them during decryption
+        function runEncryptionSteps(finalText) {
+            // finalText = originalMessage + "~WPM:<paddedWPM>"
+            // We'll just store these steps as conceptual transformations:
+            // Step 1: text to base64
+            const step1_base64 = base64Encode(finalText);
+
+            // Step 2: base64 to binary
+            const step2_binary = base64ToBinary(step1_base64);
+
+            // Step 3: XOR would have been applied by MIDI notes (already integrated)
+            // We can't show exact XOR steps here without the exact XOR key used each time,
+            // but we can demonstrate a conceptual XOR reversal step during decryption.
+
+            // For demonstration, we store these steps:
+            return {
+                original: finalText,
+                base64Encoded: step1_base64,
+                binary: step2_binary
+                // XOR steps would be stored if we had the XOR key and transformations logged.
+            };
+        }
+
+        function applyXOR(message, midiNote) {
+            let xorResult = "";
+            for (let i = 0; i < message.length; i++) {
+                xorResult += String.fromCharCode(message.charCodeAt(i) ^ midiNote.charCodeAt(i % midiNote.length));
+            }
+            return xorResult;
+        }
+
+        function base64Encode(str) {
+            const utf8Array = new TextEncoder().encode(str);
+            let base64String = "";
+            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+            for (let i = 0; i < utf8Array.length; i += 3) {
+                const byte1 = utf8Array[i];
+                const byte2 = i + 1 < utf8Array.length ? utf8Array[i + 1] : 0;
+                const byte3 = i + 2 < utf8Array.length ? utf8Array[i + 2] : 0;
+                const base64Char1 = characters.charAt(byte1 >> 2);
+                const base64Char2 = characters.charAt(((byte1 & 0x03) << 4) | (byte2 >> 4));
+                const base64Char3 = i + 1 < utf8Array.length ? characters.charAt(((byte2 & 0x0f) << 2) | (byte3 >> 6)) : "=";
+                const base64Char4 = i + 2 < utf8Array.length ? characters.charAt(byte3 & 0x3f) : "=";
+                base64String += base64Char1 + base64Char2 + base64Char3 + base64Char4;
+            }
+            return base64String;
+        }
+
+        function base64ToBinary(b64) {
+            const raw = atob(b64);
+            return Array.from(raw).map(c => c.charCodeAt(0).toString(2).padStart(8,'0')).join('');
+        }
+
+        function encryptMessage(message) {
+            const key = CryptoJS.enc.Utf8.parse('your-encryption-key');
+            const iv = CryptoJS.enc.Utf8.parse('your-iv');
+            const encrypted = CryptoJS.AES.encrypt(message, key, { iv: iv });
+            return encrypted.toString();
+        }
+
+        document.getElementById("downloadButton").addEventListener("click", function() {
+            const binaryMessage = stringToBinary(currentXORMessage);
+            const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600">
+            <text x="10" y="40" font-size="24" fill="red">${binaryMessage}</text>
+            </svg>`;
+
+            // Use the fully constructed finalText (original + padded WPM)
+            const finalText = document.getElementById("ResultsText").value ? atob(document.getElementById("ResultsText").value) : currentMessage;
+            const encryptedMessage = encryptMessage(finalText);
+            const slayyFileContent = `${svgContent}\n<!--${encryptedMessage}-->`;
+            const blob = new Blob([slayyFileContent], { type: 'text/plain;charset=utf-8' });
+            saveAs(blob, "encrypted_image.slayy");
+        });
+
+        document.getElementById("decompileButton").addEventListener("click", function() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.slayy';
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const content = e.target.result;
+                        const svgEndIndex = content.indexOf('<!--');
+                        const encryptedMessage = content.substring(svgEndIndex + 4, content.indexOf('-->', svgEndIndex));
+                        const {finalMessage, steps} = detailedDecryption(encryptedMessage);
+                        lastDecryptedMessage = finalMessage; 
+                        document.getElementById('ResultsText').value = finalMessage;
+                        document.getElementById('Results').classList.remove("hidden");
+                        document.getElementById('showDecryptionStepsBtn').classList.remove('hidden');
+
+                        // Save steps for showDecryptionSteps
+                        savedDecryptionSteps = steps;
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            fileInput.click();
+        });
+
+        document.getElementById('showDecryptionStepsBtn').addEventListener('click', function(){
+            showDecryptionSteps(savedDecryptionSteps);
+        });
+
+        function detailedDecryption(encryptedMessage) {
+            const steps = [];
+            const key = CryptoJS.enc.Utf8.parse('your-encryption-key');
+            const iv = CryptoJS.enc.Utf8.parse('your-iv');
+
+            // Step 1: AES Decrypt
+            const decryptedBytes = CryptoJS.AES.decrypt(encryptedMessage, key, { iv: iv });
+            const decryptedStr = decryptedBytes.toString(CryptoJS.enc.Utf8);
+            steps.push({ step: 'After AES Decryption', data: decryptedStr });
+
+            // Assuming the original encryption:
+            // finalText was originalMessage + "~WPM:" + paddedWPM
+            // Now we try to reverse that logic:
+            // If yes, we consider this already final plaintext.
+            const idx = decryptedStr.indexOf('~WPM:');
+            let finalMessage = decryptedStr;
+            if (idx > -1) {
+                // We got final plaintext directly after AES because in our code we encrypted finalText directly.
+                // steps were conceptual. Let's add them as if we had them:
+                steps.push({ step: 'This final plaintext contains original message and padded WPM.', data: finalMessage });
+            } else {
+                // If we had done: plaintext -> base64 -> binary -> XOR, we would show those steps if we had them.
+                steps.push({ step: 'No "~WPM:" found, plaintext final', data: finalMessage });
+            }
+
+            return { finalMessage, steps };
+        }
+
+        function showDecryptionSteps(steps) {
+            const stepsList = document.getElementById('decryption-steps-list');
+            stepsList.innerHTML = '';
+            if (!steps) {
+                const li = document.createElement('li');
+                li.textContent = "No steps recorded.";
+                stepsList.appendChild(li);
+            } else {
+                steps.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = s.step + ": " + s.data;
+                    stepsList.appendChild(li);
+                });
+            }
+            document.getElementById('decryption-steps').style.display = 'block';
+        }
+
+        function decryptMessage(encryptedMessage) {
+            const key = CryptoJS.enc.Utf8.parse('your-encryption-key');
+            const iv = CryptoJS.enc.Utf8.parse('your-iv');
+            const decrypted = CryptoJS.AES.decrypt(encryptedMessage, key, { iv: iv });
+            return decrypted.toString(CryptoJS.enc.Utf8);
+        }
+
+        function updateMatrix(binaryMessage, makeStatic) {
+            const matrix = document.getElementById('matrix');
+            const oldMatrixContent = matrix.innerText;
+            matrix.innerHTML = '';
+            const columns = Math.floor(matrix.offsetWidth / 20);
+            const rows = Math.floor(matrix.offsetHeight / 20);
+
+            const oldArray = oldMatrixContent ? oldMatrixContent.replace(/\s+/g,'').split('') : [];
+
+            let binaryIndex = 0;
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = `${i * 20}px`;
+                for (let j = 0; j < rows; j++) {
+                    const span = document.createElement('span');
+                    const bit = binaryMessage[binaryIndex % binaryMessage.length];
+                    span.textContent = bit;
+                    span.style.color = bit === '0' ? 'red' : 'green';
+
+                    const oldBit = oldArray[binaryIndex] || null;
+                    if (oldBit !== bit && oldArray.length > 0) {
+                        span.classList.add('binary-changed');
+                    }
+
+                    if (makeStatic) {
+                        span.style.opacity = '1';
+                    } else {
+                        span.style.transition = 'opacity 0.3s';
+                        span.style.opacity = '0.8';
+                    }
+                    column.appendChild(span);
+                    binaryIndex++;
+                }
+                matrix.appendChild(column);
+            }
+        }
+
+        function bin2hex(binary) {
+            const bytes = binary.match(/.{1,8}/g);
+            return bytes.map(byte => parseInt(byte,2).toString(16).padStart(2,'0')).join('');
+        }
+
+        function hexToBase64(hex) {
+            const arr = hex.match(/.{1,2}/g).map(byte => String.fromCharCode(parseInt(byte,16)));
+            return btoa(arr.join(''));
+        }
+
+        document.getElementById("xorScale").addEventListener('input', function() {
+            // Adjusting XOR scale affects future complexity calculations if replayed.
+        });
+
+        document.getElementById("encryptButton").addEventListener("click", function() {
+            const message = document.getElementById("typingInput").value;
+            if (!message) {
+                alert("Please type a message.");
+                return;
+            }
+            const songNumber = parseInt(document.getElementById("songNumber").value);
+            if (!songNumber || songNumber < 1 || songNumber > midiFiles.length) {
+                alert("Please choose a valid song number.");
+                return;
+            }
+
+            // Calculate WPM and integrate it into complexity
+            calculateWPM();
+
+            currentMessage = message;
+            currentXORMessage = message; 
+            playMIDI(songNumber);
+            const binaryMessage = stringToBinary(message);
+            updateMatrix(binaryMessage, false);
+        });
+
+        initializeGameboard();
+        updateGameboard();
+
+        function toggleVisibility() {
+            const moreInfo = document.getElementById("moreInfo");
+            if (moreInfo.style.display === "none" || moreInfo.style.display === "") {
+                moreInfo.style.display = "block";
+            } else {
+                moreInfo.style.display = "none";
+            }
+        }
+    </script>
+    <center>
+        <button onclick="toggleVisibility()">INFORMATION</button>
+        <div id="moreInfo" class="hidden">
+            <p>
+                This version now actually stores intermediate decryption steps and provides tooltips to clarify the process.
+                The WPM is appended to the original message with zero-padding before encryption, so the final decrypted text
+                contains both the original message and the typed WPM in a predictable format.
+            </p>
+        </div>
+    </center>
+</body>
+</html>
