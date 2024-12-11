@@ -261,14 +261,7 @@
     <button class="refresh-button" onclick="location.reload();">
         <img src="https://www.drupal.org/files/styles/grid-4-2x/public/Reload_mark_bg_RGB_black_x8.png?&amp;" w="40" h="40" alt="Refresh">
     </button>
-    <div class="flex flex-col items-center text-center">
-        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight" id="dynamic-header">
-            <span class="text-red-500">Choose and</span>
-            <span class="text-green-500">hear the color</span>
-        </h2>
-        <div id="typing-area" class="mt-8">
-            <textarea id="typingInput" class="w-80 h-24 bg-gray-800 text-white border-none p-2" placeholder="Type your message here..."></textarea>
-        </div>
+ 
         <div id="wpmCounter" class="mt-2"></div>
 
         <div id="gameboard" class="grid grid-cols-8 gap-2 mt-4"></div>
@@ -287,7 +280,14 @@
             <option value="10">Holding Out for a Hero</option>
             <option value="11">Hypnotize</option>
         </select>
-
+   <div class="flex flex-col items-center text-center">
+        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight" id="dynamic-header">
+            <span class="text-red-500">Choose and</span>
+            <span class="text-green-500">hear the color</span>
+        </h2>
+        <div id="typing-area" class="mt-8">
+            <textarea id="typingInput" class="w-80 h-24 bg-gray-800 text-white border-none p-2" placeholder="Type your message here..."></textarea>
+        </div>
         <button id="encryptButton" class="mt-4 p-4 bg-blue-600 rounded button-outline">Encrypt and Play MIDI</button>
         <button id="downloadButton" class="mt-4 p-4 bg-green-600 rounded hidden button-outline">Download SVG</button>
         <button id="decompileButton" class="mt-4 p-4 bg-yellow-600 rounded button-outline">Decompile .slayy</button>
