@@ -357,21 +357,23 @@
         <button onclick="toggleVisibility()">INFORMATION</button>
         <div id="moreInfo" class="hidden">
             <p>
-               Even if you have the "base string" (the final text that includes the user’s original message and appended WPM), that alone isn’t sufficient to straightforwardly decrypt the data. Here’s why:
+               Even if you have the "base string" (the final text that includes the user’s original message and appended WPM), that alone isn’t sufficient to straightforwardly decrypt the data. Here’s why:</p>
 
-1. **Missing XOR Patterns**:  
-   The encryption process doesn’t just rely on a single pass of XOR or a simple key. Instead, each note from the MIDI track triggers potentially multiple XOR transformations. The order, timing, and pitch of the notes generate a unique sequence of XOR keys or patterns. Without replicating the exact sequence of musical note events, you cannot reliably reverse these XOR operations.
+<p>1. Missing XOR Patterns**:  
+   The encryption process doesn’t just rely on a single pass of XOR or a simple key. Instead, each note from the MIDI track triggers potentially multiple XOR transformations. The order, timing, and pitch of the notes generate a unique sequence of XOR keys or patterns. Without replicating the exact sequence of musical note events, you cannot reliably reverse these XOR operations.</p>
 
-2. **AES and Data Splitting**:  
+
+  <p>  2. AES and Data Splitting:  
    Beyond XOR, the system also involves AES encryption and splitting the encrypted data into two halves. You need both halves and the encryption key to even get back to a state where XOR reversal is possible. Simply having the final text or base string that was originally typed (e.g., "hey~WPM:00075") doesn’t grant you access to the encrypted form or the ability to work backward through the transformations.
-
-3. **WPM Factor and Complexity Scales**:  
+</p>
+<p>3. WPM Factor and Complexity Scales**:  
    The WPM factor, along with other complexity controls, affects the intensity and frequency of XOR transformations. Even if you know the original message, you must reproduce the exact conditions—correct WPM factor, chosen complexity scale, and identical MIDI track—to reverse-engineer the XOR sequence.
-
-4. **Music as Part of the Keyspace**:  
+</p>
+<p>4. Music as Part of the Keyspace**:  
    The music effectively acts as part of the encryption key. Think of the MIDI track as an additional, non-traditional key that transforms the data repeatedly in a time-sensitive manner. Just having the base string is like having only one piece of a multi-piece puzzle. You’d still need to replicate or know the entire encryption environment (the MIDI events, WPM calculations, scales used, and both halves of the data) to decrypt it successfully.
 
             </p>
+            <p><a href="https://gaslighting.vercel.app"> More stenographic approach</a></p>
         </div>
     </center>
 </body>
