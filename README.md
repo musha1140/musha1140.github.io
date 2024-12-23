@@ -107,5 +107,5 @@ MIDI is an interactive web application that merges user input, cryptographic log
 This application demonstrates advanced concepts in cryptography, complexity manipulation, and data visualization. It’s designed for educational and exploratory purposes and is not intended for protecting highly sensitive information.
 
 ---
-
+For a more stenographic approach <a href="https://gaslighting.vercel.app">click me</a>
 **© 2024 Gas-Lighting**
