@@ -59,8 +59,12 @@
         </div>
         <div class="w-full flex flex-col gap-3 bg-gray-900 p-4 rounded border border-gray-800">
             <div id="inputSection"><textarea id="typingInput" rows="2" placeholder="> ENTER PAYLOAD..."></textarea></div>
-            <div id="outputSection" class="hidden"><textarea id="decryptedOutput" rows="2" readonly></textarea></div>
-            <div id="dropArea" class="w-full h-20 rounded flex flex-col items-center justify-center cursor-pointer relative bg-black border border-dashed border-gray-700 hover:border-green-500 transition-colors">
+<div id="outputSection" class="hidden text-center">
+    <textarea id="decryptedOutput" rows="2" readonly></textarea>
+    <a href="https://Gas-lighting.com" class="reply-link block uppercase">
+        [ Initiate New Transmission ]
+    </a>
+</div>            <div id="dropArea" class="w-full h-20 rounded flex flex-col items-center justify-center cursor-pointer relative bg-black border border-dashed border-gray-700 hover:border-green-500 transition-colors">
                 <p id="dropText" class="text-gray-500 text-xs">DROP MIDI / LOAD KEY</p>
                 <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".mid,.midi" />
             </div>
