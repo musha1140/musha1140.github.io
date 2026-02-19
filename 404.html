@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio Cipher: Gas-Lighting Protocol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <script src="https://unpkg.com/tone@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: #050505;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            color: #e5e5e5; font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+        }
+
+        /* --- THE GRID (64x64) --- */
+        #gameboard {
+            display: grid;
+            gap: 1px; 
+            margin: 20px 0;
+            width: 95vw; max-width: 600px; aspect-ratio: 1;
+            background-color: #000;
+            border: 2px solid #222;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.1);
+        }
+
+        .cell {
+            width: 100%; height: 100%;
+            background-color: #080808;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: bold; 
+            color: transparent; 
+            transition: background-color 0.1s;
+        }
+        
+        /* VISUAL STATES */
+        .cell.data-module { background-color: #00e676 !important; } /* Treble = Green */
+        .cell.bg-module { background-color: #b71c1c !important; }   /* Bass = Red */
+        .cell.revealed {
+            background-color: #000 !important; 
+            color: #00e676 !important; 
+            border: 1px solid #111;
+        }
+        .cell.flash {
+            filter: brightness(2.0);
+            background-color: #fff !important;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .cell.strobe {
+            background-color: #ffffff !important;
+            box-shadow: 0 0 15px #ffffff;
+            z-index: 50;
+        }
+
+        /* --- UI ELEMENTS --- */
+        #typingInput, #decryptedOutput {
+            background-color: #0a0a0a; color: #00e676;
+            border: 1px solid #333; padding: 1rem; width: 100%;
+            font-family: 'Courier New', monospace;
+            transition: border-color 0.3s;
+        }
+        #typingInput:focus { border-color: #00e676; outline: none; }
+
+        .btn-custom {
+            border: 1px solid #333; background-color: #151515; color: #aaa;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
+        }
+        .btn-custom:hover:not(:disabled) { background-color: #222; color: white; border-color: #555; }
+        .btn-custom:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .hidden { display: none; }
+        
+        /* Modal & Text FX */
+        #aboutModal { backdrop-filter: blur(5px); background: rgba(0,0,0,0.85); }
+        .glitch-char { display: inline-block; width: 1ch; }
+
+        #complexity-stats {
+            margin-top: 10px; font-size: 12px;
+            background: #0f0f0f; padding: 10px;
+            border-radius: 5px; width: 100%;
+            border: 1px solid #333;
+        }
+        
+        #moreInfo {
+            max-width: 600px; margin-top: 20px;
+            text-align: left; font-size: 12px; color: #888;
+            background: #0a0a0a; padding: 20px; border: 1px solid #333;
+        }
+        #moreInfo h3 { color: #00e676; font-weight: bold; margin-bottom: 10px; }
+        #moreInfo p { margin-bottom: 10px; line-height: 1.4; }
+    </style>
+</head>
+<body class="p-4 relative">
+
+    <button id="aboutBtn" class="absolute top-4 right-4 text-gray-500 hover:text-white border border-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-xs z-50">?</button>
+
+    <div id="aboutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-black border border-green-500 p-6 max-w-lg w-full shadow-[0_0_20px_rgba(0,255,0,0.2)] relative">
+            <button id="closeModal" class="absolute top-2 right-4 text-red-500 hover:text-white">X</button>
+            <h3 class="text-xl text-green-500 font-bold mb-4 border-b border-gray-800 pb-2">protocol_manifest.txt</h3>
+            <div class="space-y-3 text-sm text-gray-300 font-mono leading-relaxed">
+                <p><strong class="text-white">1. THE LOCK:</strong> The MIDI file acts as a symmetric key (SHA-512 Hash).</p>
+                <p><strong class="text-white">2. THE CONSTRUCT:</strong> QR code is physically built by the music. High notes = Green, Low notes = Red.</p>
+                <p><strong class="text-white">3. THE TRANSFER:</strong> Result is a .SLAYY SVG with embedded encrypted payload.</p>
+                <p class="text-xs text-gray-500 mt-4 pt-4 border-t border-gray-900">SYSTEM STATUS: OPERATIONAL</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full max-w-2xl flex flex-col items-center gap-4">
+        
+        <h2 class="text-2xl font-bold tracking-widest text-center h-8 cursor-pointer" id="dynamicHeader"></h2>
+        
+        <div id="gameboard"></div>
+        
+        <div class="w-full flex justify-between items-center text-xs font-mono bg-gray-900 p-2 rounded border border-gray-800">
+            <span id="status" class="text-green-500">SYSTEM IDLE</span>
+            <span id="wpmDisplay" class="text-gray-500">WPM: 0</span>
+        </div>
+
+        <div class="w-full flex flex-col gap-3 bg-gray-900 p-4 rounded border border-gray-800">
+            
+            <div id="inputSection">
+                <textarea id="typingInput" rows="2" placeholder="> ENTER_PAYLOAD..."></textarea>
+            </div>
+
+            <div id="outputSection" class="hidden">
+                 <textarea id="decryptedOutput" rows="2" readonly placeholder="> WAITING FOR DECRYPTION..."></textarea>
+            </div>
+            
+            <div id="dropArea" class="w-full h-20 rounded flex flex-col items-center justify-center cursor-pointer relative bg-black border border-dashed border-gray-700 hover:border-green-500 transition-colors">
+                <p id="dropText" class="text-gray-500 text-xs text-center">
+                    DROP MIDI (KEY) TO LOCK<br>
+                    <span class="text-gray-700 text-[10px]">- OR DROP .SLAYY FILE TO DECRYPT -</span>
+                </p>
+                <input type="file" id="fileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".mid,.midi,.slayy,.svg" />
+            </div>
+
+            <select id="songNumber" class="w-full bg-black text-white p-2 text-xs border border-gray-700 outline-none">
+                <option value="">[ SELECT PRESET KEY ]</option>
+                <option value="1">Severance Theme</option>
+                <option value="2">Bury a Friend</option>
+                <option value="3">Good Riddance</option>
+                <option value="4">Tetris Theme</option>
+                <option value="5">Westworld Theme</option>
+                <option value="6">Interstellar Theme</option>
+                <option value="7">Happy Violence</option>
+                <option value="8">Dancing Queen</option>
+                <option value="9">Death Note</option>
+                <option value="10">Bohemian Rhapsody</option>
+                <option value="11">Only Time</option>
+            </select>
+
+            <button id="encryptButton" class="btn-custom w-full py-3 mt-2 text-sm font-bold" disabled>
+                CONSTRUCT QR & LINK
+            </button>
+
+            <button id="decryptButton" class="hidden btn-custom w-full py-3 mt-2 text-sm font-bold text-yellow-500 border-yellow-800 animate-pulse">
+                DECRYPT INCOMING PAYLOAD
+            </button>
+        </div>
+
+        <div id="complexity-stats" class="hidden">
+            <div class="flex justify-between mb-2">
+                <h3 class="text-cyan-400 font-bold">COMPLEXITY ANALYSIS</h3>
+                <span class="text-xs text-gray-500">Note Density / Velocity</span>
+            </div>
+            <canvas id="complexityChart" width="400" height="100"></canvas>
+        </div>
+
+        <div class="w-full flex gap-2 hidden" id="shareButtons">
+            <button id="downloadButton" class="btn-custom flex-1 py-2 text-xs bg-green-900 text-white">
+                DOWNLOAD .SLAYY
+            </button>
+            <button id="copyLinkButton" class="btn-custom flex-1 py-2 text-xs bg-blue-900 text-white">
+                COPY SECURE LINK
+            </button>
+        </div>
+
+        <div class="w-full text-center mt-4">
+            <button onclick="document.getElementById('moreInfo').classList.toggle('hidden')" class="text-xs text-gray-600 hover:text-white underline">
+                [ READ PROTOCOL DETAILS ]
+            </button>
+        </div>
+
+        <div id="moreInfo" class="hidden">
+            <h3>CRYPTOGRAPHIC INTEGRITY</h3>
+            <p><strong>1. Missing XOR Patterns:</strong> The encryption process doesn't just rely on a single pass of XOR. Each note from the MIDI track triggers transformations. Without replicating the exact sequence of musical note events, you cannot reverse these XOR operations.</p>
+            <p><strong>2. AES and Data Splitting:</strong> Beyond XOR, the system involves AES encryption. You need the full key (Song Hash) to decrypt. Simply having the final text (e.g., "hey~WPM:00075") doesn't grant access.</p>
+            <p><strong>3. WPM Factor:</strong> Your typing speed is factored into the initial seed. Higher WPM = higher complexity intensity.</p>
+            <p><strong>4. Music as Key:</strong> The music effectively acts as a physical key. Think of the MIDI track as a non-traditional key that paints the data in a time-sensitive manner.</p>
+            <p><a href="https://gaslighting.vercel.app" class="text-blue-500 hover:text-blue-300">More stenographic approach -></a></p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION ---
+        const midiFiles = [
+            "https://irp.cdn-website.com/cee417da/audio/Severance_theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Billie_Eilish_-_bury_a_friend_%28WIP%29.mid",
+            "https://irp.cdn-website.com/cee417da/audio/GoodRiddance%28TimeOfYourLife%29%283%29.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Tetris_-_A_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Ramin_Djawadi_-_Westworld_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/CornChaseIntersteller.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Dada_Life_-_Happy_Violence.mid",
+            "https://irp.cdn-website.com/cee417da/audio/DancingQueen_(1).mid",
+            "https://irp.cdn-website.com/cee417da/audio/Death_Note_-_L-s_Theme.mid",
+            "https://irp.cdn-website.com/cee417da/audio/Bohemian-Rhapsody-1.mid",
+            "https://irp.cdn-website.com/cee417da/audio/OnlyTime.mid"
+        ];
+        
+        let currentMidiBuffer = null;
+        let masterAudioKey = null; 
+        let complexityChart = null;
+        
+        // QR State
+        let qrSize = 29; 
+        let availableDataPixels = [];
+        let availableBgPixels = [];
+        let targetQR = null;
+        let generatedShareLink = "";
+
+        // WPM State
+        let typingStartTime, typingEndTime;
+        
+        // Decryption State
+        let incomingPayload = null; 
+        let decryptedMessage = "";
+        let letterRevealIndex = 0;
+        let syncInterval = null;
+
+        // --- 2. HEADER & INIT ---
+        const DEFAULT_HEADER = "GAS-LIGHTING";
+        const XOR_CHARS = "010101^&|!@#$%*()_+~`={}:<>?";
+
+        function setHeader(text, isGlitch = false) {
+            const h = document.getElementById('dynamicHeader');
+            h.innerHTML = "";
+            for(let i=0; i<text.length; i++) {
+                const s = document.createElement("span");
+                s.textContent = text[i];
+                s.className = "glitch-char";
+                if(isGlitch) s.style.color = Math.random() > 0.5 ? "#00e676" : "#b71c1c";
+                else s.style.color = i < 3 ? "#ef4444" : "#ffffff";
+                h.appendChild(s);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setHeader(DEFAULT_HEADER);
+            const urlParams = new URLSearchParams(window.location.search);
+            const payload = urlParams.get('payload');
+            const songId = urlParams.get('key');
+
+            if (payload) activateDecryptMode(payload, songId);
+            setupGrid(qrSize);
+        });
+
+        function setupGrid(size) {
+            const board = document.getElementById("gameboard");
+            board.innerHTML = "";
+            board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            for (let i = 0; i < size * size; i++) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                cell.id = `cell-${i}`;
+                board.appendChild(cell);
+            }
+        }
+
+        // --- 3. WPM LOGIC ---
+        const inputArea = document.getElementById('typingInput');
+        inputArea.addEventListener('input', () => {
+            if (!typingStartTime) typingStartTime = new Date();
+            typingEndTime = new Date();
+            const timeDiff = (typingEndTime - typingStartTime) / 1000 / 60; // minutes
+            const words = inputArea.value.length / 5;
+            const wpm = Math.round(words / Math.max(timeDiff, 0.001)) || 0;
+            document.getElementById('wpmDisplay').innerText = `WPM: ${wpm}`;
+        });
+
+        // --- 4. KEY GENERATION & ANALYSIS ---
+        function generateKeys(midi) {
+            let fullKeyStream = ""; 
+            midi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    fullKeyStream += `${note.midi}.${note.duration.toFixed(3)}.${note.time.toFixed(3)}|`;
+                });
+            });
+            masterAudioKey = CryptoJS.SHA512(fullKeyStream).toString();
+            return masterAudioKey.substring(0, 6).toUpperCase();
+        }
+
+        function processMidiData(buffer, sourceName) {
+            currentMidiBuffer = buffer;
+            const midi = new Midi(buffer);
+            const keyShort = generateKeys(midi);
+            
+            document.getElementById('dropText').innerHTML = `KEY LOADED:<br><span class="text-green-500">${sourceName.substring(0,20)}</span>`;
+            
+            // Render Complexity Chart
+            renderComplexityChart(midi);
+            document.getElementById('complexity-stats').classList.remove('hidden');
+
+            if (incomingPayload) {
+                document.getElementById('decryptButton').disabled = false;
+                document.getElementById('status').innerText = "KEY MATCHED. READY TO DECRYPT.";
+            } else {
+                document.getElementById('encryptButton').disabled = false;
+                document.getElementById('status').innerText = `KEY ${keyShort} LOCKED.`;
+            }
+        }
+
+        // --- 5. CHART.JS VISUALIZER ---
+        function renderComplexityChart(midi) {
+            const ctx = document.getElementById('complexityChart').getContext('2d');
+            if (complexityChart) complexityChart.destroy();
+
+            // Simple density calculation: notes per second buckets
+            const duration = midi.duration;
+            const buckets = 20;
+            const densityData = new Array(buckets).fill(0);
+            
+            midi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    const bucket = Math.floor((note.time / duration) * buckets);
+                    if(bucket < buckets) densityData[bucket]++;
+                });
+            });
+
+            complexityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: new Array(buckets).fill(''),
+                    datasets: [{
+                        label: 'Complexity',
+                        data: densityData,
+                        borderColor: '#00e676',
+                        backgroundColor: 'rgba(0, 230, 118, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { display: false }, y: { display: false } }
+                }
+            });
+        }
+
+        // --- 6. CORE QR LOGIC ---
+        function prepareQRLogic() {
+            const rawText = document.getElementById('typingInput').value;
+            if(!rawText) return alert("NO PAYLOAD");
+            
+            const encryptedData = CryptoJS.AES.encrypt(rawText, masterAudioKey).toString();
+            const baseUrl = window.location.href.split('?')[0];
+            const songVal = document.getElementById('songNumber').value || "CUSTOM";
+            const safePayload = encodeURIComponent(encryptedData);
+            
+            generatedShareLink = `${baseUrl}?payload=${safePayload}&key=${songVal}`;
+            
+            const qr = qrcode(0, 'M'); 
+            qr.addData(generatedShareLink);
+            qr.make();
+            targetQR = qr;
+            
+            qrSize = qr.getModuleCount();
+            setupGrid(qrSize);
+            
+            availableDataPixels = [];
+            availableBgPixels = [];
+            
+            for (let r = 0; r < qrSize; r++) {
+                for (let c = 0; c < qrSize; c++) {
+                    const idx = r * qrSize + c;
+                    if (qr.isDark(r, c)) availableDataPixels.push(idx);
+                    else availableBgPixels.push(idx);
+                }
+            }
+            
+            shuffleArray(availableDataPixels);
+            shuffleArray(availableBgPixels);
+            
+            return encryptedData; 
+        }
+
+        // --- 7. EXECUTION ---
+        document.getElementById('encryptButton').addEventListener('click', async () => {
+            prepareQRLogic();
+            Tone.context.lookAhead = 0.1;
+            await Tone.start();
+            playSyncedSequence('construct'); 
+        });
+
+        document.getElementById('decryptButton').addEventListener('click', async () => {
+             try {
+                 const bytes = CryptoJS.AES.decrypt(incomingPayload, masterAudioKey);
+                 decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
+                 if(!decryptedMessage) throw new Error("Empty Decrypt");
+                 
+                 document.getElementById('status').innerText = "DECRYPTING STREAM...";
+                 letterRevealIndex = 0;
+                 document.querySelectorAll('.cell').forEach(c => { c.className = 'cell'; c.innerText = ''; });
+                 
+                 Tone.context.lookAhead = 0.1;
+                 await Tone.start();
+                 playSyncedSequence('reveal');
+             } catch(e) {
+                 console.error(e);
+                 alert("DECRYPTION FAILED. WRONG SONG OR CORRUPT DATA.");
+             }
+        });
+
+        // --- 8. SYNCED SEQUENCER (WITH HEADER FX) ---
+        function playSyncedSequence(mode) {
+            if (!currentMidiBuffer) return;
+            const midi = new Midi(currentMidiBuffer);
+            const synth = new Tone.PolySynth(Tone.Synth, { maxPolyphony: 32 }).toDestination();
+            
+            Tone.Transport.cancel();
+            if(syncInterval) clearInterval(syncInterval);
+
+            const duration = midi.duration;
+            const btn = mode === 'construct' ? document.getElementById('encryptButton') : document.getElementById('decryptButton');
+            btn.disabled = true;
+
+            midi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    Tone.Transport.schedule(time => {
+                        synth.triggerAttackRelease(note.name, note.duration, time);
+                        
+                        // Sympathetic Strobe (The Beat)
+                        if(note.velocity > 0.7) {
+                            for(let i=0; i<3; i++) {
+                                const randomId = Math.floor(Math.random() * (qrSize * qrSize));
+                                const cell = document.getElementById(`cell-${randomId}`);
+                                if(cell) {
+                                    cell.classList.add('strobe');
+                                    setTimeout(() => cell.classList.remove('strobe'), 100);
+                                }
+                            }
+                        }
+
+                        // Header Glitch
+                        const headerStr = Array(12).fill(0).map(() => XOR_CHARS[Math.floor(Math.random() * XOR_CHARS.length)]).join('');
+                        requestAnimationFrame(() => setHeader(headerStr, true));
+
+                    }, note.time);
+                });
+            });
+
+            Tone.Transport.start();
+
+            syncInterval = setInterval(() => {
+                const now = Tone.Transport.seconds;
+                const progress = Math.min(now / duration, 1.0); 
+                
+                if(mode === 'construct') {
+                    const targetDataCount = Math.floor(availableDataPixels.length * progress);
+                    const targetBgCount = Math.floor(availableBgPixels.length * progress);
+                    
+                    for(let i=0; i<targetDataCount; i++) {
+                        const idx = availableDataPixels[i];
+                        const cell = document.getElementById(`cell-${idx}`);
+                        if(cell && !cell.classList.contains('data-module')) cell.classList.add('data-module');
+                    }
+                    for(let i=0; i<targetBgCount; i++) {
+                        const idx = availableBgPixels[i];
+                        const cell = document.getElementById(`cell-${idx}`);
+                        if(cell && !cell.classList.contains('bg-module')) cell.classList.add('bg-module');
+                    }
+
+                } else if (mode === 'reveal') {
+                    const totalChars = decryptedMessage.length;
+                    const targetCharCount = Math.floor(totalChars * progress);
+                    
+                    document.getElementById('decryptedOutput').value = decryptedMessage.substring(0, targetCharCount);
+                    
+                    for(let i=0; i<targetCharCount; i++) {
+                        const cellId = i % (qrSize * qrSize);
+                        const cell = document.getElementById(`cell-${cellId}`);
+                        if(cell && cell.innerText === '') {
+                            cell.innerText = decryptedMessage[i];
+                            cell.classList.add('revealed');
+                        }
+                    }
+                }
+
+                if (progress >= 1.0) {
+                    clearInterval(syncInterval);
+                    btn.disabled = false;
+                    Tone.Transport.stop();
+                    setHeader(DEFAULT_HEADER);
+                    
+                    if(mode === 'construct') {
+                        document.getElementById('status').innerText = "TRANSMISSION READY.";
+                        document.getElementById('shareButtons').classList.remove('hidden');
+                        finalizeQR();
+                    } else {
+                        document.getElementById('status').innerText = "MESSAGE REVEALED";
+                    }
+                }
+            }, 30);
+        }
+
+        function finalizeQR() {
+            availableDataPixels.forEach(idx => document.getElementById(`cell-${idx}`)?.classList.add('data-module'));
+            availableBgPixels.forEach(idx => document.getElementById(`cell-${idx}`)?.classList.add('bg-module'));
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // --- 9. HELPERS & HANDLERS ---
+        function activateDecryptMode(payload, songId) {
+            incomingPayload = payload;
+            document.getElementById('inputSection').classList.add('hidden');
+            document.getElementById('outputSection').classList.remove('hidden');
+            document.getElementById('encryptButton').classList.add('hidden');
+            document.getElementById('decryptButton').classList.remove('hidden');
+            document.getElementById('shareButtons').classList.add('hidden');
+
+            if(songId) {
+                const select = document.getElementById('songNumber');
+                select.value = songId;
+                select.dispatchEvent(new Event('change'));
+            }
+            document.getElementById('status').innerText = "INCOMING TRANSMISSION DETECTED";
+        }
+
+        // About Modal
+        const modal = document.getElementById('aboutModal');
+        document.getElementById('aboutBtn').onclick = () => modal.classList.remove('hidden');
+        document.getElementById('closeModal').onclick = () => modal.classList.add('hidden');
+
+        // Drag & Drop
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('border-green-500'); });
+        dropArea.addEventListener('dragleave', () => { dropArea.classList.remove('border-green-500'); });
+        dropArea.addEventListener('drop', (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        function handleFile(f) {
+            if(!f) return;
+            if(f.name.toLowerCase().endsWith('.slayy') || f.name.toLowerCase().endsWith('.svg')) {
+                const r = new FileReader();
+                r.onload = (ev) => {
+                    const text = ev.target.result;
+                    const match = text.match(/<desc id="slayy-payload">(.*?)<\/desc>/);
+                    const keyMatch = text.match(/<desc id="slayy-key">(.*?)<\/desc>/);
+                    if(match && match[1]) {
+                        const payload = decodeURIComponent(match[1]);
+                        const songId = keyMatch ? keyMatch[1] : null;
+                        activateDecryptMode(payload, songId);
+                        document.getElementById('dropText').innerText = "ENCRYPTED FILE LOADED. DROP KEY TO UNLOCK.";
+                        document.getElementById('dropText').classList.add('text-yellow-500');
+                    } else alert("INVALID .SLAYY FILE");
+                };
+                r.readAsText(f);
+            } else if(f.name.toLowerCase().endsWith('.mid') || f.name.toLowerCase().endsWith('.midi')) {
+                const r = new FileReader();
+                r.onload = (ev) => processMidiData(ev.target.result, f.name);
+                r.readAsArrayBuffer(f);
+            }
+        }
+
+        document.getElementById('songNumber').addEventListener('change', async function() {
+            if(!this.value) return;
+            const url = midiFiles[parseInt(this.value) - 1];
+            const res = await fetch(url);
+            const buf = await res.arrayBuffer();
+            processMidiData(buf, this.options[this.selectedIndex].text);
+        });
+
+        // Share Buttons
+        document.getElementById('copyLinkButton').addEventListener('click', () => {
+            if(!generatedShareLink) return alert("Generate QR first.");
+            navigator.clipboard.writeText(generatedShareLink).then(() => alert("LINK COPIED TO CLIPBOARD"));
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', () => {
+            if (!targetQR) return alert("Sequence incomplete.");
+            const size = 512;
+            const modSize = size / qrSize;
+            const keyHash = masterAudioKey ? masterAudioKey.substring(0, 6) : "XXXX";
+            const safePayload = encodeURIComponent(incomingPayload || CryptoJS.AES.encrypt(document.getElementById('typingInput').value, masterAudioKey).toString());
+            const songVal = document.getElementById('songNumber').value || "";
+
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+            svg += `<desc id="slayy-payload">${safePayload}</desc>`;
+            svg += `<desc id="slayy-key">${songVal}</desc>`;
+            svg += `<rect width="${size}" height="${size}" fill="#b71c1c"/>`; 
+            for (let r = 0; r < qrSize; r++) {
+                for (let c = 0; c < qrSize; c++) {
+                    if (targetQR.isDark(r, c)) svg += `<rect x="${c*modSize}" y="${r*modSize}" width="${modSize}" height="${modSize}" fill="#00e676"/>`;
+                }
+            }
+            svg += `</svg>`;
+            
+            const b = new Blob([svg], {type:"image/svg+xml;charset=utf-8"});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(b);
+            a.download = `CIPHER_${keyHash}.slayy`;
+            a.click();
+        });
+
+    </script>
+</body>
+</html>
