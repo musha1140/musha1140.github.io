@@ -1,111 +1,185 @@
-# MIDI - Advanced Encryption and Visualization
+# musha1140.github.io — Gas-Lighting Protocol
 
-**Version:** 1.2  
-**Author:** Gas-Lighting  
-**© 2024 Gas-Lighting**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Site](https://img.shields.io/website?url=https%3A%2F%2Fmusha1140.github.io&label=site&style=flat)](https://musha1140.github.io)
+[![Hosted on](https://img.shields.io/badge/hosted-GitHub%20Pages-181717?logo=github)](https://pages.github.com/)
+[![Static](https://img.shields.io/badge/build-static-blue)](#directory-map)
+[![Redirect from](https://img.shields.io/badge/redirect%20from-gas--lighting.com-ec4899)](https://gas-lighting.com)
+[![Status](https://img.shields.io/badge/protocol-experimental-orange)](#disclaimer--liability)
 
----
-
-## **Overview**
-
-MIDI is an interactive web application that merges user input, cryptographic logic, MIDI music, and dynamic complexity factors to produce an encrypted, lossless binary image representation of your data. Unlike traditional static tools, MIDI responds to your typing speed (WPM), selected music, and customization controls, refining the encryption complexity and visual output in real-time. It also provides an explanatory "Decryption Steps" feature, offering transparency into how data transforms at each stage.
-
----
-
-## **Key Enhancements in v1.2**
-
-- **WPM Integration**: Your typing speed (Words Per Minute) affects XOR complexity, making the encryption process more challenging as you type faster. The WPM is appended to the message with zero-padding for consistency, influencing final encryption intensity.
-- **Complexity Controls**: The final XOR complexity is shaped by MIDI note density, user-defined intensity scales, and your WPM factor. These combined parameters produce a unique encryption scenario each time.
-- **Detailed Decryption Steps**: A "Show Decryption Steps" option reveals recorded intermediate transformations—after AES decryption, base64 decoding, and conceptual XOR reversal—helping you understand the internal logic behind the encryption pipeline.
-- **Tooltips and Visual Aids**: Clear tooltips explain complex operations (e.g., note density, velocity variation) and how WPM, user scales, and XOR intensity interact. This ensures a more intuitive and educational user experience.
+> `musha1140.github.io` is the canonical destination for **gas-lighting.com**.
+> Treat any link, share, QR code, or sub-path on this domain as part of the
+> same publication surface as `gas-lighting.com`, including subdirectories
+> (`/kilo/`, `/sandbox/`, etc.).
 
 ---
 
-## **Features**
+## Overview
 
-- **User Interaction**: Enter a custom message, and your WPM directly influences XOR complexity.
-- **Encryption Key Management**: Generate or input a custom encryption key. Keep it safe.
-- **MIDI Integration**: Select a MIDI track to guide XOR operations, syncing encryption events with musical notes.
-- **Real-Time Visualization**: An 8x8 grid updates live, showing binary transformations at each note event.
-- **Advanced Cryptography**: Leverages three-input XOR logic, AES encryption, and per-character checksums for data integrity.
-- **Lossless Binary Image Generation**: Produces a high-resolution image embedding the first half of encrypted data. The second half is stored separately for enhanced security.
-- **Data Management**: Clear local storage at any time to remove cached data and start fresh.
-- **Guided Decryption**: The "Decryption Steps" feature and tooltips demystify the complex transformations, showing how padded WPM and XOR complexity factor into the final output.
+This site publishes a small family of related experiments around the same
+idea: **a song is a key**. A user picks a MIDI track, the track derives a
+cryptographic key, and arbitrary text gets encrypted into a shareable
+artifact whose plaintext is only recoverable by the same song.
 
----
+There are three surfaces, each progressively more interactive:
 
-## **Technical Details**
-
-### **Encryption Process**
-
-1. **Message & WPM**: The user’s WPM is calculated and appended (with zero-padding) to the message, forming a final plaintext: `originalMessage + "~WPM:<padded_value>"`.
-2. **Complexity Calculation**: Average note density from the MIDI, user-defined XOR scale, and WPM factor combine into a `baseXORIntensity` value.
-3. **Three-Input XOR & MIDI Link**: As MIDI notes play, XOR operations are repeatedly applied to the message. Grid states and WPM factor intensify these transformations.
-4. **Per-Character Checksums**: Each character’s integrity is verified via checksums.
-5. **Data Splitting & AES**: Encrypted data splits into two halves. The first half is embedded in the final image; the second half is stored locally. AES encryption secures the combined data.
-
-### **Visualization**
-
-- **8x8 Grid**: Each cell represents a bit, updating in sync with MIDI events.
-- **Color Coding**:
-  - **Red (on)**: True bits.
-  - **Green (xor)**: Bits resulting from XOR operations.
-  - **Off (default)**: False bits.
-- **Animations & Highlights**: Changed bits and successfully validated characters are highlighted, providing immediate feedback on transformations.
-
-### **Lossless Binary Image Generation**
-
-- **High-Resolution Image**: Encodes the first half of encrypted data.
-- **Secure Storage**: The second half remains in local storage, requiring combination during decryption.
-- **Integrity & Security**: Without both halves and the encryption key, the original message cannot be reconstructed.
+| Path | Role | State |
+| --- | --- | --- |
+| `/` | Static **Gas-Lighting Protocol** demo. MIDI-keyed AES, p5-rendered QR animation, `.slayy` export/import, share-link round-trip. | Static, single file (`index.html`). |
+| `/kilo/` | Non-static, functional, full version of the protocol — capsule dispatcher, `#!exec:` handlers, share-link decryption, hop chains. | Lives in a separate codebase; this repo only links to it. |
+| `/sandbox/` | **HOPS Sandbox**: capsule-injection playground. Mirror of `/kilo/`'s dispatcher *without* the encryption layer, for studying the protocol mechanic in isolation. Verbose telemetry, SAFE/ARMED modes, HOP labyrinth deck (`#!exec:lab:`). | Static, single file (`sandbox/index.html`). |
 
 ---
 
-## **Decryption & Steps Visualization**
+## Directory map
 
-- **AES Decryption**: Upon loading the saved `.slayy` file and the stored second half, AES decryption retrieves the padded-wpm message.
-- **Recorded Steps**: Access the “Show Decryption Steps” button to view intermediate transformations (e.g., after AES decryption, base64 decoding).
-- **Tooltips**: Hover over question marks to see explanations of complexity metrics, WPM factor usage, and how XOR reversal is conceptualized.
-
----
-
-## **User Interface**
-
-- **Dark Theme**: Modern, comfortable dark UI with highlighted states and transitions.
-- **Dynamic Header**: Displays encoded text and hints at complexity changes.
-- **Responsive Design**: Optimized for various screen sizes and devices.
-- **Interactive Elements & Tooltips**: Buttons, sliders, and icons come with short explanations, making the experience informative and accessible.
-- **Footer**: Direct links to documentation (README) and controls for local storage management.
+```
+/                  → index.html             Gas-Lighting static demo
+/sandbox/          → sandbox/index.html     HOPS capsule injection playground
+/kilo/             → (external app)         Full functional version of the protocol
+404.html           → soft-404 with the same chrome as the front door
+indexold.html      → historical snapshot of an earlier UI revision
+```
 
 ---
 
-## **Usage Instructions**
+## The HOPS Sandbox in one paragraph
 
-1. **Type Your Message**: Input text in the provided textarea. The WPM is calculated automatically.
-2. **Set Encryption Key**: Generate or paste a custom key.
-3. **Copy Key (Optional)**: Use the "Copy Key" button to securely store the encryption key.
-4. **Select a MIDI Track**: Choose from the dropdown to define note-driven XOR operations.
-5. **Encrypt & Play**: Start encryption and MIDI playback with "Encrypt and Play MIDI".
-6. **Observe Changes**: Watch the 8x8 grid and dynamic header respond to notes and complexity.
-7. **Save Encrypted Image**: After completion, an image containing the first half of encrypted data is saved.
-8. **Store the Second Half**: Securely retain the second half from local storage.
-9. **Show Decryption Steps**: Click "Show Decryption Steps" to understand each transformation.
-10. **Clear Local Storage**: Reset and remove cached data anytime.
-
----
-
-## **Data Privacy & Security**
-
-- **Local Processing**: All encryption/decryption happens in your browser.
-- **Secure Key & Halves**: The second half and the key remain essential. Without them, data is irrecoverable.
-- **No External Transmission**: Your data never leaves your device.
+A **capsule** is a plaintext with envelope `#!TYPE:BODY`. In `/kilo/` the
+plaintext only appears after decrypting a share link with the right MIDI.
+The dispatcher then routes the capsule by type to a handler. The cipher
+proves who sent it; the **capability cage** decides what it touches.
+`/sandbox/` exposes the dispatcher without the crypto so visitors can
+author, run, and study capsules safely. Every run produces a verbose
+receipt (parser trace, SHA-256, per-run nonce, fired vs quarantined),
+collected as in-memory, opt-out telemetry. SAFE mode is the default;
+ARMED mode lets `hint:`, `gunicorn:`, `hop:`, `open:`, `redirect:`, and
+`lab:` actually fire. The richest type is `#!exec:lab:` — a JSON
+manifest that turns the message into a setlist of guarded HOPs.
 
 ---
 
-## **Disclaimer**
+## Third-party libraries
 
-This application demonstrates advanced concepts in cryptography, complexity manipulation, and data visualization. It’s designed for educational and exploratory purposes and is not intended for protecting highly sensitive information.
+All third-party code is loaded from public CDNs at runtime; nothing is
+vendored into this repository. Credit and links below.
+
+| Library | Version | Used by | Source | License |
+| --- | --- | --- | --- | --- |
+| [Tone.js](https://tonejs.github.io/) | latest | `/` | [unpkg](https://unpkg.com/tone@latest) · [npm](https://www.npmjs.com/package/tone) | MIT |
+| [@tonejs/midi](https://github.com/Tonejs/Midi) | latest | `/` | [jsDelivr](https://cdn.jsdelivr.net/npm/@tonejs/midi) · [npm](https://www.npmjs.com/package/@tonejs/midi) | MIT |
+| [p5.js](https://p5js.org/) | 1.4.1 | `/` | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js) · [npm](https://www.npmjs.com/package/p5) | LGPL-2.1 |
+| [crypto-js](https://github.com/brix/crypto-js) | 4.1.1 | `/` | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js) · [npm](https://www.npmjs.com/package/crypto-js) | MIT |
+| [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) | 1.4.4 | `/` | [cdnjs](https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js) · [npm](https://www.npmjs.com/package/qrcode-generator) | MIT |
+| [Tailwind CSS](https://tailwindcss.com/) | 2.2.19 | `/`, `/sandbox/` | [jsDelivr](https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css) · [npm](https://www.npmjs.com/package/tailwindcss) | MIT |
+
+The HOPS sandbox additionally uses only browser-native primitives:
+[`crypto.subtle`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)
+for SHA-256, [`crypto.getRandomValues`](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
+for nonce generation, and `localStorage` for visited-hop tracking
+(`kilo_hop_visited`).
+
+MIDI assets are fetched from `irp.cdn-website.com` (the author's hosted
+asset CDN) and are referenced, not redistributed, here.
 
 ---
-For a more stenographic approach <a href="https://gaslighting.vercel.app">click me</a>
-**© 2024 Gas-Lighting**
+
+## Local development
+
+The whole repository is plain static HTML. No build step, no package
+manager, no installer.
+
+```bash
+git clone https://github.com/musha1140/musha1140.github.io
+cd musha1140.github.io
+python3 -m http.server 8080
+# open http://localhost:8080/
+# open http://localhost:8080/sandbox/
+```
+
+Pushing to `main` republishes via GitHub Pages.
+
+---
+
+## Licensing
+
+This repository is released under the **MIT License** — see
+[`LICENSE`](./LICENSE) for the full text.
+
+Third-party libraries listed in [Third-party libraries](#third-party-libraries)
+remain under their own respective licenses; this project does not
+relicense them.
+
+---
+
+## Disclaimer & Liability
+
+This site (`musha1140.github.io`), its `gas-lighting.com` alias, and
+every subdirectory under either domain — including but not limited to
+`/`, `/kilo/`, `/sandbox/`, and any future paths — are published as
+**experimental, educational artifacts**. They demonstrate cryptographic
+and protocol-design concepts and are explicitly **not** intended for
+protecting sensitive information, for use in production systems, or as
+a basis for security claims about any third party.
+
+The HOPS Sandbox (`/sandbox/`) intentionally exposes a capability
+dispatcher (`#!exec:hint`, `#!exec:hop`, `#!exec:redirect`, `#!exec:open`,
+`#!exec:gunicorn`, `#!exec:js`, `#!exec:lab`, `#!multi`) for teaching
+purposes. It is the visitor's responsibility to understand what each
+capsule does before running it in ARMED mode. Defaults are SAFE
+(quarantined receipts only). The `#!exec:js` handler is double-gated
+behind an explicit toggle and a confirmation dialog. Telemetry is
+in-memory and opt-out; nothing is transmitted off the visitor's device
+by the sandbox itself.
+
+### Corporate notice
+
+The publisher of this site operates under the following legal entity:
+
+| Field | Value |
+| --- | --- |
+| Company name | GAS-LIGHTING, LLC |
+| Company number | LLC_15258268 |
+| Native company number | 15258268 |
+| Status | Good standing |
+| Entity type | Limited Liability Company |
+| Jurisdiction | Illinois, United States |
+
+Registered-agent details, registered street addresses, and the names
+and addresses of any directors, officers, or members are intentionally
+**redacted** from this README. Official records are publicly available
+through the Illinois Secretary of State's business records system for
+anyone with a legitimate need to inspect them.
+
+### Limitation of liability
+
+By accessing, sharing, embedding, or otherwise interacting with
+`musha1140.github.io`, `gas-lighting.com`, or any subdirectory or
+artifact thereof (including share links, `.slayy` files, capsule
+plaintexts, and HOP manifests), you acknowledge and agree that:
+
+1. The software is provided **"AS IS"** under the MIT License, without
+   warranty of any kind, express or implied, including but not limited
+   to warranties of merchantability, fitness for a particular purpose,
+   and non-infringement.
+2. **In no event** shall GAS-LIGHTING, LLC, its members, officers,
+   agents, contractors, or any contributor to this repository be liable
+   for any claim, damages, loss, or other liability — whether in
+   contract, tort, or otherwise — arising from, out of, or in
+   connection with the software, this site, any subdirectory, any
+   linked external resource, or the use or other dealings in any of the
+   foregoing.
+3. Use of the HOPS Sandbox's ARMED mode, `#!exec:js` evaluation, or
+   any capsule that triggers navigation (`hop:`, `redirect:`, `open:`,
+   `lab:`) is undertaken at your sole risk. You are responsible for
+   inspecting capsule plaintexts before arming them.
+4. Nothing on this site constitutes a security audit, certification,
+   compliance attestation, or professional advice of any kind.
+
+If you do not agree with the above, do not access or interact with
+this site.
+
+---
+
+**© Gas-Lighting, LLC.** Code released under MIT. Concept, copy, and
+the protocol mechanic remain the work of the author.
