@@ -211,6 +211,12 @@
             A <code>hop:</code> capsule can only navigate. A <code>hint:</code> can only display.
             A solver who walks a chain experiences both mechanics — that's the labyrinth.
             <br><br>
+            The richest capsule is <code>#!exec:lab:</code> — a JSON manifest that turns the message
+            into a <strong class="text-pink-400">setlist</strong>. Each "track" is a controlled
+            HOP to another encrypted stage. The user isn't reading the message — they're
+            <em>playing</em> it. Destinations are visible before click, navigation is gated by
+            <code>maxHops</code>, host allowlist, and a confirm dialog.
+            <br><br>
             This sandbox lets you author and fire capsules <strong>without</strong> the encryption layer
             so you can study the dispatcher directly. Every run produces a <strong>verbose receipt</strong>
             (parser trace, dispatch decision, SHA-256, nonce, mode). In <strong class="text-green-400">SAFE</strong>
@@ -293,6 +299,7 @@
                 <tr><td><code>#!exec:gunicorn:</code></td><td>free text</td><td>styled log line</td><td>receipt only</td></tr>
                 <tr><td><code>#!exec:js:</code></td><td>raw JS</td><td>new Function (gated)</td><td>receipt only</td></tr>
                 <tr><td><code>#!exec:safe:</code></td><td>any</td><td>force-quarantine</td><td>same</td></tr>
+                <tr><td><code>#!exec:lab:</code></td><td>JSON manifest</td><td>renders HOP deck; click → confirm → navigate</td><td>SAFE preview (buttons inert)</td></tr>
                 <tr><td><code>#!multi:</code></td><td>JSON array of capsules</td><td>run each in order</td><td>each gets a receipt</td></tr>
                 <tr><td><em>unknown</em></td><td>—</td><td>warn, no-op</td><td>same</td></tr>
             </tbody>
@@ -510,6 +517,37 @@ async function handleExec(body, depth, receipt) {
             fireOrLog(`open new tab → ${url}`, () => window.open(url, '_blank', 'noopener'));
             break;
         }
+        case 'lab': {
+            const result = parseHopLab(subbody);
+            if (!result.ok) {
+                logLine('error', `${indent}↳ lab: invalid manifest — ${result.error}`);
+                receipt.error = result.error;
+                receipt.quarantined = true;
+                showHintBanner('Invalid HOP labyrinth manifest.');
+                break;
+            }
+            const m = result.manifest;
+            receipt.labTitle = m.title;
+            receipt.labNodeCount = m.nodes.length;
+            receipt.labMaxHops = m.maxHops;
+            receipt.labMode = m.mode;
+            receipt.labNodeIds = m.nodes.map(n => n.id);
+            logLine('dispatch', `${indent}  manifest: "${m.title}" — ${m.nodes.length} node(s), maxHops=${m.maxHops}, mode=${m.mode}`);
+            for (const n of m.nodes) {
+                logLine('receipt', `${indent}    • ${n.id} [${n.label}] → ${n.href}`);
+            }
+            if (armed) {
+                logLine('effect', `${indent}↳ rendering hop deck overlay [FIRED]`);
+                renderHopLab(m, { preview: false });
+                receipt.fired = true;
+            } else {
+                logLine('effect', `${indent}↳ rendering hop deck overlay [SAFE PREVIEW — buttons inert]`);
+                renderHopLab(m, { preview: true });
+                receipt.quarantined = true;
+                receipt.note = 'safe-preview';
+            }
+            break;
+        }
         case 'safe':
             logLine('effect', `${indent}↳ safe: forced quarantine of inner payload`);
             logLine('receipt', `${indent}  inner body (not executed): ${subbody}`);
@@ -548,6 +586,163 @@ async function handleExec(body, depth, receipt) {
             receipt.note = 'unknown-exec-subtype';
             break;
     }
+}
+
+// ─────────────────────── HOP LABYRINTH ──────────────────────
+// Parses #!exec:lab:{...} JSON manifests into a guarded route deck.
+// Rules: https only, musha1140.github.io host only (and localhost for sandbox
+// dev convenience), 1..32 nodes, maxHops 1..32, manual mode default.
+const HOP_LAB_ALLOWED_HOSTS = new Set(['musha1140.github.io', 'localhost', '127.0.0.1']);
+const HOP_LAB_VISITED_KEY = 'kilo_hop_visited';
+
+function parseHopLab(body) {
+    let parsed;
+    try { parsed = JSON.parse(body); }
+    catch (e) { return { ok: false, error: 'manifest is not valid JSON: ' + e.message }; }
+
+    if (!parsed || typeof parsed !== 'object') return { ok: false, error: 'manifest is not an object' };
+    if (parsed.version !== 1) return { ok: false, error: 'manifest.version must be 1' };
+    if (typeof parsed.title !== 'string' || !parsed.title) return { ok: false, error: 'manifest.title required' };
+    if (parsed.mode && parsed.mode !== 'manual' && parsed.mode !== 'auto') return { ok: false, error: 'manifest.mode must be "manual" or "auto"' };
+    if (typeof parsed.maxHops !== 'number' || parsed.maxHops < 1 || parsed.maxHops > 32) return { ok: false, error: 'manifest.maxHops must be 1..32' };
+    if (!Array.isArray(parsed.nodes) || parsed.nodes.length < 1 || parsed.nodes.length > 32) return { ok: false, error: 'manifest.nodes must be an array of 1..32' };
+
+    const seenIds = new Set();
+    for (const [i, node] of parsed.nodes.entries()) {
+        if (!node || typeof node !== 'object') return { ok: false, error: `node[${i}] not an object` };
+        if (typeof node.id !== 'string' || !node.id) return { ok: false, error: `node[${i}].id required` };
+        if (seenIds.has(node.id)) return { ok: false, error: `duplicate node id "${node.id}"` };
+        seenIds.add(node.id);
+        if (typeof node.label !== 'string' || !node.label) return { ok: false, error: `node[${i}].label required` };
+        if (typeof node.href !== 'string' || !node.href) return { ok: false, error: `node[${i}].href required` };
+        let url;
+        try { url = new URL(node.href, window.location.href); }
+        catch { return { ok: false, error: `node[${i}].href not a valid URL` }; }
+        if (url.protocol !== 'https:' && url.protocol !== 'http:') return { ok: false, error: `node[${i}] non-http(s) protocol` };
+        if (url.protocol !== 'https:' && url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') {
+            return { ok: false, error: `node[${i}] must be https (got ${url.protocol})` };
+        }
+        if (!HOP_LAB_ALLOWED_HOSTS.has(url.hostname)) {
+            return { ok: false, error: `node[${i}] host "${url.hostname}" not allowed` };
+        }
+        if (node.hint !== undefined && typeof node.hint !== 'string') return { ok: false, error: `node[${i}].hint must be string` };
+    }
+    parsed.mode = parsed.mode || 'manual';
+    return { ok: true, manifest: parsed };
+}
+
+function getVisitedHops() {
+    try { return JSON.parse(localStorage.getItem(HOP_LAB_VISITED_KEY) || '[]'); }
+    catch { return []; }
+}
+function setVisitedHops(arr) {
+    localStorage.setItem(HOP_LAB_VISITED_KEY, JSON.stringify(arr));
+}
+function clearVisitedHops() {
+    localStorage.removeItem(HOP_LAB_VISITED_KEY);
+}
+
+function renderHopLab(manifest, opts = {}) {
+    const old = document.getElementById('kilo-hop-lab');
+    if (old) old.remove();
+
+    const visited = getVisitedHops();
+    const remaining = Math.max(0, manifest.maxHops - visited.length);
+
+    const overlay = document.createElement('section');
+    overlay.id = 'kilo-hop-lab';
+    overlay.style.cssText = [
+        'position:fixed','inset:0','z-index:999999',
+        'background:rgba(0,0,0,0.92)',
+        'display:grid','place-items:center','padding:24px',
+        'color:#e5e5e5',
+        "font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
+    ].join(';');
+
+    const previewBadge = opts.preview
+        ? '<span style="background:#7c2d12;color:#fed7aa;padding:2px 8px;font-size:10px;letter-spacing:2px;margin-left:8px;">SAFE PREVIEW — buttons inert</span>'
+        : '';
+
+    const buttons = manifest.nodes.map((node, i) => {
+        const wasVisited = visited.includes(node.id);
+        const visitedTag = wasVisited
+            ? '<span style="color:#fbbf24;font-size:10px;margin-left:8px;">★ VISITED</span>' : '';
+        return `
+          <button type="button" data-hop="${i}" style="
+            width:100%;text-align:left;background:#050505;color:#d1fae5;
+            border:1px solid rgba(34,197,94,.45);padding:12px;margin-top:10px;cursor:pointer;
+            font:inherit;">
+            <strong>${escapeHTML(node.label)}</strong>${visitedTag}
+            <br>
+            <span style="color:#9ca3af">${escapeHTML(node.hint || 'No hint.')}</span>
+            <br>
+            <code style="color:#22c55e;font-size:11px;word-break:break-all;">${escapeHTML(node.href)}</code>
+          </button>
+        `;
+    }).join('');
+
+    overlay.innerHTML = `
+      <article style="
+        width:min(860px,96vw);max-height:88vh;overflow:auto;
+        background:#020617;border:1px solid #14532d;padding:24px;
+        box-shadow:0 0 40px rgba(34,197,94,.12);">
+        <header style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;">
+          <div>
+            <div style="color:#22c55e;font-size:11px;letter-spacing:.18em;">KILO HOP LABYRINTH${previewBadge}</div>
+            <h1 style="margin:8px 0 0;font-size:22px;color:#e5e7eb;">${escapeHTML(manifest.title)}</h1>
+            <div style="color:#6b7280;font-size:10px;margin-top:4px;letter-spacing:1px;">
+              mode=${escapeHTML(manifest.mode)} · nodes=${manifest.nodes.length} · maxHops=${manifest.maxHops} · used=${visited.length} · remaining=${remaining}
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            <button type="button" data-act="clear" style="background:#111827;color:#fbbf24;border:1px solid #374151;padding:8px 10px;cursor:pointer;font:inherit;">reset visited</button>
+            <button type="button" data-act="close" style="background:#111827;color:#d1fae5;border:1px solid #374151;padding:8px 10px;cursor:pointer;font:inherit;">close</button>
+          </div>
+        </header>
+        <p style="color:#9ca3af;line-height:1.5;margin-top:14px;">
+          This decrypted payload is not a normal message. It is a route map.
+          Each track is a controlled HOP to another encrypted stage. The destination
+          is visible before you click — that's the protocol's promise.
+        </p>
+        ${buttons}
+      </article>
+    `;
+
+    overlay.querySelector('[data-act="close"]').addEventListener('click', () => overlay.remove());
+    overlay.querySelector('[data-act="clear"]').addEventListener('click', () => {
+        clearVisitedHops();
+        logLine('info', 'hop-lab: visited list cleared');
+        renderHopLab(manifest, opts);
+    });
+
+    overlay.querySelectorAll('[data-hop]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (opts.preview) {
+                logLine('warn', 'hop-lab: button click ignored (SAFE preview)');
+                return;
+            }
+            const idx = Number(btn.dataset.hop);
+            const node = manifest.nodes[idx];
+            if (!node) return;
+            const url = new URL(node.href, window.location.href);
+            const vs = getVisitedHops();
+            if (vs.length >= manifest.maxHops) {
+                alert(`Hop limit reached (${manifest.maxHops}). Reset visited to continue.`);
+                logLine('warn', `hop-lab: maxHops=${manifest.maxHops} reached`);
+                return;
+            }
+            if (!confirm(`HOP → ${node.label}\n\n${url.href}\n\nProceed?`)) {
+                logLine('warn', `hop-lab: user cancelled hop to ${node.id}`);
+                return;
+            }
+            vs.push(node.id);
+            setVisitedHops(vs);
+            logLine('effect', `hop-lab: navigating → ${node.id} (${url.href})`);
+            location.href = url.href;
+        });
+    });
+
+    document.body.appendChild(overlay);
 }
 
 // ───────────────────────── EFFECTS ──────────────────────────
@@ -642,6 +837,7 @@ const EXAMPLES = [
     { title: 'HOP — to /kilo/', body: '#!exec:hop:https://musha1140.github.io/kilo/' },
     { title: 'OPEN — new tab', body: '#!exec:open:https://musha1140.github.io/' },
     { title: 'MULTI — chain two effects', body: '#!multi:["#!exec:gunicorn:stage clear","#!exec:hint:the protocol is the labyrinth"]' },
+    { title: 'LAB — HOP deck (the message IS a setlist)', body: '#!exec:lab:{"version":1,"title":"KILO LINK LABYRINTH","mode":"manual","maxHops":8,"nodes":[{"id":"intro","label":"Track 01 — humming","hint":"You hear humming. Try Tetris next.","href":"https://musha1140.github.io/kilo/"},{"id":"phase_2","label":"Track 02 — bassline","hint":"The bassline is the key.","href":"https://musha1140.github.io/sandbox/"},{"id":"final","label":"Track 03 — polyphony","hint":"Walk back to the front door.","href":"https://musha1140.github.io/"}]}' },
     { title: 'SAFE — force quarantine of inner', body: '#!exec:safe:#!exec:hop:https://example.com' },
     { title: 'JS — gated eval (DATA.nonce is yours)', body: '#!exec:js:return "hello from nonce " + DATA.nonce;' },
     { title: 'BAD — invalid type', body: '#!EXEC:hint:should be rejected (uppercase)' },
