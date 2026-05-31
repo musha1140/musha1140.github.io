@@ -1,3 +1,16 @@
+## Disclaimer
+
+"KILO", "Gas-Lighting Protocol", "AUdio-Cipher", "Capability Payload Protocol" and other related names is an experimental browser-based cryptography, MIDI-key, QR/share-link, and trigger-capsule lab. It is provided for educational, research, and demonstration purposes only.
+
+This project is provided **AS IS**, without warranty of any kind. Use it at your own risk.
+
+To the fullest extent permitted by law, Sepas Siddiqui, Gas-Lighting, LLC, contributors, maintainers, and associated parties are not liable for any damages, losses, claims, security incidents, misuse, unauthorized activity, QR-code abuse, executable-payload behavior, sandbox bypasses, data loss, device compromise, business interruption, or third-party actions arising from use, modification, deployment, sharing, scanning, decrypting, executing, or distributing this project or payloads created with it.
+
+This project does not authorize illegal activity, unauthorized access, credential theft, malware deployment, persistence, exfiltration, or attacks against third-party systems. Users are solely responsible for their own use of the software and any payloads, links, files, or demonstrations they create with it.
+
+Safe mode, sandboxing, validation logic, and trigger routing are best-effort protections, not guarantees.
+
+
 MIT License
 
 Copyright (c) 2024 musha1140
