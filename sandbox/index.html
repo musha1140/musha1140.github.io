@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOPS — Capsule Injection Sandbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: #050505; color: #00e676;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .terminal-header { letter-spacing: 4px; border-bottom: 1px solid #111; padding-bottom: 10px; }
+        .panel {
+            border: 1px solid #1a1a1a;
+            background: #0a0a0a;
+            padding: 1rem;
+        }
+        .panel h3 {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #888;
+            text-transform: uppercase;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        textarea, input[type=text], select {
+            background-color: rgba(0,255,118,0.02);
+            color: #00e676;
+            border: 1px solid #1a1a1a;
+            padding: 0.75rem;
+            width: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            outline: none;
+            resize: vertical;
+        }
+        textarea:focus, input:focus, select:focus {
+            border-color: #00e676;
+            background-color: rgba(0,255,118,0.05);
+            box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+        }
+        .btn {
+            border: 1px solid #1a1a1a;
+            background-color: #0a0a0a;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            transition: all 0.15s ease-out;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #00e676;
+            color: #000;
+            border-color: #00e676;
+            box-shadow: 0 0 12px rgba(0, 230, 118, 0.3);
+        }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-run { border-color: #ffd700; color: #ffd700; }
+        .btn-run:hover:not(:disabled) {
+            background-color: #ffd700; color: #000; border-color: #ffed4e;
+            box-shadow: 0 0 15px rgba(255,215,0,0.4);
+        }
+        .btn-armed { border-color: #b71c1c; color: #b71c1c; }
+        .btn-armed:hover:not(:disabled) {
+            background-color: #b71c1c; color: #fff; border-color: #ff5252;
+            box-shadow: 0 0 15px rgba(183,28,28,0.4);
+        }
+        .btn-cool { border-color: #0284c7; color: #0284c7; }
+        .btn-cool:hover:not(:disabled) {
+            background-color: #0284c7; color: #fff; border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(2,132,199,0.4);
+        }
+        .log {
+            font-size: 11px;
+            line-height: 1.55;
+            max-height: 320px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            background: #020202;
+            border: 1px solid #111;
+            padding: 0.6rem;
+        }
+        .log .line { padding: 2px 0; border-bottom: 1px dashed #111; }
+        .log .line:last-child { border-bottom: none; }
+        .tag {
+            display: inline-block;
+            font-size: 9px;
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-right: 4px;
+            letter-spacing: 1px;
+        }
+        .tag-parse { background:#1e3a8a; color:#bfdbfe; }
+        .tag-dispatch { background:#065f46; color:#a7f3d0; }
+        .tag-receipt { background:#5b21b6; color:#ddd6fe; }
+        .tag-effect  { background:#9d174d; color:#fbcfe8; }
+        .tag-warn    { background:#7c2d12; color:#fed7aa; }
+        .tag-error   { background:#7f1d1d; color:#fecaca; }
+        .tag-info    { background:#1f2937; color:#e5e7eb; }
+        .tag-nonce   { background:#000; color:#ffd700; border:1px solid #333; }
+
+        .hint-banner {
+            position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+            background: rgba(157, 23, 77, 0.95);
+            color: #fbcfe8;
+            border: 1px solid #ec4899;
+            padding: 0.6rem 1.2rem;
+            font-size: 12px;
+            letter-spacing: 1px;
+            z-index: 9999;
+            max-width: 90vw;
+            box-shadow: 0 0 30px rgba(236,72,153,0.4);
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .insight {
+            background: #020202;
+            border: 1px solid #111;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .insight .n { font-size: 18px; color: #00e676; font-weight: bold; }
+        .insight .l { font-size: 9px; color: #555; letter-spacing: 1.5px; text-transform: uppercase; }
+
+        .example-btn {
+            text-align: left;
+            font-size: 10px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            color: #888;
+            padding: 8px 10px;
+            cursor: pointer;
+            width: 100%;
+            font-family: monospace;
+            transition: all 0.15s;
+        }
+        .example-btn:hover {
+            border-color: #00e676;
+            background: rgba(0,230,118,0.04);
+            color: #00e676;
+        }
+        .example-btn .title { color: #ffd700; display: block; margin-bottom: 3px; letter-spacing: 1.5px; }
+        .example-btn .body { color: #555; word-break: break-all; }
+        a { color: #ffd700; }
+        a:hover { color: #ffed4e; }
+        .pill {
+            display: inline-block;
+            font-size: 10px;
+            border: 1px solid #1a1a1a;
+            padding: 2px 8px;
+            margin-right: 6px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+        .pill.on { color: #00e676; border-color: #00e676; }
+        .pill.armed { color: #b71c1c; border-color: #b71c1c; }
+        .pill.off { color: #555; }
+        details { border: 1px solid #1a1a1a; padding: 0.5rem 0.75rem; background: #020202; }
+        details summary { cursor: pointer; font-size: 11px; letter-spacing: 2px; color: #888; }
+        details[open] summary { color: #00e676; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        th, td { border: 1px solid #111; padding: 4px 6px; text-align: left; color: #888; }
+        th { color: #00e676; letter-spacing: 1px; }
+        code { color: #ffd700; }
+    </style>
+</head>
+<body class="p-6">
+
+<div class="max-w-5xl mx-auto flex flex-col gap-4">
+
+    <header>
+        <h2 class="text-xl font-bold text-gray-500 terminal-header text-center">
+            [ HOPS <span class="text-yellow-400">SANDBOX</span> ] CAPSULE INJECTION PLAYGROUND
+        </h2>
+        <p class="text-[10px] text-gray-600 mt-2 text-center tracking-widest">
+            A static mirror of the <a href="../kilo/" target="_blank">/kilo/</a> capsule dispatcher.
+            The crypto is over there. The protocol mechanic is right here.
+            <a href="../">← back to gas-lighting demo</a>
+        </p>
+        <div class="mt-3 text-center">
+            <span id="modePill" class="pill on">MODE: SAFE</span>
+            <span id="telemetryPill" class="pill on">TELEMETRY: ON</span>
+            <span id="jsPill" class="pill off">JS EVAL: DISABLED</span>
+            <span class="pill">NONCE: <span id="sessionNonce">—</span></span>
+        </div>
+    </header>
+
+    <!-- WHAT IS THIS -->
+    <details class="panel" open>
+        <summary>WHAT IS A "HOP" / CAPSULE?</summary>
+        <div class="text-[11px] text-gray-400 leading-relaxed mt-2">
+            A <strong class="text-green-400">capsule</strong> is a plaintext string with the envelope
+            <code>#!TYPE:BODY</code>. In the real <a href="../kilo/" target="_blank">/kilo/</a> app,
+            the plaintext only appears after you decrypt a share link with the correct MIDI — the song
+            <em>is</em> the key. The dispatcher then routes the capsule to a handler based on
+            <code>TYPE</code> (and, for <code>exec</code>, the sub-type).
+            <br><br>
+            The dispatcher is a <strong class="text-yellow-400">capability cage</strong>: the cipher proves
+            who sent it, but what the payload is <em>allowed</em> to do is bounded here, not in the crypto.
+            A <code>hop:</code> capsule can only navigate. A <code>hint:</code> can only display.
+            A solver who walks a chain experiences both mechanics — that's the labyrinth.
+            <br><br>
+            The richest capsule is <code>#!exec:lab:</code> — a JSON manifest that turns the message
+            into a <strong class="text-pink-400">setlist</strong>. Each "track" is a controlled
+            HOP to another encrypted stage. The user isn't reading the message — they're
+            <em>playing</em> it. Destinations are visible before click, navigation is gated by
+            <code>maxHops</code>, host allowlist, and a confirm dialog.
+            <br><br>
+            This sandbox lets you author and fire capsules <strong>without</strong> the encryption layer
+            so you can study the dispatcher directly. Every run produces a <strong>verbose receipt</strong>
+            (parser trace, dispatch decision, SHA-256, nonce, mode). In <strong class="text-green-400">SAFE</strong>
+            mode no side effects fire — receipts only. Flip to <strong class="text-red-500">ARMED</strong> to
+            let <code>hint:</code> show its banner, <code>gunicorn:</code> log its line, <code>hop:</code>/<code>redirect:</code>/<code>open:</code>
+            prompt before navigating.
+        </div>
+    </details>
+
+    <!-- CONTROLS -->
+    <div class="panel">
+        <h3>Capsule Editor</h3>
+
+        <textarea id="capsuleInput" rows="4" placeholder="#!exec:hint:welcome, scanner. paste a capsule, then RUN.">#!exec:hint:welcome, scanner. paste a capsule, then RUN.</textarea>
+
+        <div class="flex flex-wrap gap-2 mt-3 items-center">
+            <button id="runBtn" class="btn btn-run">▶ RUN CAPSULE</button>
+            <button id="modeToggle" class="btn">MODE: SAFE → ARM</button>
+            <button id="jsToggle" class="btn">ENABLE JS EVAL</button>
+            <button id="telemetryToggle" class="btn btn-cool">TELEMETRY: ON → OPT OUT</button>
+            <button id="newNonceBtn" class="btn">↻ NEW NONCE</button>
+            <button id="clearBtn" class="btn">CLEAR LOG</button>
+            <button id="exportBtn" class="btn btn-cool">EXPORT TELEMETRY (JSON)</button>
+        </div>
+
+        <p class="text-[10px] text-gray-600 mt-2">
+            Nonce is regenerated per RUN unless you pin it.
+            Telemetry is in-memory only — nothing leaves this tab.
+            Opting out stops collection for subsequent runs.
+        </p>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="panel">
+        <h3>Telemetry Insights (session)</h3>
+        <div class="insight-grid" id="insights">
+            <div class="insight"><div class="n" id="iTotal">0</div><div class="l">runs</div></div>
+            <div class="insight"><div class="n" id="iFired">0</div><div class="l">fired</div></div>
+            <div class="insight"><div class="n" id="iQuarantined">0</div><div class="l">quarantined</div></div>
+            <div class="insight"><div class="n" id="iErrors">0</div><div class="l">parse errors</div></div>
+        </div>
+        <div class="insight-grid mt-2" id="insightTypes"></div>
+    </div>
+
+    <!-- LOG -->
+    <div class="panel">
+        <h3>Dispatcher Trace</h3>
+        <div id="log" class="log"></div>
+    </div>
+
+    <!-- EXAMPLES -->
+    <div class="panel">
+        <h3>Example Capsules — click to load</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2" id="examples"></div>
+    </div>
+
+    <!-- HOPS CHAIN -->
+    <div class="panel">
+        <h3>Worked Sample — Three-Stage Hops Chain</h3>
+        <p class="text-[11px] text-gray-500 mb-3">
+            In <code>/kilo/</code>, each stage is gated by a MIDI key — wrong song, no plaintext.
+            Here in the sandbox the plaintexts are exposed so you can study the dispatch.
+            Walk them in order. ARM the dispatcher to feel the <code>hop:</code> confirm flow.
+        </p>
+        <div id="hopsChain" class="flex flex-col gap-2"></div>
+    </div>
+
+    <!-- CHEATSHEET -->
+    <details class="panel">
+        <summary>CAPSULE CHEAT SHEET</summary>
+        <table class="mt-3">
+            <thead>
+                <tr><th>Type</th><th>Body shape</th><th>Behavior (ARMED)</th><th>SAFE behavior</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>#!exec:hint:</code></td><td>free text</td><td>pink banner, 6s</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:hop:</code></td><td>URL</td><td>confirm → navigate</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:redirect:</code></td><td>URL</td><td>confirm → location.href</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:open:</code></td><td>URL</td><td>window.open new tab</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:gunicorn:</code></td><td>free text</td><td>styled log line</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:js:</code></td><td>raw JS</td><td>new Function (gated)</td><td>receipt only</td></tr>
+                <tr><td><code>#!exec:safe:</code></td><td>any</td><td>force-quarantine</td><td>same</td></tr>
+                <tr><td><code>#!exec:lab:</code></td><td>JSON manifest</td><td>renders HOP deck; click → confirm → navigate</td><td>SAFE preview (buttons inert)</td></tr>
+                <tr><td><code>#!multi:</code></td><td>JSON array of capsules</td><td>run each in order</td><td>each gets a receipt</td></tr>
+                <tr><td><em>unknown</em></td><td>—</td><td>warn, no-op</td><td>same</td></tr>
+            </tbody>
+        </table>
+        <p class="text-[10px] text-gray-600 mt-3">
+            Envelope: <code>[ "#!" ][ TYPE ][ ":" ][ BODY ]</code> — TYPE matches <code>/^[a-z][a-z0-9-]{0,15}$/</code>,
+            terminated by the first colon.
+        </p>
+    </details>
+
+</div>
+
+<script>
+'use strict';
+
+// ───────────────────────── STATE ──────────────────────────
+const state = {
+    mode: 'safe',          // 'safe' | 'armed'
+    jsEnabled: false,
+    telemetry: true,
+    pinnedNonce: null,
+    sessionNonce: null,
+    log: [],               // {ts, tag, msg}
+    telemetryBuffer: [],   // verbose receipts
+    counters: { total: 0, fired: 0, quarantined: 0, errors: 0, types: {} }
+};
+
+// ───────────────────────── UTIL ──────────────────────────
+function genNonce(bytes = 8) {
+    const arr = new Uint8Array(bytes);
+    crypto.getRandomValues(arr);
+    return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+async function sha256(text) {
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function nowISO() { return new Date().toISOString(); }
+function el(id) { return document.getElementById(id); }
+function escapeHTML(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+}
+
+// ───────────────────────── LOG ──────────────────────────
+function logLine(tag, msg, data) {
+    const ts = nowISO().split('T')[1].replace('Z','');
+    const entry = { ts, tag, msg, data };
+    state.log.push(entry);
+    const logEl = el('log');
+    const line = document.createElement('div');
+    line.className = 'line';
+    line.innerHTML = `<span class="tag tag-${tag}">${tag.toUpperCase()}</span><span style="color:#555">${ts}</span> ${escapeHTML(msg)}`;
+    if (data) {
+        const pre = document.createElement('div');
+        pre.style.cssText = 'color:#555;font-size:10px;margin-left:14px;margin-top:2px;';
+        pre.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+        line.appendChild(pre);
+    }
+    logEl.appendChild(line);
+    logEl.scrollTop = logEl.scrollHeight;
+}
+
+// ───────────────────────── PARSER ──────────────────────────
+// Envelope: #!TYPE:BODY ; TYPE is /^[a-z][a-z0-9-]{0,15}$/.
+function parseCapsule(text) {
+    const trace = [];
+    trace.push(['scan', `input length=${text.length}`]);
+    if (!text.startsWith('#!')) {
+        trace.push(['reject', 'missing #! prefix']);
+        return { ok: false, error: 'missing #! prefix', trace };
+    }
+    const rest = text.slice(2);
+    const colon = rest.indexOf(':');
+    if (colon < 0) {
+        trace.push(['reject', 'no colon after type']);
+        return { ok: false, error: 'no colon after type', trace };
+    }
+    const type = rest.slice(0, colon);
+    const body = rest.slice(colon + 1);
+    trace.push(['extract-type', type]);
+    if (!/^[a-z][a-z0-9-]{0,15}$/.test(type)) {
+        trace.push(['reject', `type "${type}" fails /^[a-z][a-z0-9-]{0,15}$/`]);
+        return { ok: false, error: 'invalid type', trace };
+    }
+    trace.push(['extract-body', `length=${body.length}`]);
+    return { ok: true, type, body, trace };
+}
+
+// Inside the exec namespace: optional sub-type prefix.
+function parseExecBody(body) {
+    const m = body.match(/^([a-z][a-z0-9-]{0,15}):([\s\S]*)$/);
+    if (!m) return { subtype: 'js', subbody: body };
+    return { subtype: m[1], subbody: m[2] };
+}
+
+// ───────────────────────── DISPATCHER ──────────────────────────
+async function runCapsule(text, opts = {}) {
+    const depth = opts.depth || 0;
+    const indent = ' '.repeat(depth);
+    state.counters.total++;
+
+    const nonce = state.pinnedNonce || genNonce();
+    state.sessionNonce = nonce;
+    el('sessionNonce').textContent = nonce;
+    logLine('nonce', `${indent}nonce=${nonce}  mode=${state.mode}  depth=${depth}`);
+
+    const parsed = parseCapsule(text);
+    for (const [step, detail] of parsed.trace) {
+        logLine('parse', `${indent}${step}: ${detail}`);
+    }
+    if (!parsed.ok) {
+        state.counters.errors++;
+        recordTelemetry({ nonce, ts: nowISO(), input: text, ok: false, error: parsed.error, depth, mode: state.mode });
+        refreshInsights();
+        return;
+    }
+
+    state.counters.types[parsed.type] = (state.counters.types[parsed.type] || 0) + 1;
+    const hash = await sha256(text);
+    logLine('receipt', `${indent}sha256=${hash}`);
+    logLine('dispatch', `${indent}type=${parsed.type}  body[0..40]="${parsed.body.slice(0,40)}${parsed.body.length>40?'…':''}"`);
+
+    const receipt = {
+        nonce, ts: nowISO(), depth, mode: state.mode,
+        type: parsed.type, body: parsed.body, sha256: hash,
+        fired: false, quarantined: state.mode === 'safe'
+    };
+
+    try {
+        switch (parsed.type) {
+            case 'multi': await handleMulti(parsed.body, depth, receipt); break;
+            case 'exec':  await handleExec(parsed.body, depth, receipt); break;
+            default:
+                logLine('warn', `${indent}unknown top-level type "${parsed.type}" — no-op`);
+                receipt.note = 'unknown-type-noop';
+        }
+    } catch (e) {
+        logLine('error', `${indent}handler threw: ${e.message}`);
+        receipt.error = e.message;
+        state.counters.errors++;
+    }
+
+    if (receipt.fired) state.counters.fired++; else state.counters.quarantined++;
+    recordTelemetry(receipt);
+    refreshInsights();
+}
+
+async function handleMulti(body, depth, receipt) {
+    let arr;
+    try { arr = JSON.parse(body); }
+    catch (e) {
+        logLine('error', `multi body is not JSON: ${e.message}`);
+        receipt.error = 'multi-body-not-json';
+        return;
+    }
+    if (!Array.isArray(arr)) {
+        logLine('error', 'multi body did not parse to an array');
+        receipt.error = 'multi-body-not-array';
+        return;
+    }
+    logLine('dispatch', `multi: ${arr.length} child capsule(s) — running in order`);
+    receipt.children = arr.length;
+    for (const child of arr) {
+        await runCapsule(String(child), { depth: depth + 1 });
+    }
+    receipt.fired = true; // dispatch happened; children carry their own fired flags
+}
+
+async function handleExec(body, depth, receipt) {
+    const { subtype, subbody } = parseExecBody(body);
+    receipt.subtype = subtype;
+    const indent = ' '.repeat(depth);
+    logLine('dispatch', `${indent}exec sub-type → ${subtype}`);
+
+    const armed = state.mode === 'armed';
+    const fireOrLog = (label, fire) => {
+        if (armed) {
+            logLine('effect', `${indent}↳ ${label} [FIRED]`);
+            fire();
+            receipt.fired = true;
+        } else {
+            logLine('effect', `${indent}↳ ${label} [QUARANTINED — would have fired in ARMED]`);
+            receipt.quarantined = true;
+        }
+    };
+
+    switch (subtype) {
+        case 'hint':
+            fireOrLog(`hint banner: "${subbody}"`, () => showHintBanner(subbody));
+            break;
+        case 'gunicorn':
+            fireOrLog(`gunicorn log: "${subbody}"`, () => {
+                console.log('%c[gunicorn] ' + subbody, 'color:#9d174d;background:#fce7f3;padding:2px 6px;border-radius:2px;');
+                logLine('effect', `${indent}  console: [gunicorn] ${subbody}`);
+            });
+            break;
+        case 'hop':
+        case 'redirect': {
+            const url = subbody.trim();
+            fireOrLog(`${subtype} → ${url}`, () => {
+                if (confirm(`Hop to next stage?\n\n${url}`)) {
+                    location.href = url;
+                } else {
+                    logLine('warn', `${indent}  user cancelled navigation`);
+                    receipt.userCancelled = true;
+                }
+            });
+            break;
+        }
+        case 'open': {
+            const url = subbody.trim();
+            fireOrLog(`open new tab → ${url}`, () => window.open(url, '_blank', 'noopener'));
+            break;
+        }
+        case 'lab': {
+            const result = parseHopLab(subbody);
+            if (!result.ok) {
+                logLine('error', `${indent}↳ lab: invalid manifest — ${result.error}`);
+                receipt.error = result.error;
+                receipt.quarantined = true;
+                showHintBanner('Invalid HOP labyrinth manifest.');
+                break;
+            }
+            const m = result.manifest;
+            receipt.labTitle = m.title;
+            receipt.labNodeCount = m.nodes.length;
+            receipt.labMaxHops = m.maxHops;
+            receipt.labMode = m.mode;
+            receipt.labNodeIds = m.nodes.map(n => n.id);
+            logLine('dispatch', `${indent}  manifest: "${m.title}" — ${m.nodes.length} node(s), maxHops=${m.maxHops}, mode=${m.mode}`);
+            for (const n of m.nodes) {
+                logLine('receipt', `${indent}    • ${n.id} [${n.label}] → ${n.href}`);
+            }
+            if (armed) {
+                logLine('effect', `${indent}↳ rendering hop deck overlay [FIRED]`);
+                renderHopLab(m, { preview: false });
+                receipt.fired = true;
+            } else {
+                logLine('effect', `${indent}↳ rendering hop deck overlay [SAFE PREVIEW — buttons inert]`);
+                renderHopLab(m, { preview: true });
+                receipt.quarantined = true;
+                receipt.note = 'safe-preview';
+            }
+            break;
+        }
+        case 'safe':
+            logLine('effect', `${indent}↳ safe: forced quarantine of inner payload`);
+            logLine('receipt', `${indent}  inner body (not executed): ${subbody}`);
+            receipt.note = 'safe-forced-quarantine';
+            receipt.quarantined = true;
+            break;
+        case 'js':
+            if (!armed) {
+                logLine('effect', `${indent}↳ js eval [QUARANTINED — SAFE mode]`);
+                receipt.quarantined = true;
+            } else if (!state.jsEnabled) {
+                logLine('warn', `${indent}↳ js eval [BLOCKED — JS EVAL toggle disabled]`);
+                receipt.note = 'js-toggle-disabled';
+                receipt.quarantined = true;
+            } else {
+                if (!confirm(`Run arbitrary JS in this tab?\n\n${subbody.slice(0, 200)}${subbody.length>200?'…':''}`)) {
+                    logLine('warn', `${indent}  user cancelled JS eval`);
+                    receipt.userCancelled = true;
+                    receipt.quarantined = true;
+                } else {
+                    logLine('effect', `${indent}↳ js eval [FIRED]`);
+                    try {
+                        const fn = new Function('DATA', subbody);
+                        const result = fn({ nonce: state.sessionNonce });
+                        logLine('effect', `${indent}  returned: ${String(result).slice(0,200)}`);
+                        receipt.fired = true;
+                    } catch (e) {
+                        logLine('error', `${indent}  js threw: ${e.message}`);
+                        receipt.error = e.message;
+                    }
+                }
+            }
+            break;
+        default:
+            logLine('warn', `${indent}↳ unknown exec sub-type "${subtype}" — no-op`);
+            receipt.note = 'unknown-exec-subtype';
+            break;
+    }
+}
+
+// ─────────────────────── HOP LABYRINTH ──────────────────────
+// Parses #!exec:lab:{...} JSON manifests into a guarded route deck.
+// Rules: https only, musha1140.github.io host only (and localhost for sandbox
+// dev convenience), 1..32 nodes, maxHops 1..32, manual mode default.
+const HOP_LAB_ALLOWED_HOSTS = new Set(['musha1140.github.io', 'localhost', '127.0.0.1']);
+const HOP_LAB_VISITED_KEY = 'kilo_hop_visited';
+
+function parseHopLab(body) {
+    let parsed;
+    try { parsed = JSON.parse(body); }
+    catch (e) { return { ok: false, error: 'manifest is not valid JSON: ' + e.message }; }
+
+    if (!parsed || typeof parsed !== 'object') return { ok: false, error: 'manifest is not an object' };
+    if (parsed.version !== 1) return { ok: false, error: 'manifest.version must be 1' };
+    if (typeof parsed.title !== 'string' || !parsed.title) return { ok: false, error: 'manifest.title required' };
+    if (parsed.mode && parsed.mode !== 'manual' && parsed.mode !== 'auto') return { ok: false, error: 'manifest.mode must be "manual" or "auto"' };
+    if (typeof parsed.maxHops !== 'number' || parsed.maxHops < 1 || parsed.maxHops > 32) return { ok: false, error: 'manifest.maxHops must be 1..32' };
+    if (!Array.isArray(parsed.nodes) || parsed.nodes.length < 1 || parsed.nodes.length > 32) return { ok: false, error: 'manifest.nodes must be an array of 1..32' };
+
+    const seenIds = new Set();
+    for (const [i, node] of parsed.nodes.entries()) {
+        if (!node || typeof node !== 'object') return { ok: false, error: `node[${i}] not an object` };
+        if (typeof node.id !== 'string' || !node.id) return { ok: false, error: `node[${i}].id required` };
+        if (seenIds.has(node.id)) return { ok: false, error: `duplicate node id "${node.id}"` };
+        seenIds.add(node.id);
+        if (typeof node.label !== 'string' || !node.label) return { ok: false, error: `node[${i}].label required` };
+        if (typeof node.href !== 'string' || !node.href) return { ok: false, error: `node[${i}].href required` };
+        let url;
+        try { url = new URL(node.href, window.location.href); }
+        catch { return { ok: false, error: `node[${i}].href not a valid URL` }; }
+        if (url.protocol !== 'https:' && url.protocol !== 'http:') return { ok: false, error: `node[${i}] non-http(s) protocol` };
+        if (url.protocol !== 'https:' && url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') {
+            return { ok: false, error: `node[${i}] must be https (got ${url.protocol})` };
+        }
+        if (!HOP_LAB_ALLOWED_HOSTS.has(url.hostname)) {
+            return { ok: false, error: `node[${i}] host "${url.hostname}" not allowed` };
+        }
+        if (node.hint !== undefined && typeof node.hint !== 'string') return { ok: false, error: `node[${i}].hint must be string` };
+    }
+    parsed.mode = parsed.mode || 'manual';
+    return { ok: true, manifest: parsed };
+}
+
+function getVisitedHops() {
+    try { return JSON.parse(localStorage.getItem(HOP_LAB_VISITED_KEY) || '[]'); }
+    catch { return []; }
+}
+function setVisitedHops(arr) {
+    localStorage.setItem(HOP_LAB_VISITED_KEY, JSON.stringify(arr));
+}
+function clearVisitedHops() {
+    localStorage.removeItem(HOP_LAB_VISITED_KEY);
+}
+
+function renderHopLab(manifest, opts = {}) {
+    const old = document.getElementById('kilo-hop-lab');
+    if (old) old.remove();
+
+    const visited = getVisitedHops();
+    const remaining = Math.max(0, manifest.maxHops - visited.length);
+
+    const overlay = document.createElement('section');
+    overlay.id = 'kilo-hop-lab';
+    overlay.style.cssText = [
+        'position:fixed','inset:0','z-index:999999',
+        'background:rgba(0,0,0,0.92)',
+        'display:grid','place-items:center','padding:24px',
+        'color:#e5e5e5',
+        "font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
+    ].join(';');
+
+    const previewBadge = opts.preview
+        ? '<span style="background:#7c2d12;color:#fed7aa;padding:2px 8px;font-size:10px;letter-spacing:2px;margin-left:8px;">SAFE PREVIEW — buttons inert</span>'
+        : '';
+
+    const buttons = manifest.nodes.map((node, i) => {
+        const wasVisited = visited.includes(node.id);
+        const visitedTag = wasVisited
+            ? '<span style="color:#fbbf24;font-size:10px;margin-left:8px;">★ VISITED</span>' : '';
+        return `
+          <button type="button" data-hop="${i}" style="
+            width:100%;text-align:left;background:#050505;color:#d1fae5;
+            border:1px solid rgba(34,197,94,.45);padding:12px;margin-top:10px;cursor:pointer;
+            font:inherit;">
+            <strong>${escapeHTML(node.label)}</strong>${visitedTag}
+            <br>
+            <span style="color:#9ca3af">${escapeHTML(node.hint || 'No hint.')}</span>
+            <br>
+            <code style="color:#22c55e;font-size:11px;word-break:break-all;">${escapeHTML(node.href)}</code>
+          </button>
+        `;
+    }).join('');
+
+    overlay.innerHTML = `
+      <article style="
+        width:min(860px,96vw);max-height:88vh;overflow:auto;
+        background:#020617;border:1px solid #14532d;padding:24px;
+        box-shadow:0 0 40px rgba(34,197,94,.12);">
+        <header style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;">
+          <div>
+            <div style="color:#22c55e;font-size:11px;letter-spacing:.18em;">KILO HOP LABYRINTH${previewBadge}</div>
+            <h1 style="margin:8px 0 0;font-size:22px;color:#e5e7eb;">${escapeHTML(manifest.title)}</h1>
+            <div style="color:#6b7280;font-size:10px;margin-top:4px;letter-spacing:1px;">
+              mode=${escapeHTML(manifest.mode)} · nodes=${manifest.nodes.length} · maxHops=${manifest.maxHops} · used=${visited.length} · remaining=${remaining}
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            <button type="button" data-act="clear" style="background:#111827;color:#fbbf24;border:1px solid #374151;padding:8px 10px;cursor:pointer;font:inherit;">reset visited</button>
+            <button type="button" data-act="close" style="background:#111827;color:#d1fae5;border:1px solid #374151;padding:8px 10px;cursor:pointer;font:inherit;">close</button>
+          </div>
+        </header>
+        <p style="color:#9ca3af;line-height:1.5;margin-top:14px;">
+          This decrypted payload is not a normal message. It is a route map.
+          Each track is a controlled HOP to another encrypted stage. The destination
+          is visible before you click — that's the protocol's promise.
+        </p>
+        ${buttons}
+      </article>
+    `;
+
+    overlay.querySelector('[data-act="close"]').addEventListener('click', () => overlay.remove());
+    overlay.querySelector('[data-act="clear"]').addEventListener('click', () => {
+        clearVisitedHops();
+        logLine('info', 'hop-lab: visited list cleared');
+        renderHopLab(manifest, opts);
+    });
+
+    overlay.querySelectorAll('[data-hop]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (opts.preview) {
+                logLine('warn', 'hop-lab: button click ignored (SAFE preview)');
+                return;
+            }
+            const idx = Number(btn.dataset.hop);
+            const node = manifest.nodes[idx];
+            if (!node) return;
+            const url = new URL(node.href, window.location.href);
+            const vs = getVisitedHops();
+            if (vs.length >= manifest.maxHops) {
+                alert(`Hop limit reached (${manifest.maxHops}). Reset visited to continue.`);
+                logLine('warn', `hop-lab: maxHops=${manifest.maxHops} reached`);
+                return;
+            }
+            if (!confirm(`HOP → ${node.label}\n\n${url.href}\n\nProceed?`)) {
+                logLine('warn', `hop-lab: user cancelled hop to ${node.id}`);
+                return;
+            }
+            vs.push(node.id);
+            setVisitedHops(vs);
+            logLine('effect', `hop-lab: navigating → ${node.id} (${url.href})`);
+            location.href = url.href;
+        });
+    });
+
+    document.body.appendChild(overlay);
+}
+
+// ───────────────────────── EFFECTS ──────────────────────────
+function showHintBanner(text) {
+    const d = document.createElement('div');
+    d.className = 'hint-banner';
+    d.textContent = text;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 6000);
+}
+
+// ───────────────────────── TELEMETRY ──────────────────────────
+function recordTelemetry(receipt) {
+    if (!state.telemetry) {
+        receipt.telemetry = 'opted-out';
+        return;
+    }
+    state.telemetryBuffer.push(receipt);
+}
+function refreshInsights() {
+    el('iTotal').textContent = state.counters.total;
+    el('iFired').textContent = state.counters.fired;
+    el('iQuarantined').textContent = state.counters.quarantined;
+    el('iErrors').textContent = state.counters.errors;
+    const wrap = el('insightTypes');
+    wrap.innerHTML = '';
+    for (const [t, n] of Object.entries(state.counters.types)) {
+        const cell = document.createElement('div');
+        cell.className = 'insight';
+        cell.innerHTML = `<div class="n">${n}</div><div class="l">${escapeHTML(t)}</div>`;
+        wrap.appendChild(cell);
+    }
+}
+
+// ───────────────────────── UI WIRING ──────────────────────────
+el('runBtn').addEventListener('click', () => {
+    const text = el('capsuleInput').value;
+    if (!text.trim()) { logLine('warn', 'empty input'); return; }
+    runCapsule(text);
+});
+el('modeToggle').addEventListener('click', () => {
+    state.mode = state.mode === 'safe' ? 'armed' : 'safe';
+    el('modePill').textContent = `MODE: ${state.mode.toUpperCase()}`;
+    el('modePill').className = 'pill ' + (state.mode === 'armed' ? 'armed' : 'on');
+    el('modeToggle').textContent = state.mode === 'safe' ? 'MODE: SAFE → ARM' : 'MODE: ARMED → SAFE';
+    el('modeToggle').className = 'btn ' + (state.mode === 'armed' ? 'btn-armed' : '');
+    logLine('info', `mode → ${state.mode}`);
+});
+el('jsToggle').addEventListener('click', () => {
+    state.jsEnabled = !state.jsEnabled;
+    el('jsPill').textContent = `JS EVAL: ${state.jsEnabled ? 'ENABLED' : 'DISABLED'}`;
+    el('jsPill').className = 'pill ' + (state.jsEnabled ? 'armed' : 'off');
+    el('jsToggle').textContent = state.jsEnabled ? 'DISABLE JS EVAL' : 'ENABLE JS EVAL';
+    logLine('info', `js eval gate → ${state.jsEnabled ? 'enabled' : 'disabled'}`);
+});
+el('telemetryToggle').addEventListener('click', () => {
+    state.telemetry = !state.telemetry;
+    el('telemetryPill').textContent = `TELEMETRY: ${state.telemetry ? 'ON' : 'OFF'}`;
+    el('telemetryPill').className = 'pill ' + (state.telemetry ? 'on' : 'off');
+    el('telemetryToggle').textContent = state.telemetry ? 'TELEMETRY: ON → OPT OUT' : 'TELEMETRY: OFF → OPT IN';
+    logLine('info', `telemetry → ${state.telemetry ? 'on' : 'off (opted out)'}`);
+});
+el('newNonceBtn').addEventListener('click', () => {
+    const n = genNonce();
+    state.sessionNonce = n;
+    el('sessionNonce').textContent = n;
+    logLine('nonce', `manual nonce → ${n}`);
+});
+el('clearBtn').addEventListener('click', () => {
+    el('log').innerHTML = '';
+    state.log = [];
+    logLine('info', 'log cleared');
+});
+el('exportBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify({
+        exportedAt: nowISO(),
+        sessionNonce: state.sessionNonce,
+        counters: state.counters,
+        buffer: state.telemetryBuffer
+    }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `hops-telemetry-${Date.now()}.json`;
+    a.click();
+    logLine('info', `exported ${state.telemetryBuffer.length} receipt(s)`);
+});
+
+// ───────────────────────── EXAMPLES ──────────────────────────
+const EXAMPLES = [
+    { title: 'HINT — pink banner', body: '#!exec:hint:you found the loose thread' },
+    { title: 'GUNICORN — flavor log', body: '#!exec:gunicorn:phase_3 unlocked — solver verified' },
+    { title: 'HOP — to /kilo/', body: '#!exec:hop:https://musha1140.github.io/kilo/' },
+    { title: 'OPEN — new tab', body: '#!exec:open:https://musha1140.github.io/' },
+    { title: 'MULTI — chain two effects', body: '#!multi:["#!exec:gunicorn:stage clear","#!exec:hint:the protocol is the labyrinth"]' },
+    { title: 'LAB — HOP deck (the message IS a setlist)', body: '#!exec:lab:{"version":1,"title":"KILO LINK LABYRINTH","mode":"manual","maxHops":8,"nodes":[{"id":"intro","label":"Track 01 — humming","hint":"You hear humming. Try Tetris next.","href":"https://musha1140.github.io/kilo/"},{"id":"phase_2","label":"Track 02 — bassline","hint":"The bassline is the key.","href":"https://musha1140.github.io/sandbox/"},{"id":"final","label":"Track 03 — polyphony","hint":"Walk back to the front door.","href":"https://musha1140.github.io/"}]}' },
+    { title: 'SAFE — force quarantine of inner', body: '#!exec:safe:#!exec:hop:https://example.com' },
+    { title: 'JS — gated eval (DATA.nonce is yours)', body: '#!exec:js:return "hello from nonce " + DATA.nonce;' },
+    { title: 'BAD — invalid type', body: '#!EXEC:hint:should be rejected (uppercase)' },
+    { title: 'UNKNOWN — top-level no-op', body: '#!worker:do something' },
+];
+const exWrap = el('examples');
+EXAMPLES.forEach(e => {
+    const b = document.createElement('button');
+    b.className = 'example-btn';
+    b.innerHTML = `<span class="title">${escapeHTML(e.title)}</span><span class="body">${escapeHTML(e.body)}</span>`;
+    b.addEventListener('click', () => {
+        el('capsuleInput').value = e.body;
+        logLine('info', `loaded example: ${e.title}`);
+    });
+    exWrap.appendChild(b);
+});
+
+// ───────────────────────── HOPS CHAIN ──────────────────────────
+const CHAIN = [
+    {
+        n: 1, name: 'Seed',
+        midi: 'tetris_theme',
+        plaintext: '#!exec:hint:welcome, scanner. the next step listens for a song that was always above middle C.'
+    },
+    {
+        n: 2, name: 'Pivot',
+        midi: 'fur_elise',
+        plaintext: '#!multi:["#!exec:gunicorn:stage 2 reached","#!exec:hint:für elise opens with E5 / D♯5. the next song is polyphony-dense."]'
+    },
+    {
+        n: 3, name: 'Final',
+        midi: 'bohemian_rhapsody',
+        plaintext: '#!multi:["#!exec:gunicorn:phase_3 unlocked — solver verified","#!exec:hint:you walked three songs and three ciphers. the labyrinth is the protocol."]'
+    },
+];
+const chainWrap = el('hopsChain');
+CHAIN.forEach(stage => {
+    const row = document.createElement('div');
+    row.style.cssText = 'background:#020202;border:1px solid #111;padding:10px;';
+    row.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div>
+                <span style="color:#ffd700;letter-spacing:2px;font-size:11px;">STAGE ${stage.n} — ${escapeHTML(stage.name.toUpperCase())}</span>
+                <span style="color:#555;font-size:10px;margin-left:10px;">midi key: <code>${escapeHTML(stage.midi)}</code></span>
+            </div>
+            <div style="display:flex;gap:6px;">
+                <button class="btn" data-act="load">LOAD →</button>
+                <button class="btn btn-run" data-act="run">▶ RUN</button>
+            </div>
+        </div>
+        <code style="color:#888;font-size:11px;display:block;background:#000;padding:6px 8px;border:1px solid #111;word-break:break-all;">${escapeHTML(stage.plaintext)}</code>
+    `;
+    row.querySelector('[data-act=load]').addEventListener('click', () => {
+        el('capsuleInput').value = stage.plaintext;
+        logLine('info', `loaded chain stage ${stage.n}: ${stage.name}`);
+    });
+    row.querySelector('[data-act=run]').addEventListener('click', () => {
+        el('capsuleInput').value = stage.plaintext;
+        runCapsule(stage.plaintext);
+    });
+    chainWrap.appendChild(row);
+});
+
+// ───────────────────────── BOOT ──────────────────────────
+state.sessionNonce = genNonce();
+el('sessionNonce').textContent = state.sessionNonce;
+logLine('info', 'hops sandbox ready. mode=safe. telemetry=on (in-memory only).');
+logLine('info', 'flip MODE to ARM to let hint:/gunicorn:/hop:/open:/redirect: fire.');
+refreshInsights();
+</script>
+
+</body>
+</html>
