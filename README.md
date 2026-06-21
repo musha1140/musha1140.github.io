@@ -25,7 +25,9 @@ There are three surfaces, each progressively more interactive:
 
 | Path | Role | State |
 | --- | --- | --- |
-| `/` | Static **Gas-Lighting Protocol** demo. MIDI-keyed AES, p5-rendered QR animation, `.slayy` export/import, share-link round-trip. | Static, single file (`index.html`). |
+| `/` | Redirect entrypoint to the Next UI landing page. | Static redirect (`index.html` → `/nextui/`). |
+| `/nextui/` | Primary landing page for gas-lighting.com on GitHub Pages. | Static, single file (`nextui/index.html`). |
+| `/about/` | Company profile page for Gas-lighting LLC. | Static, single file (`about/index.html`). |
 | `/kilo/` | Non-static, functional, full version of the protocol — capsule dispatcher, `#!exec:` handlers, share-link decryption, hop chains. | Lives in a separate codebase; this repo only links to it. |
 | `/sandbox/` | **HOPS Sandbox**: capsule-injection playground. Mirror of `/kilo/`'s dispatcher *without* the encryption layer, for studying the protocol mechanic in isolation. Verbose telemetry, SAFE/ARMED modes, HOP labyrinth deck (`#!exec:lab:`). | Static, single file (`sandbox/index.html`). |
 
@@ -34,7 +36,9 @@ There are three surfaces, each progressively more interactive:
 ## Directory map
 
 ```
-/                  → index.html             Gas-Lighting static demo
+/                  → index.html             Redirect to /nextui/
+/nextui/           → nextui/index.html      Primary landing page
+/about/            → about/index.html       Company profile page
 /sandbox/          → sandbox/index.html     HOPS capsule injection playground
 /kilo/             → (external app)         Full functional version of the protocol
 404.html           → soft-404 with the same chrome as the front door
