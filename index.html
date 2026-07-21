@@ -1,12 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gas-Lighting</title>
-  <meta http-equiv="refresh" content="0;url=/nextui/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gas-Lighting LLC</title>
+  <meta name="description" content="Gas-Lighting, LLC — network intelligence & applied cryptography." />
+  <meta name="theme-color" content="#020604" />
+  <!-- Instant forward to the app; the styled body below only shows if the hop is slow. -->
+  <meta http-equiv="refresh" content="0; url=/nextui/" />
+  <link rel="canonical" href="https://gas-lighting.com/nextui/" />
+  <style>
+    :root { color-scheme: dark; }
+    * { margin: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      background: #020604;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100svh;
+    }
+    .wrap { text-align: center; padding: 2rem; }
+    .mark {
+      font-size: clamp(2rem, 9vw, 4rem);
+      font-weight: 500; letter-spacing: -0.02em; text-transform: lowercase;
+      line-height: 1;
+    }
+    .dot { color: #34d399; }
+    .sub {
+      margin-top: 1rem; font-size: 0.72rem; letter-spacing: 0.28em;
+      text-transform: lowercase; color: rgba(255,255,255,0.55);
+    }
+    .sub a { color: rgba(255,255,255,0.55); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    @keyframes pulse { 0%,100% { opacity: 0.35 } 50% { opacity: 0.85 } }
+    .load { margin-top: 2rem; font-size: 0.7rem; letter-spacing: 0.3em; color: rgba(52,211,153,0.8); animation: pulse 1.8s ease-in-out infinite; }
+  </style>
 </head>
 <body>
-  <p><a href="/nextui/">Continue</a></p>
+  <div class="wrap">
+    <div class="mark">gas<span class="dot">·</span>lighting</div>
+    <div class="sub">network intelligence · applied cryptography</div>
+    <div class="load">entering…</div>
+    <noscript><p class="sub" style="margin-top:1.5rem"><a href="/nextui/">continue →</a></p></noscript>
+  </div>
+  <script>window.location.replace('/nextui/');</script>
 </body>
 </html>
