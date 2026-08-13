@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-08-13T16:13:24.857Z",
+  "engine": "http",
+  "summary": {
+    "total": 6,
+    "verified": 5,
+    "external": 1,
+    "section": 0,
+    "broken": 0
+  },
+  "results": [
+    {
+      "id": "/",
+      "href": "/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/about/",
+      "href": "/about/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/",
+      "href": "/blog/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://musha1140.github.io",
+      "href": "https://musha1140.github.io",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/workflows",
+      "href": "/workflows",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/derive-verify",
+      "href": "/derive-verify",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    }
+  ]
+}

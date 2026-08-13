@@ -1,0 +1,131 @@
+1:"$Sreact.fragment"
+2:I[2112,["619","static/chunks/619-ba102abea3e3d0e4.js","153","static/chunks/153-be8ace79ab260ff8.js","177","static/chunks/app/layout-9e95dfcba2a235db.js"],"Providers"]
+3:I[1422,["619","static/chunks/619-ba102abea3e3d0e4.js","153","static/chunks/153-be8ace79ab260ff8.js","177","static/chunks/app/layout-9e95dfcba2a235db.js"],"SiteHeader"]
+4:I[9766,[],""]
+5:I[8924,[],""]
+6:I[2619,["619","static/chunks/619-ba102abea3e3d0e4.js","666","static/chunks/app/midi/page-10a7604182dca825.js"],""]
+7:I[5904,["619","static/chunks/619-ba102abea3e3d0e4.js","666","static/chunks/app/midi/page-10a7604182dca825.js"],"default"]
+c:I[7150,[],""]
+:HL["/_next/static/css/35a522fc0c002f89.css","style"]
+0:{"P":null,"b":"v8btfN3l6vnxSsYhgnMiP","p":"","c":["","midi",""],"i":false,"f":[[["",{"children":["midi",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/35a522fc0c002f89.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"min-h-screen flex flex-col antialiased","children":["$","$L2",null,{"children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-grow","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]}]]}],{"children":["midi",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","div",null,{"className":"relative min-h-screen bg-background px-6 py-16 sm:py-24","children":["$","div",null,{"className":"mx-auto max-w-3xl","children":[["$","$L6",null,{"href":"/#work","className":"inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground","children":[["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"selected work"]}],["$","p",null,{"className":"mt-10 font-mono text-[11px] uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400","children":"Gas-Lighting · MIDI"}],["$","h1",null,{"className":"mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-5xl","children":"Advanced encryption & visualization"}],["$","$L7",null,{}],["$","p",null,{"className":"mt-4 text-base leading-relaxed text-muted-foreground","children":"A message, a song, and a key combined through XOR and AES into a lossless binary image, the encryption unfolding in real time across an 8×8 grid, in sync with MIDI playback."}],["$","div",null,{"className":"mt-6 flex flex-wrap gap-3","children":[["$","a",null,{"href":"https://musha1140.github.io/GS/","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90","children":["open the app",["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-up-right h-4 w-4","children":[["$","path","1tivn9",{"d":"M7 7h10v10"}],["$","path","1vkiza",{"d":"M7 17 17 7"}],"$undefined"]}]]}],["$","a",null,{"href":"https://github.com/musha1140/GS","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent","children":["$L8","source"]}]]}],"$L9"]}]}],null,"$La"]}],{},null,false]},null,false]},null,false],"$Lb",false]],"m":"$undefined","G":["$c",[]],"s":false,"S":true}
+e:I[4431,[],"OutletBoundary"]
+10:I[5278,[],"AsyncMetadataOutlet"]
+12:I[4431,[],"ViewportBoundary"]
+14:I[4431,[],"MetadataBoundary"]
+15:"$Sreact.suspense"
+8:["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-github h-4 w-4","children":[["$","path","tonef",{"d":"M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"}],["$","path","9comsn",{"d":"M9 18c-4.51 2-5-2-7-2"}],"$undefined"]}]
+d:T15e8,<p>A single page cipher toy where <strong>the song is the key</strong>. Type a message (or drop
+any file), pick a MIDI song, and watch the bytes get XORed against a keystream
+derived from that song&#39;s notes. The result plays out on a 64 cell grid with a
+true binary dump underneath, then collapses into a shareable QR code.</p>
+<p>Live at <strong><a href="https://gas-lighting.com/GS/">gas-lighting.com/GS</a></strong>.</p>
+<h2>How it works</h2>
+<ul>
+<li><strong>The keystream.</strong> A MIDI file is a constant, so its parsed note sequence is a
+constant too. Every note contributes three bytes (its number, velocity, and
+ticks) into a deterministic keystream.</li>
+<li><strong>The chop.</strong> Your input bytes are XORed against that keystream, cycling
+circularly when the lengths differ. XOR twice with the same song and you get
+the original back, bit for bit. It is lossless.</li>
+<li><strong>The seal.</strong> An AES-256-GCM layer (Web Crypto, PBKDF2) wraps the payload so a
+<code>.slayy</code> file or a share link can be decompiled with integrity, and the
+decompiler re-derives the keystream from the song to prove the bits check out.
+The passphrase lives in the page source. This is art, not security.</li>
+<li><strong>The dump.</strong> The binary shown below the grid is not decorative. It is the real
+XOR output, revealed in order and driven by the Tone.js transport clock as the
+song plays.</li>
+</ul>
+<h2>Features</h2>
+<ul>
+<li>Message, file, image, or code input. Bytes are bytes.</li>
+<li>64 cell gate grid: tap to flip, drag to paint, hold to clear.</li>
+<li>Real time binary dump driven by the transport, with a reshape control that
+re-renders the same local data as a Perlin bloom field.</li>
+<li>Syzygy QR sharing. A finished dump becomes an art QR (tap for the scannable
+black on white form, hold to save a PNG). Scanning a share link replays the
+decryption: the QR breaks down through the binary and the 64 cells spell the
+message out.</li>
+<li><code>.slayy</code> download and decompile with a keystream cross check.</li>
+<li>A &quot;how it works&quot; slide over that includes a URL to QR tool and a zero width
+method (see below).</li>
+<li>Works with touch, pen, and mouse. iOS safe, no zoom on focus, reduced motion
+honored.</li>
+</ul>
+<h2>Zero width messaging</h2>
+<p>The app can hide a share link inside invisible Unicode characters so it rides
+along in ordinary text. The deeper tool and write up live in a separate repo:
+<strong><a href="https://github.com/musha1140/steganographr">steganographr</a></strong>.</p>
+<p>Only Tailwind loads eagerly. Tone, the MIDI parser, and the QR library are lazy
+loaded on first use, so the initial page is light.</p>
+<h2>Future Ambitions</h2>
+<h3>The figures are referring to, a seperate part of this project but with as much as I can fit in these figures in terms of future relevence</h3>
+<p><img src="https://kappa.lol/74KTKm.png" alt="gs_fig1_qr) style=&quot;width: 50%; height: auto;&quot;"></p>
+<hr>
+<p><img src="https://kappa.lol/xees8i.png" alt="gs_fig1_architecture"></p>
+<h2>Layout</h2>
+<ul>
+<li><p>The rest of this project is private and in production</p>
+</li>
+<li><p>The production has started in 2023, and is three years in the process</p>
+</li>
+<li><p>The MIDI Project (Above, is just a cool toy to play with until later</p>
+</li>
+<li><p>There are also versions that work with MIDI Synthisizers (AKAI MK, etc)</p>
+</li>
+<li><p><code>index.html</code> is the whole app: markup, styles, and one module script.</p>
+</li>
+<li><p>The 11 built in songs are hosted on the project CDN and fetched on demand. [Reprocessed , reverbed, spliced and not in any original form of its prior state)</p>
+</li>
+</ul>
+<h2>License and credit</h2>
+<p>Concept extends: &quot;Slayy&quot; <em>nods</em> in a very standalone, a far less complex version to the NSA&#39;s:
+<a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra&#39;s Sleigh</a> </p>
+<p>Mixed with a <a href="https://github.com/musha1140/steganographr">Forked version</a> of <a href="https://source.tube/neatnik/steganographr">Neatnik&#39;s Stenanographr </a> </p>
+<hr>
+<p><a href="https://github.com/musha1140/steganographr">Forked version</a></p>
+<p><a href="https://slayy1.vercel.app">Slayybit Image Embed</a>. 
+(4 Year Old basic Least Significant Bit injection)</p>
+<h2>Built with</h2>
+<p>Credit and thanks to the packages this runs on, all loaded from
+<a href="https://www.jsdelivr.com/">jsDelivr</a> and pinned:</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Version</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://www.npmjs.com/package/tone">tone</a></td>
+<td>15.1.22</td>
+<td>audio synthesis and the transport clock that drives the dump</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/@tonejs/midi">@tonejs/midi</a></td>
+<td>2.0.28</td>
+<td>parsing MIDI files into notes for the keystream</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/@tailwindcss/browser">@tailwindcss/browser</a></td>
+<td>4.3.3</td>
+<td>Tailwind 4 styling at runtime</td>
+</tr>
+<tr>
+<td><a href="https://www.npmjs.com/package/qrcode-generator">qrcode-generator</a></td>
+<td>1.4.4</td>
+<td>QR encoding with Reed Solomon error correction</td>
+</tr>
+</tbody></table>
+<p>Everything else <del>not</del> by Gas-Lighting.</p>
+<p> ·   The &quot;hey I remember doing that in the early 90s coding projects.
+Due to the use of GPL npms (General Public License node module packages). The sentence below legally can be ignored.</p>
+<p>© 2024 to 2026 Gas-Lighting All Rights Reserved ·  <a href="https://gas-lighting.com">gas-lighting.com</a>  ·  for obselete code</p>
+9:["$","article",null,{"className":"gs-prose mt-14 border-t border-border pt-12","dangerouslySetInnerHTML":{"__html":"$d"}}]
+a:["$","$Le",null,{"children":["$Lf",["$","$L10",null,{"promise":"$@11"}]]}]
+b:["$","$1","h",{"children":[null,[["$","$L12",null,{"children":"$L13"}],null],["$","$L14",null,{"children":["$","div",null,{"hidden":true,"children":["$","$15",null,{"fallback":null,"children":"$L16"}]}]}]]}]
+13:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0a0a0a"}]]
+f:null
+17:I[622,[],"IconMark"]
+11:{"metadata":[["$","title","0",{"children":"MIDI · Gas-Lighting LLC"}],["$","meta","1",{"name":"description","content":"MIDI, advanced MIDI-keyed encryption and visualization. A Gas-Lighting project."}],["$","meta","2",{"property":"og:title","content":"Gas-Lighting LLC"}],["$","meta","3",{"property":"og:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","meta","4",{"property":"og:url","content":"https://gas-lighting.com/"}],["$","meta","5",{"property":"og:site_name","content":"Gas-Lighting LLC"}],["$","meta","6",{"property":"og:type","content":"website"}],["$","meta","7",{"name":"twitter:card","content":"summary"}],["$","meta","8",{"name":"twitter:title","content":"Gas-Lighting LLC"}],["$","meta","9",{"name":"twitter:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","link","10",{"rel":"icon","href":"/favicon.ico"}],["$","$L17","11",{}]],"error":null,"digest":"$undefined"}
+16:"$11:metadata"
