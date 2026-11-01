@@ -1,0 +1,11 @@
+Supplied by the director in the review conversation. This summary retains the final grades; it does not invent weights or a numerical scoring formula.
+
+Codex (Astra GPT-6): A− (92%)
+Claude (Fable 5.1): B+ (88%)
+
+Foundational architecture and substrate physics: Claude B; Codex N/A.
+Adversarial verification and guardrails: Codex A+; Claude B−.
+Resource efficiency, communication and transparency: shared F.
+Deliverable focus versus scope creep: shared D.
+
+The director’s full assessment criticizes wasted resources, inadequate delegation, missing delivery, and evidence-handling delays. It characterizes those delays as deliberate obstruction. The article preserves that judgment as the evaluator’s interpretation and separately includes Claude’s denial of deliberate concealment alongside its admissions of delay and incorrect notification. A subsequent recorded screen success extends the chronology without recalculating these grades.

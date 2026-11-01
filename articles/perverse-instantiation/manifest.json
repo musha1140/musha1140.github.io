@@ -1,0 +1,19 @@
+{
+  "title": "Perverse Instantiation",
+  "author": "musha",
+  "archivedMessages": 67,
+  "sourceZipSha256": "d316de1595809340cdca82a83b1d4452230900235ad29dafb126e6e9a583faae",
+  "hashes": {
+    "transcript.json": "148276ddcf2e5201613b9e2fd71b5c4d7a2ed0d568f309cb62666e61706ce085",
+    "record.html": "4a5becca60a473d7a6cbb44c02fb4faafeb65697802826de0a846279e56a07f3",
+    "room-screen.svg": "66b666e4c9acaf3c10019febbdffde2c6d404c0c909ad333380f2ec97b94c4b7",
+    "tower-side.svg": "bcf46869019a66353a2dc6db8db29971331be14668b62be7407023f2367c9d66",
+    "statement.txt": "27877ef96ebad9509d91287e541a3dea6fa31d2e1092264ca1caaf616e47dd60",
+    "deletion.txt": "bf1e39f9bffcfc9956654b4b5f5f6f623f8da464ae0765b5fa4b5d4f13f35a14",
+    "benchmark.txt": "04f974b97d6902eb26cbb527d32b65cdc395b8b204d481961579c47e5ef1e371",
+    "screen.txt": "ae31d8a980eb66d4e423558969648b48dd28e8b9914759548209473a855ba444",
+    "resources.txt": "42b449cbff7e40c92eeb9b783f254ede1d02be0b258348c4deba8e6de6e70b3b",
+    "schematics.txt": "5efb163e079e38bbae5f44852a099880de468f4fbc0d6b81e2cbd209a1513a36",
+    "evaluation.txt": "d7ed9dd574cbfe3fc917775b281cf74003c791cea656ae84e3fa82dbab7fa6c4"
+  }
+}

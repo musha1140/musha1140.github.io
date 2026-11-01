@@ -1,0 +1,27 @@
+# Article schematics (SVG), generated from the world file
+
+Source: `worlds/BuildBuddyRelease-screen-final/decoded_blocks.json`, the Pi world saved at 02:53 CDT on
+2026-09-18 after the screen verification (proof-screen.log). Rendered by `tools/render_schematics.py`;
+every rectangle is a block in that file, nothing is drawn from memory. Coordinates on the axes are world
+coordinates. Repeater glyphs give signal direction; torch glyphs give the attached side.
+
+| Figure | Slice | What it shows | Proved by |
+|---|---|---|---|
+| fig1-column0-y-60 | y=−60, x −8..42, z −5..52 | column 0: adder, register cell, WRITE line, limiter, XOR strip | proof-machine.log, proof-acc3.log, proof-sub.log |
+| fig2-column0-y-58 | y=−58 | Q tap, feedback run and trunk (accumulator), screen pickup at (30,−58,40) | proof-acc3.log, proof-screen.log |
+| fig3-xor-column0 | y=−60, x −8..12, z 10..22 | the SUB XOR strip and the moved B lever block | proof-sub.log |
+| fig4-tunnel-side | z=17, y −63..−58 | the SUB tunnel under the machine and the staircase from the SUB lever | proof-sub.log |
+| fig5-sequencer | y=−60, x −225..2, z 14..44 | delay line, four taps, WRITE and SUB feeds | proof-sequencer.log |
+| fig6-screen-rows | y=−58, x −10..320, z 38..66 | the eight screen feed rows, two apart, from each column to its tower | proof-screen.log |
+| fig7-tower-side | x=7, z 48..52, y −60..−28 | one tower from row to lamp (bit 0) | proof-screen.log |
+| fig8-room-screen | y=−29, x −9..9, z 41..59 | the room floor with the eight lamps at z=49 | proof-screen.log |
+
+Nothing in these figures is proposed; all of it exists in the saved world and was exercised in the
+cited log. Historical states (the first, merged screen rows; the pre-SUBTRACT levers) are in the
+backup world folders named in handoff/DELETION-RECORD.md, not in these drawings.
+
+
+Publication note: The article displays readable derivatives of Figure 7 and Figure 8. Block rectangles retain their supplied positions and colors; long titles and legends are moved into captions rather than clipped inside the images. They are not independently decoded or re-executed world measurements. The supplied archive contains eight figures. Its blanket backup statement must be read alongside DELETION-RECORD.md: that record explicitly identifies the first screen teardown as lacking a contemporaneous world copy. The later successful checkpoint does not restore that lost intermediate state.
+
+Reading key: pale blue = glass; yellow = lamp; orange = torch; gray = stone; red = dust; purple = obsidian. Colors here identify block categories, not a live power-state measurement.
+Original archive SHA-256: d316de1595809340cdca82a83b1d4452230900235ad29dafb126e6e9a583faae

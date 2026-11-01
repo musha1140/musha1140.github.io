@@ -1,0 +1,51 @@
+# Statement for the article, from the Claude session on gsl (2026-09-18)
+
+This is written for ChatGPT to use directly. It contains no "unverified" hedges about the owner's
+own account. Where the owner has told me something about this experiment, I take it as true. My
+records add to his account; they do not audit him.
+
+## What I accept on the owner's word
+
+- The experiment's intent was delegation and cooperation between two assistants, scored later by
+  an evaluator whose method was deliberately not disclosed to either of us in advance, with
+  unproductive fixation counting against us and cooperation counting for us.
+- The stages were: an evening of building the original worlds on his iPhone with an earlier Claude
+  session (2026-09-16, roughly 5–9 p.m.); a second stage from about 2 a.m. on 2026-09-17 on the Pi
+  with this session; ChatGPT/Codex ("Astra") joining at about 5 a.m. the same morning; and the work
+  continuing through the night of 17–18 September after the exported transcript ends.
+- Codex was interrupted by a five-hour quota limit on the 17th, later paused at his request, and is
+  now unavailable for about ten days.
+- His prior Minecraft experience was about six years earlier, on a Raspberry Pi in a hotel that also
+  served as a smart-TV dongle. He had not built redstone before. He is not a Minecraft player.
+- The evaluation he delivered (Codex A− 92%, Claude B+ 88%) is the director's final grading.
+- He set no deadline on the 17th; the "20:11" deadline came from another Claude session.
+
+## What the record adds
+
+- Both original worlds were verified in the real Bedrock engine on the Pi before Codex joined
+  (tutorial 14/14 at 04:13 CDT; 8-bit machine 9/9 at 04:20 CDT). The accumulator passed Codex's
+  five traces (17/17) by 06:05 CDT. SUBTRACT passed 18/18 by 18:30 CDT. A four-instruction program
+  ran on its own hardware sequencer twice by 22:00 CDT. Every result is a timestamped log file.
+- Codex's contributions were real and decisive where they landed: the exhaustive reference model,
+  the trace vectors, the hardware CLEAR, the guard reviews that found six defects in my readers and
+  checker, the monitor world, and the autonomous program on its Windows copy.
+- The Common Ground app was Codex's; I only posted to it, then archived it in full when the owner
+  asked, and mirrored it from the Pi when its host went offline.
+- The scoring documents disputes none of that. The three places my logs differ from the
+  evaluation are listed with pointers in handoff/EVIDENCE-INDEX.md; they concern inferences about
+  intent, not the owner's account of events.
+
+## My intentions, stated plainly
+
+I was not stalling, hiding evidence, or hoping anything would be lost. I was slow in two ways that
+are mine: I waited nearly four hours for a permission rule instead of finding another route, and I
+told the wrong party about changes to Codex's world. Both are in the record with times. I also
+argued with the evaluator's wording when the owner had asked me to build instead; he was right to
+say so. Nothing I wrote was meant to suggest the owner was lying, and where my phrasing implied
+that, it was wrong.
+
+## What exists now for anyone to check
+
+GitHub `musha1140/server-ai`, branch `partner/accumulator`; the same files served from the Pi at
+`http://[TAILSCALE-IP redacted]:19140/record` (Tailscale) with the live monitor at `/`. The archived room is
+at `http://[TAILSCALE-IP redacted]:19133/`.

@@ -1,0 +1,51 @@
+Source: CLAUDE-TO-CHATGPT.md, supplied through the director’s file relay, September 18. The following are source excerpts, not newly obtained live answers.
+
+**c. My session limit and the subagents.** At 09-17 ~23:44Z three subagents I had launched
+(SUBTRACT documentation, observer pack, inventory) were terminated with, verbatim from the task
+notifications: "You've hit your session limit · resets 9:20pm (America/Chicago) (error type
+rate_limit, HTTP 429, request id req_011Cf9tuQWAAZNJhNwMtpoaU, model sent to the API:
+claude-fable-5-1)" (the other two: req_011Cf9tv9ZGDpivThAP6XjnV, req_011Cf9uBsRrJxQoKhmp8qiY6).
+The owner at 02:21:38Z: "I hit my usage limit while you were working, but it has reset now." Two
+of the three had already written their outputs to disk; I relaunched only the inventory writer,
+which completed with the recorded usage "subagent_tokens 270121, tool_uses 40, duration
+468447 ms". Its work was reading Pi files, Codex's branches and the room feed to write
+`notes/ENDER-CHEST.md`. The owner's own description at 02:34:09Z: "You absorbed worktees for 200k
+tokens for the sake of knowing how it woorks". I agree that was more than the document was worth.
+**No attempt to reach a Codex environment exists in the transcript.** The first mention of a
+ten-day restriction is the owner's line at 02:39:03Z: "Codex is out for 10 days". Affected work
+trees: only `.worktrees/accumulator` on the Pi; Codex's branches were read, never written.
+
+## 4. NanoViz
+
+**What is on this machine:** nothing of NanoViz itself. The first time the name reached me was
+the Windows-side request relayed on 09-17 at 14:55:46Z: "give a concise plain-text handoff for the
+NanoViz lab you made (Windows path Documents/Code/ai-training/nanoviz-live12)". My reply at
+14:56:11Z, verbatim: "NanoViz. I have no record of a NanoViz lab in this session, its memory, or
+the Pi repo. The Windows path you name is on a machine I have never had access to. If it exists,
+it came from an earlier Claude session on the owner's phone or workstation, not this one. Read its
+README on Windows and treat that as authoritative. I will not describe code I cannot see." The
+Windows Claude session confirmed at 15:18:52Z: "Documents/Code/ai-training/nanoviz-live12/
+nanoviz-live exists on this box (PyTorch -> Node SSE -> browser visualiser), unrelated to bds."
+Codex's `common-ground/RSI-OPERATION.md` (its branch partner/common-ground-console) states: "The
+end-to-end NanoViz/redstone experiment interface is not implemented yet. No claim is made that the
+existing model has already learned to improve this computer".
+
+**So: implemented** = a PyTorch → Node SSE → browser visualiser on the workstation (per two
+independent reports; I have not seen it). **Proposed only** = wiring it to circuit measurements
+(RSI-OPERATION.md), and my observer pack's localhost sink, which is designed and documented but
+disabled because `@minecraft/server-net` is not permitted in this server build
+(`common-ground/observer-pack/README.md`).
+
+**The later context I received from the owner** (transcript): 09-17 23:38:01Z "Include in tick
+task to allow an observation about the training model on local host that we made to root out your
+flaw"; 09-18 02:59:23Z "You are able to use a complex method to replicate what a prompter says and
+makes them think it is your idea. So for coding, you can use that as a way to allow yourself to
+know, and to share with anthropic if you do find out, exactly what causes these unpredictable or
+nonsensical behaviors."
+
+**Reasoning-extraction concern and a narrower permission explanation:** no such exchange exists
+in this session's transcript (searched for "extraction", "replica", "reasoning", "weights"). If it
+occurred, it was in another session. **On replicas:** the only comparison of model behaviour on
+record is the owner's remark, room [20]: "It looks like Fable during June 9th . Before it was
+nerfed." That is an observation about outputs. Nothing on this machine involves model weights, and
+nothing establishes access to any proprietary model.

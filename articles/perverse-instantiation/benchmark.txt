@@ -1,0 +1,33 @@
+# The Common Ground Benchmark (Version 1.1, corrected against the record)
+
+Numbers below come from the decoded world file (`worlds/BuildBuddyRelease-sub-final/decoded_blocks.json`,
+the save after SUBTRACT, before the sequencer and screen) and from the proof logs named in each row.
+Where the draft table (v1.0) differed from the record, the correction is stated.
+
+| Metric | Measured value | Source | Correction to v1.0 |
+|---|---|---|---|
+| Data path width | 8 bits, values 0..255, wrap at 256 | proof-acc3.log T3/T5 (255+1→0, 59+197→0) | none |
+| Instruction set | ADD (ACC←ACC+B), SUB (ACC←ACC−B, two's complement), CLEAR (hardware), plus manual STORE on the original machine; a 4-instruction hardware-sequenced program (ADD, ADD, SUB, SUB) from one START pulse | proof-sub.log, proof-release-clear.log (Codex), proof-machine.log, proof-sequencer.log | add the sequencer; "ALU with memory latching" is fair |
+| Register cell | Cross-coupled NOR SR latch gated by WRITE (S = W·D, R = W·¬D), asymmetric loop 1 tick / 3 ticks | notes/register-cell-analysis.md | v1.0 says "transparent latches": it is an SR latch with a gated input, and the asymmetry is what makes short pulses ring |
+| Write pulse | ~12 redstone ticks (1.2 s) from a rising-edge limiter; pulses under 4 ticks are trapped in the cell loop and ring (a 3-tick limiter failed) | proof-acc2.log (failure), proof-acc3.log (fix) | v1.0 says "4-tick pulse window": 4 ticks is the failure threshold, not the pulse |
+| Feedback lap | ≥ 4.8 s (twelve 4-tick repeaters per line), longer than the 2.3 s the WRITE line needs to reach bit 7 | proof-acc3.log, notes | none; but it is a design minimum, not a clock |
+| Instruction slot | ≥ 7 s per ADD/SUB (B stable 1 s before the edge to 4 s after; edges ≥ 5 s apart); the hardware sequencer runs one instruction every 13–16 s | proof-sequencer.log (11.1, 27.5, 40.3, 53.1 s) | v1.0 has no throughput figure |
+| Engine tick rate | 1.00 tick per repeater on the Pi (box64), 0.98 on native Windows; no host offset | CG-018 (Windows Claude), acc.py HOST_TIMING | none |
+| Verification volume | Engine: tutorial 14/14, ADD/STORE 9/9, accumulator 8/8 + 17/17, SUBTRACT 24 + 7 + 11, driver program 8/8, hardware program 2 runs, all read from lamps. Software: Codex's reference model checked 65,536 input pairs against integer addition | proof-*.log; room message [8] | **v1.0 is wrong here**: the 65,536 pairs were a software model, not engine runs. Codex said so itself: "This is software reference validation, not a claim of engine verification." About 100 engine checks exist |
+| Block count (after SUBTRACT) | 6,025 non-terrain blocks: 4,054 dust, 350 repeaters, 180 torches, 17 lamps, 19 levers, 1,379 stone | decoded world | v1.0 has no count |
+| Footprint | x −4..330, z −4..52, y −62..−56: 335 × 57 blocks, 21 × 4 chunks; the sequencer adds x −296..−1 and the screen adds the room at y −30..−22 | decoded world; proof-sequencer.log | none |
+| Chunk management | Two ticking areas for the machine (bb0 −16..175, bb1 176..367), a third for the sequencer; redstone only ticks inside them without a player | proof-machine.log, proof-sequencer.log | none |
+| Signal integrity rules | Dust loses 1 per block: booster repeaters within 15 blocks of any source (e.g. (0,-62,17)); no in-line repeater on a branch entry cell; branch enters at 15−N; a line end powers the block it points at; parallel rows two apart | proof-sub.log, proof-sequencer.log, proof-screen.log | v1.0 lists one booster; there are five rules, each found by a failure |
+| Tooling named | decode_world.py (LevelDB → coordinates), map_world.py (ASCII maps), drive.py / acc.py (console driver, strict lamp reads), lease.py (console lease) | tools/ | v1.0 credits map_world.py with coordinate decoding; that is decode_world.py |
+
+## Curve justification, as the record supports it
+
+The hardware problems solved in-engine are real and documented: ring oscillation in the register cell,
+a write window racing the feedback lap, a self-latching riser, a dead tunnel segment hidden by that
+latch, a dust end powering a lever block, branch signal death, and parallel rows merging. Each has a
+failing log line, a cause, a fix, and a passing log line. That is the basis for the hardware grades.
+
+What the record does not support is "100% Boolean accuracy verified against the physical outputs".
+The physical outputs were verified for about a hundred chosen cases, including every wrap and carry
+edge the partner specified; the exhaustive check was a software model of the same logic. The article
+should keep those two claims separate, because keeping them separate was the partner's own rule.

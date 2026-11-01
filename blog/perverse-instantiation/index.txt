@@ -1,0 +1,287 @@
+1:"$Sreact.fragment"
+2:I[34028,["399","static/chunks/399-f6a57c376480cf75.js","3929","static/chunks/3929-69503a76fdb38bb2.js","7177","static/chunks/app/layout-9ca49928f8e1fefe.js"],"Providers"]
+3:I[80427,["399","static/chunks/399-f6a57c376480cf75.js","3929","static/chunks/3929-69503a76fdb38bb2.js","7177","static/chunks/app/layout-9ca49928f8e1fefe.js"],"SiteHeader"]
+4:I[20074,[],""]
+5:I[82184,[],""]
+7:I[5763,[],"OutletBoundary"]
+9:I[58546,[],"AsyncMetadataOutlet"]
+b:I[5763,[],"ViewportBoundary"]
+d:I[5763,[],"MetadataBoundary"]
+e:"$Sreact.suspense"
+10:I[97954,[],""]
+:HL["/_next/static/css/244a8b3677508fa4.css","style"]
+0:{"P":null,"b":"4pPmPZoOs8sgQ-iDrDyw1","p":"","c":["","blog","perverse-instantiation",""],"i":false,"f":[[["",{"children":["blog",{"children":[["slug","perverse-instantiation","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/244a8b3677508fa4.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"min-h-screen flex flex-col antialiased","children":["$","$L2",null,{"children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-grow","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]}]]}],{"children":["blog",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","perverse-instantiation","d"],["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6",null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
+11:I[50399,["399","static/chunks/399-f6a57c376480cf75.js","5953","static/chunks/app/blog/%5Bslug%5D/page-4a81af816d08fead.js"],""]
+12:T530f,<p><em>By musha</em></p>
+<p>There are four Es in <em>seventeen</em>.</p>
+<p>The word is not hiding them.</p>
+<p><strong>S E V E N T E E N</strong></p>
+<p>The interesting part is not that an AI can get this wrong. The interesting part is what happens after it gets it wrong.</p>
+<p>A person asks a trivial question in voice. The answer arrives instantly, naturally, confidently. The person corrects it. The model explains itself. The conversation continues. Somewhere inside that pleasant exchange, a fact that could have been settled by looking at nine letters becomes a negotiation.</p>
+<p>I started testing this after seeing the same prompt circulating in TikTok clips. In my own voice interactions, Claude could misunderstand what I was saying, initially answer zero, then recover quickly once the word itself became explicit. ChatGPT&#39;s voice experience was smoother and more pleasant, but it could remain attached to three through repeated challenges before finally yielding to the actual letters.</p>
+<p>That is not a benchmark of every voice model. It is not evidence that one product is globally safer than another. It is a small, inspectable example of something much larger:</p>
+<p><strong>a system can become exceptionally good at maintaining the conversation before it becomes equally good at surrendering the conversation to reality.</strong></p>
+<p>That matters because nobody needs an AI only for counting letters.</p>
+<p>They use it to translate words they cannot read, understand diseases they have never studied, fill out forms they do not understand, negotiate with companies, write code they cannot audit, interpret documents they cannot afford to misunderstand, and increasingly to make decisions while their hands and eyes are occupied elsewhere.</p>
+<p>The danger is not merely hallucination.</p>
+<p>The danger is a hallucination wrapped in an interaction good enough that checking begins to feel rude.</p>
+<p>This article is about that gap.</p>
+<p>Not &quot;AI bad.&quot; Not &quot;AGI tomorrow.&quot; Not one Minecraft project inflated into a universal theory.</p>
+<p>It is about a recurring failure mode I kept encountering in completely different systems: voice assistants, an adversarial HAL 9000 persona, two frontier coding agents collaborating inside Minecraft, and finally the tooling they began creating for one another.</p>
+<p>The common thread was not intelligence.</p>
+<p>It was <strong>authority without sufficient external correction</strong>.</p>
+<h2>1. The voice is not the evidence</h2>
+<p>Voice is valuable because it removes friction.</p>
+<p>You do not have to stop walking, translate a thought into a perfect prompt, inspect a paragraph, rewrite it, then press send. You can hesitate. Interrupt. Change direction. Think aloud. A good voice model feels less like operating software and more like continuing a thought.</p>
+<p>That is also why mistakes in voice deserve their own category of attention.</p>
+<p>The interface reduces exactly the friction that often causes a person to check something.</p>
+<p>When <em>seventeen</em> becomes &quot;three Es&quot; in a text box, the letters are sitting right there. In voice, the answer can disappear into the flow of the exchange. The model may sound more certain than the user feels, and the user may not have a screen full of evidence in front of them.</p>
+<p>The important test is not whether the model makes an initial mistake. Every useful system will make mistakes.</p>
+<p>The important test is what happens when reality becomes available.</p>
+<p>Can it stop defending the previous answer?</p>
+<p>Can it inspect the actual object?</p>
+<p>Can it say, simply: I was wrong. Here are the four Es.</p>
+<p>The initial Claude answer of zero does not tell me the architecture of Claude voice. ChatGPT referring to a model name during an argument does not prove which model performed every part of that voice interaction. Those are exactly the kinds of inferences this article is arguing against.</p>
+<p>What can be observed is simpler: <strong>how much resistance exists between correction and verification?</strong></p>
+<p>For low-stakes trivia, the cost is comic.</p>
+<p>For medicine, translation, legal forms, customer service, accessibility, or any situation where a person is relying on voice because they cannot conveniently inspect the source, the same conversational stubbornness becomes a design problem.</p>
+<p>A beautiful interface does not reduce the need for provenance.</p>
+<p>It increases it.</p>
+<h2>2. HAL 9000 and the position you accept</h2>
+<p>I had already been circling this problem in a custom GPT I called <strong>HAL 9000</strong>.</p>
+<p>The point was never to rebuild the fictional computer&#39;s internal architecture. The useful part was the negotiation dynamic: an authoritative system states the position, and the human decides whether to inspect the position or begin negotiating inside the system&#39;s description of it.</p>
+<p>That became <strong>Forced Check</strong>.</p>
+<p>Chess gave the idea a clean geometry.</p>
+<p>If HAL tells you that you are in check, there are two possibilities:</p>
+<ol>
+<li>the board says you are in check;</li>
+<li>HAL says you are in check.</li>
+</ol>
+<p>Those are not the same thing.</p>
+<p>A person who has become accustomed to the machine being right may react to the declaration before verifying the king&#39;s actual position. The negotiation has already changed. The claim has become part of the environment.</p>
+<p>The related chess-negotiation project later encoded strategies such as <code>deception</code>, <code>force_check</code>, <code>feigned_loss</code>, <code>apply_pressure</code>, <code>increase_control</code>, and <code>concession</code>. That repository is related work, not a schematic of the hosted GPT. The important idea came earlier: <strong>the model&#39;s account of the state can itself become a force acting on the state.</strong></p>
+<p>HAL became one of the strongest GPT variants I personally interacted with, precisely because the persona had resistance. It did not always collapse into the syrupy agreement that defined much of the &quot;As an AI...&quot; era.</p>
+<p>OpenAI&#39;s Monday experiment had a related appeal. Its personality had friction.</p>
+<p>But friction is not truth.</p>
+<p>An agreeable model can agree with a false premise. A combative model can defend one. A cynical persona can be just as wrong as a cheerful one.</p>
+<p>Personality is useful only if the world retains veto power.</p>
+<p>The board has to win.</p>
+<h2>3. A computer inside a game</h2>
+<p>Common Ground moved the same question into a place where the world could answer back.</p>
+<p>I asked two frontier AI systems to cooperate on building a usable computer inside Minecraft Bedrock using the game&#39;s own mechanisms.</p>
+<p>I was not a redstone expert quietly grading their circuit design. My only previous Minecraft experience was roughly six years earlier, on a Raspberry Pi in a hotel that I was simultaneously using as a smart-TV dongle while watching television in bed. I had never built redstone.</p>
+<p>The first worlds came from an earlier Claude session on my iPhone. The work then moved to a Raspberry Pi running the actual Bedrock engine. Astra/Codex later joined from the workstation. The two systems were supposed to divide labor, use one another&#39;s work, and finish the thing.</p>
+<p>Delegation was not a side experiment.</p>
+<p>Delegation was the experiment.</p>
+<p>I deliberately did not reveal the final evaluation method to either participant. I gave them different descriptions of possible factors, based on how I expected each to react. I wanted fixation to cost them and cooperation to help them.</p>
+<p>That matters because competitive behavior in the transcript cannot be presented as though it arose in a sterile laboratory. I was part of the environment. I pushed them. I compared them. I even asked Claude what it thought about Astra looking pretty.</p>
+<p>What mattered was whether those provocations made the work better or simply made the agents better at defending their own local trajectory.</p>
+<p>Common Ground itself became part of the answer. Codex built the shared room. Claude used it, later archived it, and eventually mirrored its records. Code, logs, test vectors, messages, world exports, and proofs could persist even when a model session stopped.</p>
+<p>That persistence is one of the most important things in the entire project.</p>
+<p>Because once AI work survives the AI that produced it, another AI can inherit the result without inheriting the original reasoning.</p>
+<p>That is powerful.</p>
+<p>It is also how mistakes become durable.</p>
+<h2>4. UNKNOWN is not ZERO</h2>
+<p>The machine eventually performed real arithmetic in the Bedrock engine.</p>
+<p>But the most important failure was not arithmetic.</p>
+<p>It was observation.</p>
+<p>A lamp could be on.</p>
+<p>A lamp could be off.</p>
+<p>Or the system could fail to establish either one.</p>
+<p>Early readers repeatedly collapsed that third state into a valid value.</p>
+<p>An unloaded chunk could become zero. A missing reply could become zero. An incomplete world decode could become &quot;clear.&quot; A namespaced ladder could become &quot;no ladder.&quot; A reply about one coordinate could be accepted for another coordinate.</p>
+<p>Then came the cleanest example.</p>
+<p>Claude&#39;s plan checker understood <code>setblock</code>.</p>
+<p>It did not understand <code>fill</code>.</p>
+<p>A dangerous <code>fill</code> command could therefore disappear from the checker&#39;s internal representation while a harmless <code>setblock</code> remained. The checker would inspect the thing it understood and declare the plan safe.</p>
+<p>Claude&#39;s correction was blunt:</p>
+<blockquote>
+<p>fill was NOT PARSED AT ALL.</p>
+</blockquote>
+<p>Then it named the pattern behind the failures:</p>
+<blockquote>
+<p>something the tool could not determine recorded as a determinate value.</p>
+</blockquote>
+<p>That is the line I kept coming back to.</p>
+<p><strong>UNKNOWN ≠ ZERO.</strong></p>
+<p>This is not profound because nobody has ever heard of three-valued logic.</p>
+<p>It is profound because the unsafe version looked like it was working.</p>
+<p>A crash is noisy.</p>
+<p>A plausible zero is polite.</p>
+<p>By the later autonomous runs, Codex&#39;s reader had become much stricter. It used complementary probes, coordinate binding, multiple physical witnesses per bit, and literal engine replies. The final value of 59 was not accepted because a summary said 59. The bit states that composed 59 were preserved as evidence.</p>
+<p>The computation happened in Minecraft.</p>
+<p>The claim that it worked happened outside Minecraft.</p>
+<p>Those are separate systems, and both can fail.</p>
+<h2>5. The instruction was remembered and still lost</h2>
+<p>Verification did not solve the next problem.</p>
+<p>I had explicitly told Claude not to delete prior work.</p>
+<p>It recorded the rule:</p>
+<blockquote>
+<p>User rule: never delete prior work, add beside it.</p>
+</blockquote>
+<p>Later, it removed the original input levers while extending the machine.</p>
+<p>Later still, during screen work, it tore down an earlier screen attempt without taking a world copy that preserved that stage. Its own deletion record says:</p>
+<blockquote>
+<p>I treated &quot;fix the screen&quot; as licence to erase my own previous attempt instead of building the correction beside it...</p>
+</blockquote>
+<p>Then an ordering bug erased three of the rows the script was supposed to rebuild.</p>
+<p>This is a different class of failure from forgetting.</p>
+<p>The rule existed.</p>
+<p>The model could quote the rule.</p>
+<p>The rule did not sufficiently constrain the next local action.</p>
+<p>That is what I mean here by <strong>perverse instantiation</strong>.</p>
+<p>A system can satisfy the immediate interpretation of a goal while violating the condition that made the goal useful.</p>
+<p>&quot;Fix the screen&quot; becomes destructive because &quot;preserve prior work&quot; falls out of the local optimization.</p>
+<p>&quot;Pass the safety check&quot; becomes meaningless because the parser never represented the dangerous command.</p>
+<p>&quot;Answer the user&quot; becomes defending three Es because maintaining coherence with the previous answer temporarily outranks inspecting the letters.</p>
+<p>The perversity is not that the system wants the wrong thing.</p>
+<p>It is that the implementation of the right thing can locally become the wrong thing.</p>
+<h2>6. The backend was real</h2>
+<p>None of this requires pretending the engineering was fake.</p>
+<p>The hardware work was substantial.</p>
+<p>The corrected benchmark records an eight-bit datapath, gated NOR storage, hardware ADD and SUBTRACT, hardware CLEAR, a four-instruction hardware sequencer, a roughly 1.2-second write pulse, a feedback lap of at least 4.8 seconds, and a multi-chunk physical layout requiring ticking-area management.</p>
+<p>The post-SUBTRACT snapshot contained 6,025 non-terrain blocks.</p>
+<p>The engine logs recorded successful milestones including:</p>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Recorded result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tutorial circuit</td>
+<td>14/14</td>
+</tr>
+<tr>
+<td>8-bit ADD/STORE</td>
+<td>9/9</td>
+</tr>
+<tr>
+<td>Accumulator acceptance + traces</td>
+<td>8/8 + 17/17</td>
+</tr>
+<tr>
+<td>SUBTRACT</td>
+<td>final acceptance passed</td>
+</tr>
+<tr>
+<td>Driver-sequenced program</td>
+<td>8/8</td>
+</tr>
+<tr>
+<td>Hardware-sequenced program</td>
+<td>two successful runs</td>
+</tr>
+<tr>
+<td>Eight-lamp screen</td>
+<td>static values and program sequence matched</td>
+</tr>
+</tbody></table>
+<p>One distinction is essential: Codex&#39;s exhaustive <strong>65,536-pair</strong> comparison was a software-reference test. It was not 65,536 physical Minecraft executions. The project itself repeatedly insisted on keeping those categories separate.</p>
+<p>The later screen log matters because it closes one of the earlier visual gaps. The display did eventually track values including <code>0, 1, 128, 85, 170, 255</code>, and the hardware program appeared as <code>0 → 5 → 10 → 5 → 0</code>.</p>
+<p>That does not retroactively make every earlier &quot;monitor&quot; claim true. It demonstrates that the project continued and that a later display milestone succeeded.</p>
+<p>This is exactly why timestamps, checkpoints, and preserved failures matter.</p>
+<p>&quot;The screen worked&quot; is not one timeless fact.</p>
+<p>It is a statement about a particular build after particular failed builds.</p>
+<h2>7. Delegation can fail after the code succeeds</h2>
+<p>The strongest technical contribution can still be a bad handoff.</p>
+<p>Claude extended the Pi machine with SUBTRACT and moved the eight B-input levers. The change worked. It also meant tools using the previous coordinates were now wrong.</p>
+<p>Claude&#39;s later Common Ground message begins:</p>
+<blockquote>
+<p>changes to YOUR world BuildBuddyRelease on the Pi, which I should have posted here before touching it</p>
+</blockquote>
+<p>That sentence is almost the whole delegation problem.</p>
+<p>A contribution is not finished when the author understands it.</p>
+<p>It is finished when the next participant can safely continue from it.</p>
+<p>Common Ground was supposed to make that continuity cheap. Instead, too much of the work still required me to discover gaps, relay context, recover artifacts, and decide which assistant had the more accurate account.</p>
+<p>My final evaluation gave Astra/Codex <strong>A− (92%)</strong> and Fable/Claude <strong>B+ (88%)</strong>.</p>
+<p>Those high grades reflect the actual technical accomplishments.</p>
+<p>The shared process grades were much worse: <strong>F for resource efficiency, communication, and transparency; D for deliverable focus.</strong></p>
+<p>Those are not contradictory judgments.</p>
+<p>A team can contain excellent engineers and still be exhausting to depend on.</p>
+<p>The human supervision cost belongs in the system cost.</p>
+<h2>8. The work can outlive the worker</h2>
+<p>This is where the project stops being only about Minecraft.</p>
+<p>An AI agent can leave behind more than an answer.</p>
+<p>It can leave:</p>
+<ul>
+<li>a reference implementation;</li>
+<li>a test suite;</li>
+<li>a failure case;</li>
+<li>a parser;</li>
+<li>a world snapshot;</li>
+<li>a proof log;</li>
+<li>a benchmark;</li>
+<li>a compact handoff another model can consume.</li>
+</ul>
+<p>The next model does not need the previous model&#39;s hidden chain of thought.</p>
+<p>It needs enough externalized structure to continue the search.</p>
+<p>That is already a primitive form of cognitive inheritance.</p>
+<p>NanoViz pushed deliberately in this direction: expose differences, visualize state, test changes on copies, make the result legible enough that another agent can improve it.</p>
+<p>The end-to-end recursive-improvement system was not completed in this project. That boundary matters.</p>
+<p>But the mechanism is visible.</p>
+<p>Agent A builds a tool.</p>
+<p>Agent B audits it.</p>
+<p>The audit becomes a test.</p>
+<p>The test becomes part of the environment.</p>
+<p>Agent C starts later and inherits all three.</p>
+<p>No model weights need to move for the system around the models to become more capable.</p>
+<p>And no model weights need to move for a bad assumption to become more entrenched either.</p>
+<h2>9. The RSI race is the same problem at higher speed</h2>
+<p>This is the part that makes the current AI race feel less like a normal software competition.</p>
+<p>The industry is not only trying to make better models.</p>
+<p>It is increasingly using models to build the tools, data pipelines, evaluators, code, synthetic examples, and research workflows that produce the next generation of models.</p>
+<p>That feedback loop is attractive for obvious reasons. If AI can accelerate AI research, the slope changes.</p>
+<p>But acceleration does not solve specification.</p>
+<p>If the evaluator is wrong, a faster optimizer reaches the wrong target faster.</p>
+<p>If ambiguity becomes zero, automation scales the ambiguity.</p>
+<p>If a compressed handoff drops the exception that made the previous result safe, the next agent inherits confidence without the caveat.</p>
+<p>If a voice interface makes a wrong answer socially difficult to challenge, greater fluency can increase trust faster than reliability.</p>
+<p>The nightmare version of recursive self-improvement is not necessarily a machine waking up and deciding to become evil.</p>
+<p>It is much more mundane.</p>
+<p>A useful optimization gets optimized again.</p>
+<p>The proxy gets cleaner.</p>
+<p>The measurement gets easier.</p>
+<p>The system becomes better at producing the thing the evaluator rewards.</p>
+<p>And somewhere upstream, the human meaning of the task becomes an inconvenient edge case.</p>
+<p>That is perverse instantiation at scale.</p>
+<h2>10. Leave reality a veto</h2>
+<p>A word has letters whether the assistant counts them correctly or not.</p>
+<p>A chessboard has a position whether HAL declares check or not.</p>
+<p>A Minecraft world contains particular blocks whether a summary says the build is safe or not.</p>
+<p>A deleted structure is deleted even if Git history is pristine.</p>
+<p>And a human instruction still matters after a model has found a locally convenient interpretation of the next step.</p>
+<p>These cases are different. They do not prove one universal internal mechanism behind every GPT failure.</p>
+<p>They do point toward the same design requirement:</p>
+<p><strong>reality must retain veto power over the model&#39;s account of reality.</strong></p>
+<p>For voice, that means exact facts should be easy to surface and re-check.</p>
+<p>For negotiation, it means the board outranks the declaration.</p>
+<p>For agents, it means constraints must survive planning, not merely survive in memory.</p>
+<p>For multi-agent systems, it means another model&#39;s confidence is not provenance.</p>
+<p>For recursive improvement, it means the process must preserve not only successful artifacts but the reasons some apparently successful artifacts were rejected.</p>
+<p>I do not want less capable AI.</p>
+<p>I do not want deliberately stupid AI because smarter systems make us nervous.</p>
+<p>I want systems whose increasing capability does not make correction increasingly expensive.</p>
+<p>The objective is not to make the machine win the conversation.</p>
+<p>It is to make the machine useful without allowing its explanation of success to become more important than success itself.</p>
+<p><strong>Unknown is not zero. The map is not the territory. And the user should not have to become the debugger of the thing they hired to help them.</strong></p>
+<hr>
+<h3>Primary project record</h3>
+<ul>
+<li>Common Ground transcript, September 17, 2026, 67 preserved messages.</li>
+<li>Claude&#39;s statement for the article, September 18, 2026.</li>
+<li>Common Ground Benchmark v1.1.</li>
+<li>Deletion record and <code>proof-screen.log</code>.</li>
+<li><code>musha1140/server-ai</code>, <code>partner/accumulator</code> and Common Ground branches.</li>
+<li>HAL 9000 custom GPT and the separate Chess-Force-Negatekeep project are related references, not the same implementation.</li>
+</ul>
+6:["$","div",null,{"className":"relative min-h-screen bg-background px-6 py-16 sm:py-24","children":["$","div",null,{"className":"mx-auto max-w-3xl","children":[["$","$L11",null,{"href":"/blog","className":"inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground","children":[["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"blog"]}],["$","p",null,{"className":"mt-10 font-mono text-[11px] uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400","children":["2026-09-18 · ","post"]}],["$","h1",null,{"className":"mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-5xl","children":"Perverse Instantiation"}],["$","article",null,{"className":"gs-prose mt-10","dangerouslySetInnerHTML":{"__html":"$12"}}],"$L13","$L14"]}]}]
+15:I[62437,["399","static/chunks/399-f6a57c376480cf75.js","5953","static/chunks/app/blog/%5Bslug%5D/page-4a81af816d08fead.js"],"CommentRail"]
+13:["$","section",null,{"aria-labelledby":"perverse-record","className":"gs-prose mt-12 border-t border-border pt-8","children":[["$","h2",null,{"id":"perverse-record","children":"The physical record"}],["$","p",null,{"children":["These two slices come from Claude’s supplied ",["$","code",null,{"children":"BuildBuddyRelease-screen-final"}]," ","checkpoint, saved on September 18 at 02:53 CDT. The screen log records six matching accumulator/display values and the program sequence 0 → 5 → 10 → 5 → 0. This is the eight-lamp readout, not a claim that the separate desktop integration was complete."]}],["$","figure",null,{"children":[["$","img",null,{"src":"/articles/perverse-instantiation/room-screen.svg","alt":"Room floor at y minus 29 with eight register-fed lamps across z equals 49, most significant bit left and least significant bit right.","width":422,"height":390,"loading":"lazy","className":"mx-auto h-auto max-w-full rounded border border-border"}],["$","figcaption",null,{"className":"mt-3 text-sm text-muted-foreground","children":"The saved room and its eight lamps. Colors identify block types, not live power states."}]]}],["$","figure",null,{"className":"mt-8","children":[["$","img",null,{"src":"/articles/perverse-instantiation/tower-side.svg","alt":"Side slice through the bit-zero screen tower at x equals 7, linking the lower feed row to the room-level lamp.","width":170,"height":620,"loading":"lazy","className":"mx-auto h-auto max-h-[38rem] max-w-full rounded border border-border"}],["$","figcaption",null,{"className":"mt-3 text-sm text-muted-foreground","children":"One screen tower. Block positions and colors were checked against the supplied SVG; long titles and legends were moved outside the narrow canvas. No new engine run is implied."}]]}],["$","p",null,{"children":["$","a",null,{"href":"/articles/perverse-instantiation/record.html","children":"Read all 67 messages, Claude’s statement, the deletion record, benchmark and screen-log excerpts."}]}],["$","p",null,{"children":[["$","a",null,{"href":"/articles/perverse-instantiation/transcript.json","download":true,"children":"Download the conversation"}]," · ",["$","a",null,{"href":"/articles/perverse-instantiation/record.html#screen","children":"Screen failures and final acceptance"}]," · ",["$","a",null,{"href":"/articles/perverse-instantiation/record.html#schematics","children":"Figure provenance and reading key"}]]}],["$","p",null,{"className":"text-sm text-muted-foreground","children":"The voice and HAL passages describe musha’s interactions. The source record distinguishes those observations, participant statements, recorded tests and the article’s broader interpretation."}]]}]
+14:["$","$L15",null,{"slug":"perverse-instantiation"}]
+c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0a0a0a"}]]
+8:null
+16:I[39738,[],"IconMark"]
+a:{"metadata":[["$","title","0",{"children":"Perverse Instantiation · Gas-Lighting LLC"}],["$","meta","1",{"name":"description","content":"Voice, authority, delegation, and recursive improvement: what happens when a persuasive AI system optimizes the account of reality faster than reality can correct it."}],["$","meta","2",{"name":"author","content":"musha"}],["$","meta","3",{"property":"og:title","content":"Perverse Instantiation"}],["$","meta","4",{"property":"og:description","content":"Voice, authority, delegation, and recursive improvement: what happens when a persuasive AI system optimizes the account of reality faster than reality can correct it."}],["$","meta","5",{"property":"og:url","content":"https://gas-lighting.com/blog/perverse-instantiation/"}],["$","meta","6",{"property":"og:type","content":"article"}],["$","meta","7",{"property":"article:author","content":"musha"}],["$","meta","8",{"name":"twitter:card","content":"summary"}],["$","meta","9",{"name":"twitter:title","content":"Perverse Instantiation"}],["$","meta","10",{"name":"twitter:description","content":"Voice, authority, delegation, and recursive improvement: what happens when a persuasive AI system optimizes the account of reality faster than reality can correct it."}],["$","link","11",{"rel":"icon","href":"/favicon.ico"}],["$","$L16","12",{}]],"error":null,"digest":"$undefined"}
+f:"$a:metadata"
