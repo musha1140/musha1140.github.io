@@ -1,14 +1,21 @@
 {
-  "generatedAt": "2026-08-13T16:13:24.857Z",
-  "engine": "http",
+  "generatedAt": "2026-11-01T19:36:28.329Z",
+  "engine": "static-handler",
   "summary": {
-    "total": 6,
-    "verified": 5,
-    "external": 1,
-    "section": 0,
+    "total": 84,
+    "verified": 46,
+    "external": 38,
+    "section": 7,
     "broken": 0
   },
   "results": [
+    {
+      "id": "/blog/perverse-instantiation",
+      "href": "/blog/perverse-instantiation/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
     {
       "id": "/",
       "href": "/",
@@ -17,39 +24,582 @@
       "httpStatus": 200
     },
     {
-      "id": "/about/",
-      "href": "/about/",
+      "id": "/portfolio",
+      "href": "/portfolio/",
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
     },
     {
-      "id": "/blog/",
+      "id": "/blog",
       "href": "/blog/",
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
     },
     {
-      "id": "https://gas-lighting.com/",
-      "href": "https://gas-lighting.com/",
+      "id": "/about",
+      "href": "/about/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://gaslighting.vercel.app/tools/scanner",
+      "href": "https://gaslighting.vercel.app/tools/scanner",
       "kind": "external",
       "status": "external",
       "note": "egress-restricted in CI"
     },
     {
-      "id": "/workflows",
-      "href": "/workflows",
+      "id": "/whitepapers/zero-width-integrity",
+      "href": "/whitepapers/zero-width-integrity/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://gas-lighting.com/morse-beacon/",
+      "href": "https://gas-lighting.com/morse-beacon/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/whitepapers/morse-beacon",
+      "href": "/whitepapers/morse-beacon/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/midi",
+      "href": "/midi/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/whitepapers/midi-constellation",
+      "href": "/whitepapers/midi-constellation/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://mdtgf.vercel.app",
+      "href": "https://mdtgf.vercel.app",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/whitepapers/mdtgf-gsl",
+      "href": "/whitepapers/mdtgf-gsl/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/common-room",
+      "href": "/common-room/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/lattice",
+      "href": "/lattice/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://blackhole.ai.studio",
+      "href": "https://blackhole.ai.studio",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/whitepapers/qgo",
+      "href": "/whitepapers/qgo/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/ghosts",
+      "href": "/ghosts/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/gasper",
+      "href": "/gasper/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/whitepapers/acquit",
+      "href": "/whitepapers/acquit/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/whitepapers/forced-check",
+      "href": "/whitepapers/forced-check/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/whitepapers/ra-flow",
+      "href": "/whitepapers/ra-flow/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/new-water-no-zero",
+      "href": "/blog/new-water-no-zero/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/capital-cartography-violence",
+      "href": "/blog/capital-cartography-violence/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/the-feedback-equation-thesis",
+      "href": "/blog/the-feedback-equation-thesis/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/cascaded-reality",
+      "href": "/blog/cascaded-reality/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/single-event-upsets",
+      "href": "/blog/single-event-upsets/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/redfin-ventures",
+      "href": "/blog/redfin-ventures/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/value-statistical-life",
+      "href": "/blog/value-statistical-life/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/blog/working-taxed-betrayed",
+      "href": "/blog/working-taxed-betrayed/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://github.com/musha1140",
+      "href": "https://github.com/musha1140",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/substrate",
+      "href": "/substrate/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/media/common-room/common-room-film.mp4",
+      "href": "/media/common-room/common-room-film.mp4",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/deck",
+      "href": "/deck/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://gas-lighting.com/GS/",
+      "href": "https://gas-lighting.com/GS/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://github.com/musha1140/GS",
+      "href": "https://github.com/musha1140/GS",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://github.com/musha1140/steganographr",
+      "href": "https://github.com/musha1140/steganographr",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://github.com/NationalSecurityAgency/ghidra",
+      "href": "https://github.com/NationalSecurityAgency/ghidra",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://source.tube/neatnik/steganographr",
+      "href": "https://source.tube/neatnik/steganographr",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://slayy1.vercel.app",
+      "href": "https://slayy1.vercel.app",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.jsdelivr.com/",
+      "href": "https://www.jsdelivr.com/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.npmjs.com/package/tone",
+      "href": "https://www.npmjs.com/package/tone",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.npmjs.com/package/@tonejs/midi",
+      "href": "https://www.npmjs.com/package/@tonejs/midi",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.npmjs.com/package/@tailwindcss/browser",
+      "href": "https://www.npmjs.com/package/@tailwindcss/browser",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.npmjs.com/package/qrcode-generator",
+      "href": "https://www.npmjs.com/package/qrcode-generator",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://gas-lighting.com",
+      "href": "https://gas-lighting.com",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/tunnel",
+      "href": "/tunnel/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/loop",
+      "href": "/loop/",
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
     },
     {
       "id": "/derive-verify",
-      "href": "/derive-verify",
+      "href": "/derive-verify/",
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
+    },
+    {
+      "id": "/whitepapers",
+      "href": "/whitepapers/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://gas-lighting.com/kilo/",
+      "href": "https://gas-lighting.com/kilo/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/workflows",
+      "href": "/workflows/",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://www.un.org/unispal/document/israel-has-committed-genocide-in-the-gaza-strip-un-commission-finds-16sep25/",
+      "href": "https://www.un.org/unispal/document/israel-has-committed-genocide-in-the-gaza-strip-un-commission-finds-16sep25/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.reuters.com/world/middle-east/how-did-un-inquiry-find-genocide-has-been-committed-gaza-2025-09-18/",
+      "href": "https://www.reuters.com/world/middle-east/how-did-un-inquiry-find-genocide-has-been-committed-gaza-2025-09-18/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "/ghosts/browser",
+      "href": "/ghosts/browser",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title22-section2378d&amp;num=0&amp;edition=prelim",
+      "href": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title22-section2378d&amp;num=0&amp;edition=prelim",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.ilga.gov/commission/lrb/con1.htm",
+      "href": "https://www.ilga.gov/commission/lrb/con1.htm",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://archivegenocide.com/geolocation/",
+      "href": "https://archivegenocide.com/geolocation/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.congress.gov/107/plaws/publ243/PLAW-107publ243.pdf",
+      "href": "https://www.congress.gov/107/plaws/publ243/PLAW-107publ243.pdf",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.govinfo.gov/app/details/GPO-DUELFERREPORT",
+      "href": "https://www.govinfo.gov/app/details/GPO-DUELFERREPORT",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.intelligence.senate.gov/publications/report-select-committee-intelligence-us-intelligence-communitys-prewar-intelligence",
+      "href": "https://www.intelligence.senate.gov/publications/report-select-committee-intelligence-us-intelligence-communitys-prewar-intelligence",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.ohchr.org/en/press-releases/2023/11/gaza-israeli-attacks-jabalia-camp-could-amount-war-crimes-un-human-rights",
+      "href": "https://www.ohchr.org/en/press-releases/2023/11/gaza-israeli-attacks-jabalia-camp-could-amount-war-crimes-un-human-rights",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://airwars.org/conflict/israel-and-gaza-2023/",
+      "href": "https://airwars.org/conflict/israel-and-gaza-2023/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.reuters.com/graphics/ISRAEL-LEBANON/JOURNALIST/akveabxrzvr/",
+      "href": "https://www.reuters.com/graphics/ISRAEL-LEBANON/JOURNALIST/akveabxrzvr/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.amnesty.org/en/latest/news/2023/12/lebanon-deadly-israeli-attack-on-journalists-must-be-investigated-as-a-war-crime/",
+      "href": "https://www.amnesty.org/en/latest/news/2023/12/lebanon-deadly-israeli-attack-on-journalists-must-be-investigated-as-a-war-crime/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.ohchr.org/en/press-releases/2024/03/un-experts-condemn-flour-massacre-urge-israel-end-campaign-starvation-gaza",
+      "href": "https://www.ohchr.org/en/press-releases/2024/03/un-experts-condemn-flour-massacre-urge-israel-end-campaign-starvation-gaza",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://forensic-architecture.org/",
+      "href": "https://forensic-architecture.org/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://forensic-architecture.org/investigation/the-killing-of-hind-rajab",
+      "href": "https://forensic-architecture.org/investigation/the-killing-of-hind-rajab",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.washingtonpost.com/world/interactive/2024/hind-rajab-israel-gaza-killing-timeline/",
+      "href": "https://www.washingtonpost.com/world/interactive/2024/hind-rajab-israel-gaza-killing-timeline/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://ilga.gov/legislation/BillStatus.asp?DocNum=2723&amp;DocTypeID=HB&amp;GAID=18&amp;SessionID=112&amp;LegID=160719",
+      "href": "https://ilga.gov/legislation/BillStatus.asp?DocNum=2723&amp;DocTypeID=HB&amp;GAID=18&amp;SessionID=112&amp;LegID=160719",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://ilga.gov/legislation/BillStatus.asp?DocNum=2462&amp;DocTypeID=SB&amp;GAID=18&amp;SessionID=112&amp;LegID=162549",
+      "href": "https://ilga.gov/legislation/BillStatus.asp?DocNum=2462&amp;DocTypeID=SB&amp;GAID=18&amp;SessionID=112&amp;LegID=162549",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://supreme.justia.com/cases/federal/us/458/886/",
+      "href": "https://supreme.justia.com/cases/federal/us/458/886/",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=004000050K1-110.16",
+      "href": "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=004000050K1-110.16",
+      "kind": "external",
+      "status": "external",
+      "note": "egress-restricted in CI"
+    },
+    {
+      "id": "#ssid-clustering",
+      "href": "/portfolio#ssid-clustering",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#koszul-gsl",
+      "href": "/portfolio#koszul-gsl",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#midi-steganography",
+      "href": "/portfolio#midi-steganography",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#mdtgf",
+      "href": "/portfolio#mdtgf",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#adversarial-ai",
+      "href": "/portfolio#adversarial-ai",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#data-infrastructure",
+      "href": "/portfolio#data-infrastructure",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "#business-governance",
+      "href": "/portfolio#business-governance",
+      "kind": "section",
+      "status": "verified",
+      "note": "anchor target present on /portfolio"
+    },
+    {
+      "id": "/common-room/film",
+      "href": "/common-room/film",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/zero",
+      "href": "/zero",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200
+    },
+    {
+      "id": "/api/health",
+      "href": "/api/health",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200,
+      "safetyChecked": true,
+      "note": "safety-checked: 200 application/json · nosniff · zero key/tier leakage"
+    },
+    {
+      "id": "/api/ghosts/proven-index",
+      "href": "/api/ghosts/proven-index",
+      "kind": "route",
+      "status": "verified",
+      "httpStatus": 200,
+      "safetyChecked": true,
+      "note": "safety-checked: 200 application/json · nosniff · zero key/tier leakage"
     }
   ]
 }
