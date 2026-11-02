@@ -1,6 +1,6 @@
 1:"$Sreact.fragment"
-2:I[12112,["2619","static/chunks/2619-04bc32f026a0d946.js","4999","static/chunks/4999-4f282b92c30c4cc7.js","7177","static/chunks/app/layout-957dea7247131fa2.js"],"Providers"]
-3:I[75604,["2619","static/chunks/2619-04bc32f026a0d946.js","4999","static/chunks/4999-4f282b92c30c4cc7.js","7177","static/chunks/app/layout-957dea7247131fa2.js"],"SiteHeader"]
+2:I[12112,["2619","static/chunks/2619-04bc32f026a0d946.js","4999","static/chunks/4999-4f282b92c30c4cc7.js","7177","static/chunks/app/layout-837973d96a7e4403.js"],"Providers"]
+3:I[75604,["2619","static/chunks/2619-04bc32f026a0d946.js","4999","static/chunks/4999-4f282b92c30c4cc7.js","7177","static/chunks/app/layout-837973d96a7e4403.js"],"SiteHeader"]
 4:I[9766,[],""]
 5:I[98924,[],""]
 7:I[24431,[],"OutletBoundary"]
@@ -9,17 +9,17 @@ b:I[24431,[],"ViewportBoundary"]
 d:I[24431,[],"MetadataBoundary"]
 e:"$Sreact.suspense"
 10:I[57150,[],""]
-:HL["/_next/static/css/fc8e312017eda8c6.css","style"]
-0:{"P":null,"b":"zxOHVD2YwOrAPVGXnBg7S","p":"","c":["","blog","cascaded-reality",""],"i":false,"f":[[["",{"children":["blog",{"children":[["slug","cascaded-reality","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/fc8e312017eda8c6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"min-h-screen flex flex-col antialiased","children":["$","$L2",null,{"children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-grow","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]}]]}],{"children":["blog",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","cascaded-reality","d"],["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6",null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
-11:I[52619,["2619","static/chunks/2619-04bc32f026a0d946.js","5953","static/chunks/app/blog/%5Bslug%5D/page-09cc364be1711493.js"],""]
-12:T1a6f,<p>In September 2024 I wrote a draft about quantum mechanics, black holes,
+:HL["/_next/static/css/d88f280e930bd611.css","style"]
+0:{"P":null,"b":"Y5-VbhDS1sYkX8cA6hIPX","p":"","c":["","blog","cascaded-reality",""],"i":false,"f":[[["",{"children":["blog",{"children":[["slug","cascaded-reality","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/d88f280e930bd611.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"min-h-screen flex flex-col antialiased","children":["$","$L2",null,{"children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-grow","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]}]}]]}],{"children":["blog",["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","cascaded-reality","d"],["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6",null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
+11:I[52619,["2619","static/chunks/2619-04bc32f026a0d946.js","5953","static/chunks/app/blog/%5Bslug%5D/page-6acaa15973e3d3bb.js"],""]
+12:T2776,<p>In September 2024 I wrote a draft about quantum mechanics, <a href="/wiki/black-hole/" class="wiki-term" title="A region where gravity is strong enough that nothing, light included, gets back out.">black holes</a>,
 and the multiverse. It got two things wrong, and I&#39;m opening with them
 because the method matters more than the conclusions: I claimed
-information could outrun light (it can&#39;t, the no-communication theorem
+information could outrun light (it can&#39;t, the <a href="/wiki/no-communication-theorem/" class="wiki-term" title="Entanglement can't carry a message: nothing done at one end changes the statistics at the other.">no-communication theorem</a>
 closes that door), and I said black holes form when massive stars
 collapse (that&#39;s <em>one</em> way, and as of last year it&#39;s provably not the
 only one). This is the corrected, tightened, blog-voice version. The full
-revision, with all forty-nine references and the claims ledger intact,
+thesis, with every reference linked and the claims ledger intact,
 lives beside this post, <a href="../the-feedback-equation-thesis/">the thesis itself</a>.</p>
 <h2>The cascade</h2>
 <p>Here&#39;s the core idea in one breath: the definiteness of everyday reality,
@@ -27,12 +27,12 @@ the fact that your coffee cup has <em>a</em> position instead of a smear of
 them, is not painted onto the world at the bottom. It accumulates.</p>
 <p>Quantum systems in contact with an environment get &quot;measured&quot; constantly:
 air molecules, photons, neighboring matter. Only certain states survive
-that monitoring (Zurek called the filtering <em>einselection</em>), and the
+that monitoring (Zurek called the filtering <em><a href="/wiki/einselection/" class="wiki-term" title="Environment-induced superselection: the environment keeps measuring a system, and only the states that survive that monitoring stick around.">einselection</a></em>), and the
 environment doesn&#39;t just destroy the fragile states, it broadcasts
 redundant copies of the survivor. Many observers each intercept a
 different fragment and read the same record. That agreement is the entire
 content of the word &quot;objective.&quot;</p>
-<p>I call the resulting structure <strong>cascaded reality</strong>: outcomes fix, records
+<p>I call the resulting structure <strong><a href="/wiki/cascaded-reality/" class="wiki-term" title="Definiteness is not painted onto the world at the bottom; it accumulates, one broadcast record at a time.">cascaded reality</a></strong>: outcomes fix, records
 propagate, and every record constrains everything downstream. Once the
 copies are everywhere, the outcome cannot be unwritten, not because the
 underlying law is irreversible (it isn&#39;t), but because you&#39;d have to chase
@@ -43,16 +43,16 @@ register through Hadamard gates in the quantum-circuit package and
 measures it; the collapse of that register decides which section of the
 page comes into existence, or whether the press hits a null field and
 nothing does. The null-field odds are not hand-picked either: they derive
-from the SHA-256 digest of the first line of the Equation, the same
+from the <a href="/wiki/sha-2/" class="wiki-term" title="A cryptographic hash: any input becomes a 256-bit digest that can't feasibly be run backwards.">SHA-256</a> digest of the first line of the Equation, the same
 &quot;ĤΨ=0&quot; that seeds the thesis companion&#39;s hash chain. The constraint sets
 the statistics, the measurement collapses them, the record keeps the
 outcome. Sections don&#39;t exist until measured; once measured, the record
 keeps them.)</p>
 <h2>The singularity, inverted</h2>
-<p>General relativity defines a singularity by what it costs the theory:
+<p>General relativity defines a <a href="/wiki/gravitational-singularity/" class="wiki-term" title="Where general relativity's equations stop returning answers: curvature diverges and paths end.">singularity</a> by what it costs the theory:
 equations stop returning answers. That&#39;s the outside view, singularity
 as breakdown.</p>
-<p>I read it inverted. At a horizon, entropy saturates the Bekenstein bound:
+<p>I read it inverted. At a horizon, entropy saturates the <a href="/wiki/bekenstein-bound/" class="wiki-term" title="The most information a region can hold for its size and energy; a black hole sits exactly at the limit.">Bekenstein bound</a>:
 the maximum information the region can hold, exactly a quarter of the
 area in Planck units. Saturation is not failure; it&#39;s a ledger closed.
 And time ends there for a specific reason: time is relational bookkeeping
@@ -62,7 +62,7 @@ photons). When correlations are complete, there are no further
 distinguishable states for a clock to count. <strong>The singularity is one
 position after one event: the constraint saturated, the cascade complete,
 the equation solved.</strong></p>
-<p>The deepest equation we have for the whole universe, Wheeler-DeWitt,
+<p>The deepest equation we have for the whole universe, <a href="/wiki/wheeler-dewitt-equation/" class="wiki-term" title="ĤΨ = 0: quantum mechanics applied to the whole universe, with no time in it.">Wheeler-DeWitt</a>,
 has no time in it at all. ĤΨ = 0. Not a law of evolution; a
 self-consistency condition. The Big Bang, on this reading, isn&#39;t the
 input fed to the equation. It&#39;s what the solution looks like from a clock
@@ -70,9 +70,9 @@ embedded inside it.</p>
 <h2>The loop, and what 2026 changed</h2>
 <p>Chain the pieces: a timeless constraint, a cascade that writes records, a
 saturation point where the ledger closes, and then Penrose&#39;s conformal
-cyclic cosmology and Smolin&#39;s cosmological natural selection both propose,
+cyclic cosmology and Smolin&#39;s <a href="/wiki/cosmological-natural-selection/" class="wiki-term" title="Smolin's proposal that black holes seed new universes with slightly changed constants, so universes evolve toward making black holes.">cosmological natural selection</a> both propose,
 in different formalisms, that the closed ledger hands forward the next
-initial condition. I call the assembled loop the <strong>Feedback Equation</strong>,
+initial condition. I call the assembled loop the <strong><a href="/wiki/feedback-equation/" class="wiki-term" title="The whole loop stated as one artifact: a timeless constraint, a cascade that writes records, a horizon where the ledger closes, and the closed ledger handing forward the next beginning.">Feedback Equation</a></strong>,
 and I label it plainly: speculation.</p>
 <p>But its substrate improved on August 12, 2026. Naidu and collaborators
 reported MoM-BH*-1 in <em>Nature</em>: an object 660 million years after the Big
@@ -88,12 +88,12 @@ rate refuse to overlap at roughly five sigma, and DESI keeps preferring
 dark energy that evolves. Wrong decade to declare the equation&#39;s edges
 settled.</p>
 <h2>No shortcut</h2>
-<p>One more claim, the newest in the ledger, <strong>conditional irreducibility</strong>:
-wherever an outcome routes through a decoherence-grade record channel, no
+<p>One more claim, the newest in the ledger, <strong><a href="/wiki/conditional-irreducibility/" class="wiki-term" title="Wherever an outcome runs through a channel that writes records the way decoherence does, no computation cheaper than running it exists.">conditional irreducibility</a></strong>:
+wherever an outcome routes through a <a href="/wiki/quantum-decoherence/" class="wiki-term" title="How contact with an environment turns quantum superpositions into ordinary, classical-looking outcomes.">decoherence</a>-grade record channel, no
 computation cheaper than execution exists. You cannot skip to the state at
 year 13.8 billion; the running <em>is</em> the solving. The lab-bench version is
 a cryptographic hash, preimage resistance is engineered irreducibility,
-and I measured the field version myself: in MDTGF, a convergence gate
+and I measured the field version myself: in <a href="/wiki/midi-project/" class="wiki-term" title="One project since 2023 under several names: music, color, and number on one 64-cell board, read out through a cipher.">MDTGF</a>, a convergence gate
 upstream of SHA-256 could not predict primality downstream of it, ever.
 The gate schedules execution. It cannot replace it.</p>
 <p>The claim is deliberately conditional, physics is full of compressible
@@ -103,22 +103,24 @@ demonstrated shortcut across such a channel breaks it.</p>
 <p>Standing of everything above, in three lines, because a claim doesn&#39;t
 count until its label does:</p>
 <ul>
-<li><strong>Established:</strong> decoherence, einselection, quantum Darwinism; the
-Bekenstein-Hawking area law; Wheeler-DeWitt; Page-Wootters relational
+<li><strong>Established:</strong> decoherence, einselection, <a href="/wiki/quantum-darwinism/" class="wiki-term" title="Zurek's extension of einselection: the environment broadcasts many redundant copies of the surviving state, which is why different observers agree.">quantum Darwinism</a>; the
+<a href="/wiki/black-hole-thermodynamics/" class="wiki-term" title="A black hole carries entropy proportional to the area of its horizon: a quarter of that area in Planck units.">Bekenstein-Hawking</a> area law; Wheeler-DeWitt; <a href="/wiki/problem-of-time/" class="wiki-term" title="Why the deepest equations have no time in them while we plainly live in it; Page and Wootters' answer is that time is a correlation between a clock and the rest.">Page-Wootters</a> relational
 time; the MoM-BH*-1 observation.</li>
-<li><strong>Labeled speculation:</strong> conformal cyclic cosmology; cosmological
+<li><strong>Labeled speculation:</strong> <a href="/wiki/conformal-cyclic-cosmology/" class="wiki-term" title="Penrose's proposal that the infinitely expanded end of one universe is, rescaled, the big bang of the next.">conformal cyclic cosmology</a>; cosmological
 natural selection (wounded by heavy neutron stars); the black-hole-star
 reading of the little red dots as strong inference.</li>
-<li><strong>Original here:</strong> cascaded reality; the inverted singularity; the
+<li><strong>Original here:</strong> cascaded reality; the <a href="/wiki/inverted-singularity/" class="wiki-term" title="Read from the inside, a singularity is not where physics breaks but where the constraint saturates: one position after one event.">inverted singularity</a>; the
 Feedback Equation as the named loop; conditional irreducibility.</li>
 </ul>
 <p>The provenance is in the paper, including where the questions came from.
 Honesty about that is part of the method. The ledger is the point.</p>
-6:["$","div",null,{"className":"relative min-h-screen bg-background px-6 py-16 sm:py-24","children":["$","div",null,{"className":"mx-auto max-w-3xl","children":[["$","$L11",null,{"href":"/blog","className":"inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground","children":[["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"blog"]}],["$","p",null,{"className":"mt-10 font-mono text-[11px] uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400","children":["","post"]}],["$","h1",null,{"className":"mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-5xl","children":"Cascaded reality, or: the universe as a commit log"}],["$","article",null,{"className":"gs-prose mt-10","dangerouslySetInnerHTML":{"__html":"$12"}}],"$L13"]}]}]
-14:I[91305,["2619","static/chunks/2619-04bc32f026a0d946.js","5953","static/chunks/app/blog/%5Bslug%5D/page-09cc364be1711493.js"],"CommentRail"]
-13:["$","$L14",null,{"slug":"cascaded-reality"}]
+6:["$","div",null,{"className":"relative min-h-screen bg-background px-6 py-16 sm:py-24","children":["$","div",null,{"className":"mx-auto max-w-3xl","children":[["$","$L11",null,{"href":"/blog","className":"inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground","children":[["$","svg",null,{"ref":"$undefined","xmlns":"http://www.w3.org/2000/svg","width":24,"height":24,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":2,"strokeLinecap":"round","strokeLinejoin":"round","className":"lucide lucide-arrow-left h-4 w-4","children":[["$","path","1l729n",{"d":"m12 19-7-7 7-7"}],["$","path","x3x0zl",{"d":"M19 12H5"}],"$undefined"]}],"blog"]}],["$","p",null,{"className":"mt-10 font-mono text-[11px] uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400","children":["","post"]}],["$","h1",null,{"className":"mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-5xl","children":"Cascaded reality, or: the universe as a commit log"}],["$","article",null,{"className":"gs-prose mt-10","dangerouslySetInnerHTML":{"__html":"$12"}}],"$L13","$L14"]}]}]
+15:I[31332,["2619","static/chunks/2619-04bc32f026a0d946.js","5953","static/chunks/app/blog/%5Bslug%5D/page-6acaa15973e3d3bb.js"],"ReferenceTwiddler"]
+16:I[91305,["2619","static/chunks/2619-04bc32f026a0d946.js","5953","static/chunks/app/blog/%5Bslug%5D/page-6acaa15973e3d3bb.js"],"CommentRail"]
+13:["$","$L15","cascaded-reality",{}]
+14:["$","$L16",null,{"slug":"cascaded-reality"}]
 c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#0a0a0a"}]]
 8:null
-15:I[80622,[],"IconMark"]
-a:{"metadata":[["$","title","0",{"children":"Cascaded reality, or: the universe as a commit log · Gas-Lighting LLC"}],["$","meta","1",{"name":"description","content":"The blog-voice version of my thesis, why definiteness accumulates like an append-only ledger, why the singularity might be a solved equation rather than a broken one, and what a 2026 telescope result did to the loop."}],["$","meta","2",{"property":"og:title","content":"Gas-Lighting LLC"}],["$","meta","3",{"property":"og:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","meta","4",{"property":"og:url","content":"https://gas-lighting.com/"}],["$","meta","5",{"property":"og:site_name","content":"Gas-Lighting LLC"}],["$","meta","6",{"property":"og:type","content":"website"}],["$","meta","7",{"name":"twitter:card","content":"summary"}],["$","meta","8",{"name":"twitter:title","content":"Gas-Lighting LLC"}],["$","meta","9",{"name":"twitter:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","link","10",{"rel":"icon","href":"/favicon.ico"}],["$","$L15","11",{}]],"error":null,"digest":"$undefined"}
+17:I[80622,[],"IconMark"]
+a:{"metadata":[["$","title","0",{"children":"Cascaded reality, or: the universe as a commit log · Gas-Lighting LLC"}],["$","meta","1",{"name":"description","content":"The blog-voice version of my thesis, why definiteness accumulates like an append-only ledger, why the singularity might be a solved equation rather than a broken one, and what a 2026 telescope result did to the loop."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}],["$","meta","3",{"name":"googlebot","content":"noindex, nofollow"}],["$","meta","4",{"property":"og:title","content":"Gas-Lighting LLC"}],["$","meta","5",{"property":"og:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","meta","6",{"property":"og:url","content":"https://gas-lighting.com/"}],["$","meta","7",{"property":"og:site_name","content":"Gas-Lighting LLC"}],["$","meta","8",{"property":"og:type","content":"website"}],["$","meta","9",{"name":"twitter:card","content":"summary"}],["$","meta","10",{"name":"twitter:title","content":"Gas-Lighting LLC"}],["$","meta","11",{"name":"twitter:description","content":"Network intelligence and applied cryptography from a registered Illinois technology company."}],["$","link","12",{"rel":"icon","href":"/favicon.ico"}],["$","$L17","13",{}]],"error":null,"digest":"$undefined"}
 f:"$a:metadata"
