@@ -4,7 +4,7 @@
   "summary": {
     "total": 84,
     "verified": 46,
-    "external": 38,
+    "external": 37,
     "section": 7,
     "broken": 0
   },
@@ -85,13 +85,6 @@
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
-    },
-    {
-      "id": "https://mdtgf.vercel.app",
-      "href": "https://mdtgf.vercel.app",
-      "kind": "external",
-      "status": "external",
-      "note": "egress-restricted in CI"
     },
     {
       "id": "/whitepapers/mdtgf-gsl",
