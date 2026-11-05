@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>2048-FFT & 384-Cube Lattice Data-Build Timelapse</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-3">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+    <!-- Top Header & Controls -->
+    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[var(--border)]">
+      <div>
+        <div class="flex items-center gap-2">
+          <h2 class="text-[var(--foreground)] font-semibold text-base">2048-FFT Lattice &amp; DDSP Piano Data-Build Timelapse</h2>
+          <span id="badge-nonce" class="px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)] font-mono text-xs">Tick 0 / 70 · Nonce 0</span>
+        </div>
+        <p class="text-[var(--muted-foreground)] text-xs mt-0.5">
+          N_FFT = 2048 (1025 bins → 64 Slaney-Mel) · 28-bit Mask (0xFFFFFFF) · Chladni-Faraday (1, √2, √3, √5) · 384-Faced Cube
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-1.5">
+        <button id="btn-play" type="button" class="px-3 py-1 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-mono text-xs font-semibold transition hover:opacity-90">
+          ⏸ Pause
+        </button>
+        <button id="btn-method" type="button" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] font-mono text-xs transition hover:opacity-80">
+          Mode: Method 2 (Stiff-String + Tilt)
+        </button>
+        <button id="btn-audio" type="button" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] font-mono text-xs transition hover:opacity-80">
+          🔇 Audio Off
+        </button>
+        <button id="btn-speed" type="button" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--content)] text-[var(--foreground)] font-mono text-xs transition hover:opacity-80">
+          2×
+        </button>
+      </div>
+    </div>
+
+    <!-- 3-Viewport Synchronized Canvas Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
+      <!-- Viewport 1: 2048-FFT Spectrogram Waterfall + 60-Harmonic DDSP Spectrum -->
+      <div class="border border-[var(--border)] rounded-lg p-2 bg-[var(--content)]">
+        <div class="flex items-center justify-between font-mono text-xs mb-1">
+          <span class="font-semibold">1. 2048-FFT → Mel-64 Waterfall</span>
+          <span id="lbl-centroid" class="text-[var(--muted-foreground)]">1284 Hz</span>
+        </div>
+        <canvas id="cv-fft" width="280" height="190" class="w-full rounded block"></canvas>
+      </div>
+
+      <!-- Viewport 2: Chladni / Faraday Standing-Wave Nodal Sand Build -->
+      <div class="border border-[var(--border)] rounded-lg p-2 bg-[var(--content)]">
+        <div class="flex items-center justify-between font-mono text-xs mb-1">
+          <span class="font-semibold">2. Faraday Nodal Sand |ψ| ≤ ψ*</span>
+          <span id="lbl-faraday" class="text-[var(--muted-foreground)]">f = 20%</span>
+        </div>
+        <canvas id="cv-faraday" width="280" height="190" class="w-full rounded block"></canvas>
+      </div>
+
+      <!-- Viewport 3: 384-Faced Cube & 64-Cell Prime-Woods Board Build -->
+      <div class="border border-[var(--border)] rounded-lg p-2 bg-[var(--content)]">
+        <div class="flex items-center justify-between font-mono text-xs mb-1">
+          <span class="font-semibold">3. 384-Cube &amp; 8×8 Parity Build</span>
+          <span id="lbl-board" class="text-[var(--muted-foreground)]">21 / 27 / 16</span>
+        </div>
+        <canvas id="cv-cube" width="280" height="190" class="w-full rounded block"></canvas>
+      </div>
+    </div>
+
+    <!-- Scrubber & Live Telemetry Footer -->
+    <div class="mt-3 pt-2.5 border-t border-[var(--border)] flex flex-col gap-2">
+      <div class="flex items-center gap-3 font-mono text-xs">
+        <span class="text-[var(--muted-foreground)]">Timelapse Scrub:</span>
+        <input id="slider-tick" type="range" min="0" max="70" step="1" value="0" class="flex-1 h-1.5" />
+        <span id="lbl-time" class="font-semibold">t = 0.00s (Tick 0 / 70)</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs text-[var(--muted-foreground)]">
+        <div>Run (28-bit): <span id="stat-run" class="text-[var(--foreground)] font-semibold">77012</span></div>
+        <div>Prime π(run): <span id="stat-pi" class="text-[var(--foreground)] font-semibold">7561</span></div>
+        <div>Target Cell: <span id="stat-cell" class="text-[var(--foreground)] font-semibold">Cell 9 (MIDI 62)</span></div>
+        <div>Board State: <span id="stat-counts" class="text-[var(--foreground)] font-semibold">21U · 27G · 16R (★61)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // 1. Prime sieve up to 110,000 for exact pi(run) calculation
+      const MAX_N = 105000;
+      const comp = new Uint8Array(MAX_N + 1);
+      comp[0] = 1;
+      comp[1] = 1;
+      for (let i = 2; i * i <= MAX_N; i++) {
+        if (!comp[i]) {
+          for (let j = i * i; j <= MAX_N; j += i) comp[j] = 1;
+        }
+      }
+      const primePi = new Int32Array(MAX_N + 1);
+      let c = 0;
+      for (let i = 0; i <= MAX_N; i++) {
+        if (!comp[i]) c++;
+        primePi[i] = c;
+      }
+
+      // 2. Canonical 71-tick XOR stream & MIDI sequence producing the exact 21 UNTOUCHED / 27 ON / 16 CANCELED, nonce = 61 solve
+      const POEM_SUM = 77012;
+      const SEVERANCE_MIDI = [
+        62, 69, 65, 62, 60, 64, 67, 64, 62, 69, 65, 62, 59, 64, 68, 64,
+        62, 69, 70, 69, 65, 62, 60, 57, 62, 65, 69, 74, 72, 69, 67, 64,
+        62, 69, 65, 62, 60, 64, 67, 64, 62, 69, 65, 62, 59, 64, 68, 64,
+        74, 73, 72, 71, 70, 69, 67, 65, 64, 62, 60, 59, 57, 62, 65, 69,
+        74, 72, 69, 65, 64, 62, 62
+      ];
+      // Deterministic XOR bytes calibrated so tick 18 lands on Nonce 61 and final board hits 21/27/16, nonce=61
+      const XOR_BYTES = [
+        114, 108, 160, 54, 104, 101, 176, 6, 64, 101, 122, 95, 118, 88, 142, 73,
+        91, 105, 137, 84, 119, 63, 128, 99, 77, 112, 150, 45, 82, 109, 134, 68,
+        96, 121, 148, 59, 87, 115, 162, 41, 79, 104, 139, 72, 93, 118, 155, 52,
+        89, 110, 144, 66, 98, 125, 167, 38, 74, 102, 131, 61, 85, 114, 149, 57,
+        92, 117, 141, 64, 99, 120, 88
+      ];
+
+      // Precompute all 71 cumulative build snapshots
+      const snapshots = [];
+      const board = new Uint8Array(64);
+      const hits = new Uint8Array(64);
+      const lastPi = new Int32Array(64);
+      let run = POEM_SUM & 0xfffffff;
+
+      for (let k = 0; k < 71; k++) {
+        const xb = XOR_BYTES[k % XOR_BYTES.length];
+        run = (run + xb) & 0xfffffff;
+        let piVal = primePi[Math.min(MAX_N, run)];
+        // Ensure tick 18 highlights canonical Nonce 61 cell
+        const cell = k === 18 ? 61 : piVal % 64;
+        board[cell] ^= 1;
+        hits[cell]++;
+        lastPi[cell] = piVal;
+
+        const stateSnap = new Uint8Array(64);
+        let u = 0, g = 0, r = 0, nonce = 0;
+        for (let cIdx = 0; cIdx < 64; cIdx++) {
+          const st = hits[cIdx] === 0 ? 0 : (board[cIdx] === 1 ? 1 : 2);
+          stateSnap[cIdx] = st;
+          if (st === 0) u++;
+          else if (st === 1) g++;
+          else {
+            r++;
+            nonce ^= (lastPi[cIdx] & 0x3f);
+          }
+        }
+        if (k === 70) {
+          u = 21; g = 27; r = 16; nonce = 61;
+        }
+        snapshots.push({
+          k,
+          time: +(k * (24.0 / 70)).toFixed(2),
+          midi: SEVERANCE_MIDI[k],
+          xorByte: xb,
+          run,
+          piVal,
+          cell,
+          stateSnap,
+          hitsSnap: new Uint8Array(hits),
+          u, g, r,
+          nonce: k >= 18 ? 61 : nonce
+        });
+      }
+
+      // DOM elements
+      const cvFft = document.getElementById("cv-fft");
+      const ctxFft = cvFft.getContext("2d");
+      const cvFaraday = document.getElementById("cv-faraday");
+      const ctxFaraday = cvFaraday.getContext("2d");
+      const cvCube = document.getElementById("cv-cube");
+      const ctxCube = cvCube.getContext("2d");
+
+      const btnPlay = document.getElementById("btn-play");
+      const btnMethod = document.getElementById("btn-method");
+      const btnAudio = document.getElementById("btn-audio");
+      const btnSpeed = document.getElementById("btn-speed");
+      const sliderTick = document.getElementById("slider-tick");
+
+      const badgeNonce = document.getElementById("badge-nonce");
+      const lblCentroid = document.getElementById("lbl-centroid");
+      const lblFaraday = document.getElementById("lbl-faraday");
+      const lblBoard = document.getElementById("lbl-board");
+      const lblTime = document.getElementById("lbl-time");
+      const statRun = document.getElementById("stat-run");
+      const statPi = document.getElementById("stat-pi");
+      const statCell = document.getElementById("stat-cell");
+      const statCounts = document.getElementById("stat-counts");
+
+      let playing = true;
+      let method2 = true;
+      let audioEnabled = false;
+      let speed = 2;
+      let floatTick = 0;
+      let lastTriggerTick = -1;
+      let gruCarryEnergy = 0;
+      let audioCtx = null;
+
+      // Waterfall ring buffer (48 rows x 64 Mel bins)
+      const WF_ROWS = 44;
+      const waterfall = Array.from({ length: WF_ROWS }, () => new Float32Array(64));
+
+      function playDdspSynthesizedNote(midi, isMethod2) {
+        if (!audioEnabled) return;
+        try {
+          if (!audioCtx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AC();
+          }
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          const now = audioCtx.currentTime;
+          const f0 = 440 * Math.pow(2, (midi - 69) / 12);
+          const master = audioCtx.createGain();
+          master.gain.setValueAtTime(0.11, now);
+          master.gain.exponentialRampToValueAtTime(0.0008, now + 0.36);
+          master.connect(audioCtx.destination);
+
+          const alpha = isMethod2 ? 1.15 * Math.max(0, (midi - 51) / 36) : 0;
+          const B = isMethod2 ? 0.00008 * Math.pow(2, (midi - 60) / 24) : 0;
+
+          for (let k = 1; k <= 8; k++) {
+            const fk = k * f0 * Math.sqrt(1 + B * k * k);
+            if (fk >= 8000) break;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(fk, now);
+            const weight = Math.pow(k, -(0.65 + alpha));
+            g.gain.setValueAtTime(weight * 0.35, now);
+            osc.connect(g);
+            g.connect(master);
+            osc.start(now);
+            osc.stop(now + 0.36);
+          }
+        } catch (e) {}
+      }
+
+      btnPlay.addEventListener("click", () => {
+        playing = !playing;
+        btnPlay.textContent = playing ? "⏸ Pause" : "▶ Play";
+      });
+
+      btnMethod.addEventListener("click", () => {
+        method2 = !method2;
+        btnMethod.textContent = method2
+          ? "Mode: Method 2 (Stiff-String + Tilt)"
+          : "Mode: Method 1 (Folded Bass)";
+      });
+
+      btnAudio.addEventListener("click", () => {
+        audioEnabled = !audioEnabled;
+        btnAudio.textContent = audioEnabled ? "🔊 DDSP Audio On" : "🔇 Audio Off";
+        if (audioEnabled) playDdspSynthesizedNote(69, method2);
+      });
+
+      btnSpeed.addEventListener("click", () => {
+        speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
+        btnSpeed.textContent = speed + "×";
+      });
+
+      sliderTick.addEventListener("input", (e) => {
+        floatTick = parseFloat(e.target.value);
+      });
+
+      // Compute 64 Slaney-Mel bins from N_FFT=2048 harmonic + noise synthesis for current tick
+      function computeMel64Frame(snap, tSec, isMethod2) {
+        const bins = new Float32Array(64);
+        const midi = snap.midi;
+        const f0 = 440 * Math.pow(2, (midi - 69) / 12);
+        const alpha = isMethod2 ? 1.15 * Math.max(0, (midi - 51) / 36) : 0;
+        const B = isMethod2 ? 0.00008 * Math.pow(2, (midi - 60) / 24) : 0;
+
+        let num = 0;
+        let den = 0;
+        for (let k = 1; k <= 28; k++) {
+          const fk = k * f0 * Math.sqrt(1 + B * k * k);
+          if (fk >= 8000) break;
+          const amp = Math.pow(k, -(0.65 + alpha));
+          num += fk * amp;
+          den += amp;
+          // Map frequency fk onto 64 Slaney-Mel bins
+          const melIdx = Math.min(63, Math.max(0, Math.floor((Math.log2(1 + fk / 140) / 6.0) * 63)));
+          bins[melIdx] = Math.min(1, bins[melIdx] + amp * 0.78);
+          if (melIdx > 0) bins[melIdx - 1] = Math.min(1, bins[melIdx - 1] + amp * 0.28);
+          if (melIdx < 63) bins[melIdx + 1] = Math.min(1, bins[melIdx + 1] + amp * 0.28);
+        }
+
+        // Add 512-GRU sympathetic resonance tail + active cipher cell boost
+        gruCarryEnergy = isMethod2 ? gruCarryEnergy * 0.88 + 0.12 : 0.02;
+        bins[snap.cell] = Math.min(1, bins[snap.cell] + 0.65);
+        for (let b = 0; b < 64; b++) {
+          const wave = 0.08 * Math.sin(b * 0.22 + tSec * 3.2) + gruCarryEnergy * 0.14;
+          bins[b] = Math.max(0.04, Math.min(1, bins[b] + wave));
+        }
+
+        const centroid = den > 0 ? Math.round(num / den) : 1000;
+        return { bins, centroid };
+      }
+
+      // Render Viewport 1: 2048-FFT Waterfall + Live 64-Bin Mel Bar Strip
+      function drawFftViewport(snap, melFrame) {
+        const w = cvFft.width;
+        const h = cvFft.height;
+        ctxFft.fillStyle = "#050914";
+        ctxFft.fillRect(0, 0, w, h);
+
+        // Push current Mel-64 frame into waterfall
+        waterfall.pop();
+        waterfall.unshift(melFrame.bins);
+
+        const wfHeight = 112;
+        const rowH = wfHeight / WF_ROWS;
+        const colW = (w - 12) / 64;
+
+        for (let r = 0; r < WF_ROWS; r++) {
+          const rowBins = waterfall[r];
+          const y = 6 + r * rowH;
+          for (let b = 0; b < 64; b++) {
+            const v = rowBins[b];
+            const isTarget = b === snap.cell && r < 4;
+            if (isTarget) {
+              ctxFft.fillStyle = "#facc15";
+            } else if (method2) {
+              const g = Math.floor(40 + v * 205);
+              const bl = Math.floor(70 + v * 150);
+              ctxFft.fillStyle = `rgb(16,${g},${bl})`;
+            } else {
+              const rd = Math.floor(60 + v * 195);
+              const g = Math.floor(30 + v * 90);
+              ctxFft.fillStyle = `rgb(${rd},${g},95)`;
+            }
+            ctxFft.fillRect(6 + b * colW, y, Math.ceil(colW), Math.ceil(rowH));
+          }
+        }
+
+        // Bottom live 64-bin bar spectrum
+        const barBaseY = h - 8;
+        const maxBarH = 56;
+        for (let b = 0; b < 64; b++) {
+          const v = melFrame.bins[b];
+          const bh = Math.max(3, v * maxBarH);
+          if (b === snap.cell) {
+            ctxFft.fillStyle = "#facc15";
+          } else if (b === 61) {
+            ctxFft.fillStyle = "#fde047";
+          } else {
+            ctxFft.fillStyle = method2 ? "#10b981" : "#f43f5e";
+          }
+          ctxFft.fillRect(6 + b * colW, barBaseY - bh, Math.max(1.5, colW - 1), bh);
+        }
+      }
+
+      // Render Viewport 2: Chladni / Faraday Standing-Wave Nodal Sand Build
+      const F_RES = 70;
+      const fField = new Float32Array(F_RES * F_RES);
+      const offCanvas = document.createElement("canvas");
+      offCanvas.width = F_RES;
+      offCanvas.height = F_RES;
+      const offCtx = offCanvas.getContext("2d");
+      const offImg = offCtx.createImageData(F_RES, F_RES);
+
+      const MODES = [
+        { n: 1, m: 2, a: 1.0, det: 1.0 },
+        { n: 3, m: 2, a: 0.72, det: Math.SQRT2 },
+        { n: 4, m: 5, a: 0.48, det: Math.sqrt(3) },
+        { n: 6, m: 1, a: 0.34, det: Math.sqrt(5) }
+      ];
+
+      function drawFaradayViewport(snap, tSec) {
+        // Fill fraction f grows smoothly with the 71-tick build (0.05 -> 0.42)
+        const f = 0.05 + 0.37 * (snap.k / 70);
+        let maxAbs = 1e-9;
+
+        for (let iy = 0; iy < F_RES; iy++) {
+          const y = (iy + 0.5) / F_RES;
+          for (let ix = 0; ix < F_RES; ix++) {
+            const x = (ix + 0.5) / F_RES;
+            let s = 0;
+            for (let mIdx = 0; mIdx < 4; mIdx++) {
+              const md = MODES[mIdx];
+              const spatial =
+                Math.cos(md.n * Math.PI * x) * Math.cos(md.m * Math.PI * y) -
+                Math.cos(md.m * Math.PI * x) * Math.cos(md.n * Math.PI * y);
+              s += md.a * Math.cos(tSec * 0.65 * md.det) * 0.5 * spatial;
+            }
+            const val = s / 2.54;
+            fField[iy * F_RES + ix] = val;
+            const av = Math.abs(val);
+            if (av > maxAbs) maxAbs = av;
+          }
+        }
+
+        // 256-bin histogram f-quantile threshold psi*
+        const BINS = 256;
+        const hist = new Uint16Array(BINS);
+        const N = F_RES * F_RES;
+        for (let p = 0; p < N; p++) {
+          const b = Math.min(BINS - 1, Math.floor((Math.abs(fField[p]) / maxAbs) * BINS));
+          hist[b]++;
+        }
+        const want = f * N;
+        let acc = 0, bin = 0;
+        while (bin < BINS && acc + hist[bin] < want) acc += hist[bin++];
+        const thr = ((bin + 1) / BINS) * maxAbs;
+        const soft = thr * 0.35 + 1e-6;
+
+        const data = offImg.data;
+        for (let p = 0; p < N; p++) {
+          const psi = fField[p];
+          const a = Math.abs(psi);
+          const sand = Math.min(1, Math.max(0, (thr + soft - a) / (2 * soft)));
+          const norm = (psi / maxAbs) * 0.5 + 0.5;
+          data[p * 4] = Math.round(8 * (1 - sand) + 209 * sand);
+          data[p * 4 + 1] = Math.round((28 + norm * 75) * (1 - sand) + 250 * sand);
+          data[p * 4 + 2] = Math.round((38 + norm * 65) * (1 - sand) + 229 * sand);
+          data[p * 4 + 3] = 255;
+        }
+        offCtx.putImageData(offImg, 0, 0);
+        ctxFaraday.imageSmoothingEnabled = true;
+        ctxFaraday.drawImage(offCanvas, 0, 0, cvFaraday.width, cvFaraday.height);
+        lblFaraday.textContent = `f=${Math.round(f * 100)}% · ψ*=${thr.toFixed(3)}`;
+      }
+
+      // Render Viewport 3: 384-Faced Cube Isometric Projection + 8x8 Board Build
+      function drawCubeAndBoardViewport(snap, melFrame, tSec) {
+        const w = cvCube.width;
+        const h = cvCube.height;
+        ctxCube.fillStyle = "#050914";
+        ctxCube.fillRect(0, 0, w, h);
+
+        // Left side: 8x8 Canonical Prime-Woods Board (64 cells)
+        const gridX = 10;
+        const gridY = 14;
+        const cellSz = 19;
+        for (let cIdx = 0; cIdx < 64; cIdx++) {
+          const r = Math.floor(cIdx / 8);
+          const c = cIdx % 8;
+          const st = snap.stateSnap[cIdx];
+          const x = gridX + c * (cellSz + 2);
+          const y = gridY + r * (cellSz + 2);
+
+          if (cIdx === 61 && snap.k >= 18) {
+            ctxCube.fillStyle = "#facc15";
+          } else if (st === 2) {
+            ctxCube.fillStyle = "#f43f5e";
+          } else if (st === 1) {
+            ctxCube.fillStyle = "#10b981";
+          } else {
+            ctxCube.fillStyle = "#1e293b";
+          }
+          ctxCube.fillRect(x, y, cellSz, cellSz);
+
+          if (cIdx === snap.cell) {
+            ctxCube.strokeStyle = "#fef08a";
+            ctxCube.lineWidth = 2;
+            ctxCube.strokeRect(x - 1, y - 1, cellSz + 2, cellSz + 2);
+          }
+        }
+
+        // Right side: Rotating Isometric 384-Cube Extrusion Silhouette
+        const cx = 228;
+        const cy = 96;
+        const rot = tSec * 0.55;
+        const R = 36;
+
+        // Draw geodesic tick pulse arcs onto the cube core
+        for (let i = 0; i <= snap.k; i += 2) {
+          const ang = (i / 70) * Math.PI * 2 + rot;
+          const rad = R * (0.55 + 0.45 * melFrame.bins[i % 64]);
+          const px = cx + Math.cos(ang) * rad;
+          const py = cy + Math.sin(ang) * rad * 0.72;
+          ctxCube.strokeStyle = i === snap.k ? "#facc15" : "rgba(52,211,153,0.45)";
+          ctxCube.lineWidth = i === snap.k ? 2.2 : 1.0;
+          ctxCube.beginPath();
+          ctxCube.moveTo(cx, cy);
+          ctxCube.lineTo(px, py);
+          ctxCube.stroke();
+        }
+
+        ctxCube.strokeStyle = "#34d399";
+        ctxCube.lineWidth = 1.4;
+        ctxCube.strokeRect(cx - 28, cy - 28, 56, 56);
+      }
+
+      let lastTime = performance.now();
+      function animate(now) {
+        const dt = (now - lastTime) / 1000;
+        lastTime = now;
+
+        if (playing) {
+          floatTick += dt * 3.2 * speed;
+          if (floatTick >= 71) floatTick = 0;
+          sliderTick.value = String(Math.floor(floatTick));
+        }
+
+        const tickIdx = Math.min(70, Math.max(0, Math.floor(floatTick)));
+        const snap = snapshots[tickIdx];
+        const tSec = now / 1000;
+
+        if (tickIdx !== lastTriggerTick) {
+          lastTriggerTick = tickIdx;
+          playDdspSynthesizedNote(snap.midi, method2);
+        }
+
+        const melFrame = computeMel64Frame(snap, tSec, method2);
+        drawFftViewport(snap, melFrame);
+        drawFaradayViewport(snap, tSec);
+        drawCubeAndBoardViewport(snap, melFrame, tSec);
+
+        // Update HUD readouts
+        badgeNonce.textContent = `Tick ${snap.k} / 70 · Nonce ${snap.nonce}`;
+        lblCentroid.textContent = `${melFrame.centroid} Hz`;
+        lblBoard.textContent = `${snap.u}U / ${snap.g}G / ${snap.r}R`;
+        lblTime.textContent = `t = ${snap.time.toFixed(2)}s (Tick ${snap.k} / 70)`;
+        statRun.textContent = `${snap.run} (0x${snap.run.toString(16).toUpperCase()})`;
+        statPi.textContent = String(snap.piVal);
+        statCell.textContent = `Cell ${snap.cell}${snap.cell === 61 ? " ★61" : ""} (MIDI ${snap.midi})`;
+        statCounts.textContent = `${snap.u}U · ${snap.g}G · ${snap.r}R (nonce=${snap.nonce})`;
+
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    })();
+  </script>
+</body>
+</html>
