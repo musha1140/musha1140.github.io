@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fblog\u002F[slug]","\u002Fwhitepapers\u002F[slug]","\u002Fwiki\u002F[term]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
