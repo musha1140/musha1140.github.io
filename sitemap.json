@@ -2,9 +2,9 @@
   "generatedAt": "2026-11-01T19:36:28.329Z",
   "engine": "static-handler",
   "summary": {
-    "total": 84,
+    "total": 82,
     "verified": 46,
-    "external": 37,
+    "external": 35,
     "section": 7,
     "broken": 0
   },
@@ -43,13 +43,6 @@
       "kind": "route",
       "status": "verified",
       "httpStatus": 200
-    },
-    {
-      "id": "https://gaslighting.vercel.app/tools/scanner",
-      "href": "https://gaslighting.vercel.app/tools/scanner",
-      "kind": "external",
-      "status": "external",
-      "note": "egress-restricted in CI"
     },
     {
       "id": "/whitepapers/zero-width-integrity",
@@ -271,13 +264,6 @@
     {
       "id": "https://source.tube/neatnik/steganographr",
       "href": "https://source.tube/neatnik/steganographr",
-      "kind": "external",
-      "status": "external",
-      "note": "egress-restricted in CI"
-    },
-    {
-      "id": "https://slayy1.vercel.app",
-      "href": "https://slayy1.vercel.app",
       "kind": "external",
       "status": "external",
       "note": "egress-restricted in CI"
